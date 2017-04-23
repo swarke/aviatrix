@@ -1,0 +1,16 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Bootstrap 4  */
+@import '../node_modules/bootstrap/scss/bootstrap';
+
+/* Angular Materil prebuilt theme */
+@import '~@angular/material/core/theming/prebuilt/deeppurple-amber.css';
+
+/* Angular Material light */
+@import '../node_modules/material-design-lite/src/material-design-lite.scss';
+
+/* Material design icons */
+@import '../node_modules/material-design-icons/iconfont/material-icons.css';
+
+/* Custom scss */
+@import './avaitrix-style.scss';
