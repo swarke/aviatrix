@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { ChartModule } from 'angular2-highcharts';
-
+import { MapsAPILoader, GoogleMapsAPIWrapper } from 'angular2-google-maps/core';
+import { Response,Http } from '@angular/http';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -15,80 +16,55 @@ export class DashboardComponent implements OnInit {
   throughputOptions: any;
   lat: number;
   lng: number;
+  geoLocation: any;
+  errorMessage: any;
+
+  locations: any[];
 
   inventory: any;
-  constructor() {
+  constructor(private mapsAPILoader : MapsAPILoader,
+              private ngZone: NgZone,
+              private http: Http) {
   	  this.clouds = [
-  	    {value: '0', viewValue: 'All Cloud'},
-  	    {value: '1', viewValue: 'Google Cloud'},
-  	    {value: '2', viewValue: 'Azure'}
-  	  ];
-     this.lat = 37.646152;
-     this.lng = -77.511429;
+                	    {value: '0', viewValue: 'All Cloud'},
+                	    {value: '1', viewValue: 'Google Cloud'},
+                	    {value: '2', viewValue: 'Azure'}
+                	  ];
      this.options = [];
+     this.errorMessage = "";
      this.renderAllCharts();
-     this.inventory = {
-        'aws': [{
-          'name': 'aviatrix-us-east-1-test1',
-          'id': 'i-04eccf81f71a331c4',
-          'dns_name': 'ec2-107-22-156-82.compute-1.amazonaws.com',
-          'public_ip': '107.22.156.82',
-          'cloud_info': {
-            'region': 'us-east-1',
-            'availability_zone': 'us-east-1c',
-          },
-          'url': 'url',
-          'lat': '41.283142',
-          'lng': '-72.872870',
-        }]
-      };
+     this.locations = [];
   }
 
   ngOnInit() {
-    //this.renderAllCharts();
+    this.getCurrentGeoLocation();
   }
 
-    public zoom: number = 15;
-  public opacity: number = 1.0;
+ getCurrentGeoLocation() {
+     let current = this;
+      this.getGeolocation().subscribe((geoLocation:   any) => {
+      current.geoLocation = JSON.parse(geoLocation._body);
+       let locs: any[] = current.geoLocation.loc.split(',');
+       current.lat = parseFloat(locs[0]);
+       current.lng = parseFloat(locs[1]);
+       current.locations.push({
+                              lat: parseFloat(locs[0]),
+                              lng: parseFloat(locs[1]),
+                              label: 'User location : ' + current.geoLocation.city,
+                              draggable: false
+                            });
+       current.locations.push({
+                            lat: 41.283142,
+                            lng: -72.872870,
+                            label: 'US East (N. Virginia)',
+                            draggable: false
+                          });
+    })
+  }
 
-  increaseZoom(){
-    this.zoom  = Math.min(this.zoom + 1, 18);
-    console.log('zoom: ', this.zoom);
-  }
-  decreaseZoom(){
-    this.zoom  = Math.max(this.zoom - 1, 1);
-    console.log('zoom: ', this.zoom);
-  }
-
-  increaseOpacity(){
-    this.opacity  = Math.min(this.opacity + 0.1, 1);
-    console.log('opacity: ', this.opacity);
-  }
-  decreaseOpacity(){
-    this.opacity  = Math.max(this.opacity - 0.1, 0);
-    console.log('opacity: ', this.opacity);
-  }
-
-    markers: marker[] = [
-    {
-      lat: 37.646152,
-      lng: -77.511429,
-      label: 'Richmond',
-      draggable: false
-    },
-    {
-      lat: 41.283142,
-      lng: -72.872870,
-      label: 'US East (N. Virginia)',
-      draggable: false
-    },
-    {
-      lat: 41.468801,
-      lng: -81.921060,
-      label: 'US West (Oregon)',
-      draggable: true
-    }
-  ];
+ getGeolocation() {
+   return this.http.get('http://ipinfo.io/json');
+  };
 
   myclick(marker: any){
       console.log("mouse over event ", marker);
@@ -96,7 +72,6 @@ export class DashboardComponent implements OnInit {
   renderAllCharts () {
     this.generateChart('latency');
     this.generateChart('responseTime');
-    // this.generateChart(this.getChartData(this.getResponsetime2()), 'responseTime');
     this.generateChart('packetLoss');
     this.generateChart('throughput');
     console.log(this.latencyOptions);
@@ -531,13 +506,4 @@ export class DashboardComponent implements OnInit {
 
     return metricData;
   }
-
-}
-
-// just an interface for type safety.
-interface marker {
-  lat: number;
-  lng: number;
-  label?: string;
-  draggable: boolean;
 }
