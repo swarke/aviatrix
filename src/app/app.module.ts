@@ -7,6 +7,7 @@ import 'hammerjs';
 import { ChartModule } from 'angular2-highcharts';
 import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
 import { AgmCoreModule} from 'angular2-google-maps/core';
+import { AngularOpenlayersModule } from 'angular2-openlayers';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -34,6 +35,7 @@ export function highchartsFactory() {
     HttpModule,
     MaterialModule,
     ChartModule,
+    AngularOpenlayersModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyDvSnAZNrXrmyEurdnijIl9BPYhaT706Ns'
     })
