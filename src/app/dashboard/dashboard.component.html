@@ -2,8 +2,7 @@
     <div class="row mrg-top-15">
         <div class="col-md-9 pad-right-none">
             <div class="card card-radious-none">
-                <div class="card-header">
-                    
+                <div class="card-header">   
                     <!-- <md-select placeholder="Select Cloud">
                         <md-option *ngFor="let cloud of clouds" [value]="cloud.value">
                             {{ cloud.viewValue }}
@@ -14,14 +13,14 @@
                             <h5 class="card-title card-title-margin">Map - Public Cloud Data Centers</h5>
                         </div>
                         <div class="col-md-6">
-                            <button class="btn btn-primary" (click)="startTest();" style="float: right">Start</button>
+                            <button class="btn btn-primary" (click)="startTest();" style="float: right" [disabled]="disabledStart">Start</button>
                         </div>
                     </div>
-                    
                 </div>
-                <div class="card-block">
-                    <sebm-google-map [latitude]="lat" [longitude]="lng">
-                        <sebm-google-map-marker *ngFor="let m of markers" [latitude]="m.lat" [longitude]="m.lng" (mouseOver)="myclick(m)">
+                <div class="card-block" *ngIf="locations.length > 0">
+                    <sebm-google-map [latitude]="lat" [longitude]="lng" 
+                    [scrollwheel]="false" [zoom]="2">
+                        <sebm-google-map-marker *ngFor="let m of locations" [latitude]="m.lat" [longitude]="m.lng" (mouseOver)="myclick(m)">
                             <sebm-google-map-info-window [disableAutoPan]="false">
                                 <strong>{{m.label}}</strong>
                             </sebm-google-map-info-window>
@@ -33,9 +32,14 @@
         <div class="col-md-3">
             <div class="card card-radious-none">
                 <div class="card-header">
-                    <h5 class="card-title card-title-margin">Test Results</h5>
+                    <div class="row">
+                        <div class="col-md-6"><h5 class="card-title card-title-margin">Test Results</h5></div>
+                        <div class="col-md-6"><img src="../assets/loader.gif" style="float: right; margin-top: 10px;" *ngIf="disabledStart"></div>
+                    </div>
+                    
                 </div>
                 <div class="card-block test-card-height">
+                    <h6 style="margin-top: 15px;">US East (N. Virginia)</h6>
                     <h6 class="card-title card-title-margin">Bandwidth</h6>
                     <h6 class="card-title card-title-margin value-color" *ngIf="bandwidth !=='NA'">{{bandwidth | number}} Mbps</h6>
                     <h6 class="card-title card-title-margin value-color" *ngIf="bandwidth ==='NA'">{{bandwidth}}</h6>
@@ -61,20 +65,28 @@
         <div class="col-md-6 pad-right-none">
             <div class="card card-radious-none">
                 <div class="card-header">
-                    <h5 class="card-title card-title-margin">Latency</h5>
+                    <div class="row">
+                        <div class="col-md-6"><h5 class="card-title card-title-margin">Latency</h5></div>
+                        <div class="col-md-6"><img src="../assets/loader.gif" style="float: right; margin-top: 10px;" *ngIf="disabledStart"></div>
+                    </div>
                 </div>
                 <div class="card-block">
-                    <chart [options]="latencyOptions" ></chart>
+                    <chart [options]="latencyOptions" *ngIf="latencyOptions"></chart>
+                    <h6 *ngIf="!latencyOptions">Latency data is not available.</h6>
                 </div>
             </div>
         </div>
         <div class="col-md-6">
             <div class="card card-radious-none">
                 <div class="card-header">
-                    <h5 class="card-title card-title-margin">Response Time</h5>
+                     <div class="row">
+                        <div class="col-md-6"><h5 class="card-title card-title-margin">Response Time</h5></div>
+                        <div class="col-md-6"><img src="../assets/loader.gif" style="float: right; margin-top: 10px;" *ngIf="disabledStart"></div>
+                    </div>
                 </div>
                 <div class="card-block">
-                    <chart [options]="responseTimeOptions"></chart>
+                    <chart [options]="responseTimeOptions" *ngIf="responseTimeOptions"></chart>
+                    <h6 *ngIf="!responseTimeOptions">Response time data is not available.</h6>
                 </div>
             </div>
         </div>

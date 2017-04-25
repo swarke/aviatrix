@@ -1,7 +1,8 @@
 import { Component, OnInit, } from '@angular/core';
 import { ChartModule } from 'angular2-highcharts';
 import { DashboardModel} from '../../models';
-import {Http} from '@angular/http';
+import { MapsAPILoader, GoogleMapsAPIWrapper } from 'angular2-google-maps/core';
+import { Response,Http } from '@angular/http';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,13 +18,17 @@ export class DashboardComponent implements OnInit {
   throughputOptions: any;
   lat: number;
   lng: number;
+  geoLocation: any;
+  errorMessage: any;
+
+  locations: any[];
 
   inventory: any;
 
   dashboardModel: DashboardModel;
   pingStartTime: any =  null;
 
-  TEST_MINUTES: number = 1;
+  TEST_MINUTES: number = 5;
 
   latency: any = 'NA';
   bandwidth: any = 'NA';
@@ -32,19 +37,21 @@ export class DashboardComponent implements OnInit {
 
   latencyChart: any;
 
-  chart : Object;
+  disabledStart: any;
 
-  constructor(private _http: Http) {
+  chart : Object;
+      
+  constructor(private mapsAPILoader : MapsAPILoader,
+              private http: Http) {
+      this.disabledStart = false;
       this.dashboardModel = new DashboardModel();
   	  this.clouds = [
-  	    {value: '0', viewValue: 'All Cloud'},
-  	    {value: '1', viewValue: 'Google Cloud'},
-  	    {value: '2', viewValue: 'Azure'}
-  	  ];
-     this.lat = 37.646152;
-     this.lng = -77.511429;
+                	    {value: '0', viewValue: 'All Cloud'},
+                	    {value: '1', viewValue: 'Google Cloud'},
+                	    {value: '2', viewValue: 'Azure'}
+                	  ];
      this.options = [];
-     // this.renderAllCharts();
+
      this.inventory = {
         'aws': [{
           'name': 'aviatrix-us-east-1-test1',
@@ -60,6 +67,9 @@ export class DashboardComponent implements OnInit {
           'lng': '-72.872870',
         }]
       };
+
+     this.errorMessage = "";
+     this.locations = [];
   }
 
   saveInstance(chartInstance) {
@@ -67,40 +77,42 @@ export class DashboardComponent implements OnInit {
   }
   
   ngOnInit() {
-    //this.renderAllCharts();
+    this.getCurrentGeoLocation();
   }
 
-    markers: marker[] = [
-    {
-      lat: 37.646152,
-      lng: -77.511429,
-      label: 'Richmond',
-      draggable: false
-    },
-    {
-      lat: 41.283142,
-      lng: -72.872870,
-      label: 'US East (N. Virginia)',
-      draggable: false
-    },
-    {
-      lat: 41.468801,
-      lng: -81.921060,
-      label: 'US West (Oregon)',
-      draggable: true
-    }
-  ];
+ getCurrentGeoLocation() {
+     let current = this;
+      this.getGeolocation().subscribe((geoLocation:   any) => {
+      current.geoLocation = JSON.parse(geoLocation._body);
+       let locs: any[] = current.geoLocation.loc.split(',');
+       current.lat = parseFloat(locs[0]);
+       current.lng = parseFloat(locs[1]);
+       current.locations.push({
+                              lat: parseFloat(locs[0]),
+                              lng: parseFloat(locs[1]),
+                              label: 'User location : ' + current.geoLocation.city,
+                              draggable: false
+                            });
+       current.locations.push({
+                            lat: 41.283142,
+                            lng: -72.872870,
+                            label: 'US East (N. Virginia)',
+                            draggable: false
+                          });
+    })
+  }
+
+ getGeolocation() {
+   return this.http.get('http://ipinfo.io/json');
+  };
 
   myclick(marker: any){
-      console.log("mouse over event ", marker);
   };
   renderAllCharts () {
     this.generateChart('latency');
     this.generateChart('responseTime');
-    // this.generateChart(this.getChartData(this.getResponsetime2()), 'responseTime');
     this.generateChart('packetLoss');
     this.generateChart('throughput');
-    console.log(this.latencyOptions);
   }
 
   getSeriesData(chartType: any, name: any, data: any) {
@@ -548,6 +560,7 @@ export class DashboardComponent implements OnInit {
    * Starts test for calculating the statistics.
    */
   startTest() {
+    this.disabledStart = true;
     this.pingStartTime = new Date();
     this.latency =  'NA';
     this.responseTime = 'NA';
@@ -567,7 +580,6 @@ export class DashboardComponent implements OnInit {
     let diff: any = endTime - this.pingStartTime;
 
     var diffMins = Math.round(((diff % 86400000) % 3600000) / 60000);
-    console.log('Diff is ' + diffMins);
 
     return diffMins;
   }
@@ -577,24 +589,20 @@ export class DashboardComponent implements OnInit {
     let diff: any = endTime.getTime() - this.pingStartTime.getTime();
 
     var diffSec = diff/ 1000;
-    console.log('Diff is diffSec' + diffSec);
 
     return diffSec;
   }
 
   setBandwith() {
-    console.log("In bandwidth");
     var downloadSize = 2621440; //bytes
     let dashboard = this;
     if (this.getTimeDiff() < this.TEST_MINUTES) {
         let pingStart = performance.now();
         var cacheBuster = "?nnn=" + pingStart;
-        this._http.get(this.inventory.aws[0].url + 'clouds-01.jpeg' + cacheBuster)
+        this.http.get(this.inventory.aws[0].url + 'clouds-01.jpeg' + cacheBuster)
           .subscribe((data) => {
-            // console.log("data : " + data);
             let pingEnd: number = performance.now();
             let duration: number = ((pingEnd - pingStart)/1000);
-            console.log("Duration Second: " + duration);
             let bitsLoaded = downloadSize * 8;
             let speedBps: any = (bitsLoaded / duration).toFixed(2);
             let speedKbps: any = (speedBps / 1024).toFixed(2);
@@ -625,6 +633,8 @@ export class DashboardComponent implements OnInit {
           // let pingStart = performance.now();
           // var cacheBuster = "?nnn=" + pingStart;
           // download.src = this.inventory.aws[0].url + 'clouds-01.jpeg' + cacheBuster;
+      } else {
+        this.disabledStart = false;
       }
   }
 
@@ -639,25 +649,23 @@ export class DashboardComponent implements OnInit {
   }
 
   setLatency() {
-    console.log("In Latency");
     if (this.getTimeDiff() < this.TEST_MINUTES) {
        let pingStart = performance.now();
-        this._http.get(this.inventory.aws[0].url)
+        this.http.get(this.inventory.aws[0].url)
           .subscribe((data) => {
             let pingEnd: number = performance.now();
             let ping: number = (pingEnd - pingStart);
             this.dashboardModel.latency.push({'time': new Date(), 'value': Math.round(ping)});
 
             let series: any = [];
-            this.latencyOptions = [];
             series.push(this.getSeriesData('spline', "us-east-1", this.getChartData(this.dashboardModel.latency)));
             this.latencyOptions = this.getChartConfig('', 'Miliseconds', series, 'spline');
             
-
             this.getLatency();
             this.setLatency();
         });
     } else {
+      this.disabledStart = false;
       let series: any = [];
       this.latencyOptions = [];
       series.push(this.getSeriesData('spline', "us-east-1", this.getChartData(this.dashboardModel.latency)));
@@ -677,10 +685,9 @@ export class DashboardComponent implements OnInit {
   }
 
   setResponseTime() {
-    console.log("In Response Time");
     if (this.getTimeDiff() < this.TEST_MINUTES) {
        let pingStart = performance.now();
-        this._http.get(this.inventory.aws[0].url + 'test.html')
+        this.http.get(this.inventory.aws[0].url + 'test.html')
           .subscribe((data) => {
             let pingEnd: number = performance.now();
             let ping: number = pingEnd - pingStart;
@@ -695,6 +702,7 @@ export class DashboardComponent implements OnInit {
             this.setResponseTime();
         });
     } else {
+        this.disabledStart = false;
         let series: any = [];
         this.responseTimeOptions = [];
         series.push(this.getSeriesData('spline', "us-east-1", this.getChartData(this.dashboardModel.responseTime)));
@@ -715,7 +723,6 @@ export class DashboardComponent implements OnInit {
 
   setThroughput(bandwidth, time, duration) {
     var seconds = ((time % 60000) / 1000)
-    console.log("seconds ==>> " + seconds + " throuput ==>> " + (bandwidth / seconds));
     var _bandwidth = (bandwidth / seconds);
     let speedBps: any = (_bandwidth / duration).toFixed(2);
     let speedKbps: any = (speedBps / 1024).toFixed(2);
@@ -729,11 +736,8 @@ export class DashboardComponent implements OnInit {
       for (let index = 0 ; index < this.dashboardModel.throughput.length; index++) {
         _throughput = _throughput + parseFloat(this.dashboardModel.throughput[index].value);
       }
-
-     console.log("before Throughput " + _throughput);
  
      this.throughput =  _throughput / this.dashboardModel.throughput.length;
-     console.log("After Throughput " + _throughput);
     }
   }
 }

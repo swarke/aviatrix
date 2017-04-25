@@ -6,7 +6,7 @@ import { MaterialModule } from '@angular/material';
 import 'hammerjs';
 import { ChartModule } from 'angular2-highcharts';
 import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
-import { AgmCoreModule} from 'angular2-google-maps/core';
+import { AgmCoreModule } from 'angular2-google-maps/core';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
