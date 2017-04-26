@@ -2,12 +2,16 @@ import { Component, OnInit, } from '@angular/core';
 import { ChartModule } from 'angular2-highcharts';
 import { DashboardModel} from '../../models';
 import { MapsAPILoader, GoogleMapsAPIWrapper } from 'angular2-google-maps/core';
-import { Response,Http } from '@angular/http';
+import { Response, Http } from '@angular/http';
+import {DashboardService} from '../../services'
+
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
+  viewProviders: [DashboardService]
+
 })
 export class DashboardComponent implements OnInit {
   clouds: any;
@@ -40,9 +44,11 @@ export class DashboardComponent implements OnInit {
   disabledStart: any;
 
   responseTimeChart : any;
+  selectedRegions: any;
       
   constructor(private mapsAPILoader : MapsAPILoader,
-              private http: Http) {
+              private http: Http,
+              private dashboardService: DashboardService) {
       this.disabledStart = false;
       this.latencyOptions = null;
       this.responseTimeOptions = null;
@@ -56,24 +62,10 @@ export class DashboardComponent implements OnInit {
                 	  ];
      this.options = [];
 
-     this.inventory = {
-        'aws': [{
-          'name': 'aviatrix-us-east-1-test1',
-          'id': 'i-04eccf81f71a331c4',
-          'dns_name': 'ec2-107-22-156-82.compute-1.amazonaws.com',
-          'public_ip': '107.22.156.82',
-          'cloud_info': {
-            'region': 'us-east-1',
-            'availability_zone': 'us-east-1c',
-          },
-          'url': 'http://107.22.156.82/',
-          'lat': '41.283142',
-          'lng': '-72.872870',
-        }]
-      };
-
+     this.inventory = {};
      this.errorMessage = "";
      this.locations = [];
+     this.selectedRegions = [];
   }
 
   latencyInstance(chartInstance) {
@@ -85,7 +77,7 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getCurrentGeoLocation();
+    this.getInvetory();
   }
 
  getCurrentGeoLocation() {
@@ -101,12 +93,12 @@ export class DashboardComponent implements OnInit {
                               label: 'User location : ' + current.geoLocation.city,
                               draggable: false
                             });
-       current.locations.push({
-                            lat: 41.283142,
-                            lng: -72.872870,
-                            label: 'US East (N. Virginia)',
-                            draggable: false
-                          });
+
+       for(let index = 0; index < this.inventory.aws.data.length; index++) {
+         let obj = this.inventory.aws.data[index];
+         current.locations.push(obj);
+       }
+       
     })
   }
 
@@ -148,181 +140,6 @@ export class DashboardComponent implements OnInit {
       return options;
     }
 
-  getPacketLossData () {
-    return [{
-                "value": 5,
-                "time": "2017-04-07 05:50:00"
-            },
-            {
-                "value": 7,
-                "time": "2017-04-07 05:50:30"
-            },
-            {
-                "value": 10,
-                "time": "2017-04-07 05:51:00"
-            },
-            {
-                "value": 12,
-                "time": "2017-04-07 05:51:30"
-            },
-            {
-                "value": 25,
-                "time": "2017-04-07 05:52:00"
-            },
-            {
-                "value": 30,
-                "time": "2017-04-07 05:52:30"
-            },
-            {
-                "value": 37,
-                "time": "2017-04-07 05:53:00"
-            },
-            {
-                "value": 42,
-                "time": "2017-04-07 05:53:30"
-            },
-            {
-                "value": 48,
-                "time": "2017-04-07 05:54:00"
-            },
-            {
-                "value": 53,
-                "time": "2017-04-07 05:54:30"
-            }
-          ]
-  };
-
-  getPacketLossData2 () {
-    return [{
-                "value": 10,
-                "time": "2017-04-07 05:50:00"
-            },
-            {
-                "value": 6,
-                "time": "2017-04-07 05:50:30"
-            },
-            {
-                "value": 20,
-                "time": "2017-04-07 05:51:00"
-            },
-            {
-                "value": 5,
-                "time": "2017-04-07 05:51:30"
-            },
-            {
-                "value": 25,
-                "time": "2017-04-07 05:52:00"
-            },
-            {
-                "value": 10,
-                "time": "2017-04-07 05:52:30"
-            },
-            {
-                "value": 40,
-                "time": "2017-04-07 05:53:00"
-            },
-            {
-                "value": 24,
-                "time": "2017-04-07 05:53:30"
-            },
-            {
-                "value": 67,
-                "time": "2017-04-07 05:54:00"
-            },
-            {
-                "value": 53,
-                "time": "2017-04-07 05:54:30"
-            }
-          ]
-  };
-
-  getThroughputData () {
-    return [{
-             "value": 60,
-             "time": "2017-04-07 05:50:00"
-            },
-            {
-              "value": 20,
-              "time": "2017-04-07 05:50:30"
-            },
-            {
-              "value": 40,
-              "time": "2017-04-07 05:51:00"
-            },
-            {
-              "value": 30,
-              "time": "2017-04-07 05:51:30"
-            },
-            {
-              "value": 50,
-              "time": "2017-04-07 05:52:00"
-            },
-            {
-              "value": 30,
-              "time": "2017-04-07 05:52:30"
-            },
-            {
-              "value": 40,
-              "time": "2017-04-07 05:53:00"
-            },
-            {
-              "value": 70,
-              "time": "2017-04-07 05:53:30"
-            },
-            {
-              "value": 50,
-              "time": "2017-04-07 05:54:00"
-            },
-            {
-              "value": 20,
-              "time": "2017-04-07 05:54:30"
-            }
-            ]
-  };
-
-   getThroughputData2 () {
-    return [{
-             "value": 30,
-             "time": "2017-04-07 05:50:00"
-            },
-            {
-              "value": 50,
-              "time": "2017-04-07 05:50:30"
-            },
-            {
-              "value": 40,
-              "time": "2017-04-07 05:51:00"
-            },
-            {
-              "value": 60,
-              "time": "2017-04-07 05:51:30"
-            },
-            {
-              "value": 30,
-              "time": "2017-04-07 05:52:00"
-            },
-            {
-              "value": 50,
-              "time": "2017-04-07 05:52:30"
-            },
-            {
-              "value": 20,
-              "time": "2017-04-07 05:53:00"
-            },
-            {
-              "value": 60,
-              "time": "2017-04-07 05:53:30"
-            },
-            {
-              "value": 70,
-              "time": "2017-04-07 05:54:00"
-            },
-            {
-              "value": 40,
-              "time": "2017-04-07 05:54:30"
-            }
-            ]
-  };
 
   /**
    * [getChartData description]
@@ -377,10 +194,10 @@ export class DashboardComponent implements OnInit {
     this.latencyOptions = this.getChartConfig('', 'Miliseconds', latencySeries, 'spline');
 
     // Calculating latency.
-    this.setLatency();
+    // this.setLatency();
 
     // Calculating bandwidth.
-    this.setBandwith();
+    // this.setBandwith();
 
     // Setting chart configuration
     let responseTimeSeries: any = [];
@@ -390,7 +207,7 @@ export class DashboardComponent implements OnInit {
     this.responseTimeOptions = this.getChartConfig('', 'Miliseconds', responseTimeSeries, 'spline');
  
     // Calculating resposne time.
-    this.setResponseTime();  
+    // this.setResponseTime();  
   }
 
   /**
@@ -466,16 +283,20 @@ export class DashboardComponent implements OnInit {
   setLatency() {
     if (this.getTimeDiff() < this.TEST_MINUTES) {
        let pingStart = performance.now();
-        this.http.get(this.inventory.aws[0].url)
-          .subscribe((data) => {
-            let pingEnd: number = performance.now();
-            let ping: number = (pingEnd - pingStart);
-            this.dashboardModel.latency.push({'time': new Date(), 'value': Math.round(ping)});
+        // this.http.get(this.inventory.aws[0].url)
+        //   .subscribe((data) => {
+        //     let pingEnd: number = performance.now();
+        //     let ping: number = (pingEnd - pingStart);
+        //     this.dashboardModel.latency.push({'time': new Date(), 'value': Math.round(ping)});
 
-            this.latencyChart.series[0].addPoint(this.getChartPoint(new Date(), Math.round(ping)));
+        //     this.latencyChart.series[0].addPoint(this.getChartPoint(new Date(), Math.round(ping)));
 
-            this.getLatency();
-            this.setLatency();
+        //     this.getLatency();
+        //     this.setLatency();
+        // });
+
+        this.dashboardService.getLatency('http://107.22.156.82/').subscribe((data:any ) =>{
+          console.log('DAta in latency' +  data);
         });
     } else {
       this.disabledStart = false;
@@ -559,10 +380,24 @@ export class DashboardComponent implements OnInit {
       for (let index = 0 ; index < this.dashboardModel.throughput.length; index++) {
         _throughput = _throughput + parseFloat(this.dashboardModel.throughput[index].value);
       }
- 
+
      this.throughput =  _throughput / this.dashboardModel.throughput.length;
     }
   }
+
+  getInvetory() {
+    this.dashboardService.getInventory().subscribe((inventory: any) => {
+        this.inventory = JSON.parse(inventory);
+        this.getCurrentGeoLocation();
+      },
+        (error: any) => this.handleError(error)
+      );
+  }
+
+  handleError(error: any) {
+
+  }
+
 }
 
 // just an interface for type safety.

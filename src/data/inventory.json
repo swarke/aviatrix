@@ -1,0 +1,33 @@
+{
+  "aws": {
+    "cloud_name": "AWS",
+    "data": [{
+      "name": "aviatrix-us-east-1-test1",
+      "label": "US East (N. Virginia)",
+      "id": "i-04eccf81f71a331c4",
+      "dns_name": "ec2-107-22-156-82.compute-1.amazonaws.com",
+      "public_ip": "107.22.156.82",
+      "cloud_info": {
+        "region": "us-east-1",
+        "availability_zone": "us-east-1c"
+      },
+      "url": "http://107.22.156.82/",
+      "lat": 41.283142,
+      "lng": -72.872870
+    },
+    {
+      "name": "aviatrix-us-west",
+      "label": "US West (Oregon)",
+      "id": "i-0627f325230a7e7f0",
+      "dns_name": "ec2-34-209-70-236.us-west-2.compute.amazonaws.com",
+      "public_ip": "34.209.70.236",
+      "cloud_info": {
+        "region": "us-west-2b",
+        "availability_zone": "us-west-2b"
+      },
+      "url": "http://34.209.70.236/",
+      "lat": 41.468801,
+      "lng": -81.921060
+    }]
+  }
+}

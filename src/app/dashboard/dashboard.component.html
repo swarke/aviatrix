@@ -12,7 +12,13 @@
                         <div class="col-md-6">
                             <h5 class="card-title card-title-margin">Map - Public Cloud Data Centers</h5>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
+                            <md2-select id="regionId" name="regionName" placeholder="Select Regions"
+                                 [(ngModel)]="selectedRegions" [multiple]="true">
+                                     <md2-option *ngFor="let region of regions" [value]="region.name">{{region.name}}</md2-option>
+                               </md2-select>
+                        </div>
+                        <div class="col-md-3">
                             <button class="btn btn-primary" (click)="startTest();" style="float: right" [disabled]="disabledStart">Start</button>
                         </div>
                     </div>
