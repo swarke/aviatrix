@@ -71,8 +71,8 @@
                     </div>
                 </div>
                 <div class="card-block">
-                    <chart [options]="latencyOptions" *ngIf="latencyOptions"></chart>
-                    <h6 *ngIf="!latencyOptions">Latency data is not available.</h6>
+                    <chart [options]="latencyOptions" (load)="latencyInstance($event.context)"  *ngIf="latencyOptions !== null"></chart>
+                    <h6 *ngIf="latencyOptions === null">Latency data is not available.</h6>
                 </div>
             </div>
         </div>
@@ -85,8 +85,8 @@
                     </div>
                 </div>
                 <div class="card-block">
-                    <chart [options]="responseTimeOptions" *ngIf="responseTimeOptions"></chart>
-                    <h6 *ngIf="!responseTimeOptions">Response time data is not available.</h6>
+                    <chart [options]="responseTimeOptions" (load)="responseTimeInstance($event.context)" *ngIf="responseTimeOptions !== null"></chart>
+                    <h6 *ngIf="responseTimeOptions === null">Response time data is not available.</h6>
                 </div>
             </div>
         </div>
