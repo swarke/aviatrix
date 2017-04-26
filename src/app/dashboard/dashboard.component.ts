@@ -388,7 +388,11 @@ export class DashboardComponent implements OnInit {
   getInvetory() {
     this.dashboardService.getInventory().subscribe((inventory: any) => {
         this.inventory = JSON.parse(inventory);
-        this.getCurrentGeoLocation();
+        // this.getCurrentGeoLocation();
+        for(let index = 0; index < this.inventory.aws.data.length; index++) {
+         let obj = this.inventory.aws.data[index];
+         this.locations.push(obj);
+       }
       },
         (error: any) => this.handleError(error)
       );
@@ -396,6 +400,10 @@ export class DashboardComponent implements OnInit {
 
   handleError(error: any) {
 
+  }
+
+  stopTest() {
+    
   }
 
 }

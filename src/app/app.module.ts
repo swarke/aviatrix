@@ -7,15 +7,11 @@ import 'hammerjs';
 import { ChartModule } from 'angular2-highcharts';
 import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
 import { AgmCoreModule } from 'angular2-google-maps/core';
-import {Md2SelectModule} from 'md2-select/select';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ApiService } from '../services/api.service';
-
-import { Md2Module }  from 'md2';
-
 
 declare var require: any;
 
@@ -39,7 +35,6 @@ export function highchartsFactory() {
     HttpModule,
     MaterialModule,
     ChartModule,
-    Md2Module.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyDvSnAZNrXrmyEurdnijIl9BPYhaT706Ns'
     })
