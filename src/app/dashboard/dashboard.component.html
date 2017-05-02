@@ -20,7 +20,7 @@
                 </div>
                 <div class="card-block" *ngIf="locations.length > 0">
                     <sebm-google-map [latitude]="lat" [longitude]="lng" 
-                    [scrollwheel]="false" [zoom]="2" [streetViewControl]="false"  [disableDefaultUI]="true">
+                    [scrollwheel]="false" [zoom]="2" [streetViewControl]="false"  [disableDefaultUI]="false" [styles]="mapStyles">
                         <sebm-google-map-marker *ngFor="let m of locations" [latitude]="m.lat" [longitude]="m.lng" (mouseOver)="myclick(m)">
                             <sebm-google-map-info-window [disableAutoPan]="false">
                                 <strong>{{m.label}}</strong>
