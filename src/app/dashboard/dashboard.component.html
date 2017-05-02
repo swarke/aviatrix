@@ -13,7 +13,7 @@
                             <h5 class="card-title card-title-margin">Cloud Regions</h5>
                         </div>
                         <div class="col-md-6">
-                            <button class="btn btn-primary" (click)="stopTest();" style="float: right;">Stop</button>
+                            <button class="btn btn-primary" (click)="stopTest();" style="float: right;" [disabled]="!disabledStart">Stop</button>
                             <button class="btn btn-primary" (click)="startTest();" style="float: right; margin-right: 10px;" [disabled]="disabledStart">Start</button>
                         </div>
                     </div>

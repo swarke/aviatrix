@@ -481,7 +481,8 @@ export class DashboardComponent implements OnInit {
     let dashboard = this;
     if (this.getTimeDiffInSeconds(obj.pingStartTime, index) < this.TEST_MINUTES 
         && this.disabledStart) {
-        let pingStart = performance.now();
+        setTimeout(()=>this.setBandwith(index),this.TEST_INTERVAL);
+        let pingStart = new Date();
         var cacheBuster = "?nnn=" + pingStart;
         // this.http.get(this.inventory.aws[0].url + 'clouds-01.jpeg' + cacheBuster)
         //   .subscribe((data) => {
@@ -498,17 +499,15 @@ export class DashboardComponent implements OnInit {
         // });
 
         this.dashboardService.getBandwidth(obj.url + 'clouds-01.jpeg' + cacheBuster).subscribe((data:any ) =>{
-            let pingEnd: number = performance.now();
-            let duration: number = ((pingEnd - pingStart)/1000);
+            let pingEnd = new Date();
+            let duration: number = ((pingEnd.getTime() - pingStart.getTime())/1000);
             let bitsLoaded = downloadSize * 8;
             let speedBps: any = (bitsLoaded / duration).toFixed(2);
             let speedKbps: any = (speedBps / 1024).toFixed(2);
             let speedMbps = (speedKbps / 1024).toFixed(2);
 
-            obj.dashboardModel.bandwidth.push({'time': pingEnd, 'value': speedMbps});
-            this.bandwidthChart.series[index].addPoint(this.getChartPoint(new Date(), parseInt(speedMbps)));
-            
-            setTimeout(()=>this.setBandwith(index),this.TEST_INTERVAL);
+            obj.dashboardModel.bandwidth.push({'time': new Date(), 'value': speedMbps});
+            this.bandwidthChart.series[index].addPoint(this.getChartPoint(new Date(), parseFloat(speedMbps)));
         });
       } else {
         this.getBandwidth(obj);
@@ -536,7 +535,9 @@ export class DashboardComponent implements OnInit {
     let obj = this.locations[index];
     if (this.getTimeDiffInSeconds(obj.pingStartTime, index) < this.TEST_MINUTES 
         && this.disabledStart) {
-       let pingStart = performance.now();
+       setTimeout(() => this.setLatency(index), this.TEST_INTERVAL);
+       let pingStart = new Date();
+       var cacheBuster = "?nnn=" + pingStart;
         // this.http.get(this.inventory.aws[0].url)
         //   .subscribe((data) => {
         //     let pingEnd: number = performance.now();
@@ -549,13 +550,20 @@ export class DashboardComponent implements OnInit {
         //     this.setLatency();
         // });
 
-        this.dashboardService.getLatency(obj.url).subscribe((data: any ) => {
-            let pingEnd: number = performance.now();
-            let ping: number = (pingEnd - pingStart);
+        this.dashboardService.getLatency(obj.url + cacheBuster).subscribe((data: any ) => {
+            let pingEnd = new Date();
+            let ping: number = (pingEnd.getTime() - pingStart.getTime());
             obj.dashboardModel.latency.push({'time': new Date(), 'value': Math.round(ping)});
 
             this.latencyChart.series[index].addPoint(this.getChartPoint(new Date(), Math.round(ping)));
-            setTimeout(() => this.setLatency(index), this.TEST_INTERVAL);
+            
+        }, (error:any) => {
+            // let pingEnd = new Date();
+            // let ping: number = (pingEnd.getTime() - pingStart.getTime());
+            // obj.dashboardModel.latency.push({'time': new Date(), 'value': Math.round(ping)});
+
+            // this.latencyChart.series[index].addPoint(this.getChartPoint(new Date(), Math.round(ping)));
+            // setTimeout(() => this.setLatency(index), this.TEST_INTERVAL);
         });
     } else {
       // console.log("Latency Calculated ==> " + JSON.stringify(obj.dashboardModel.latency));
@@ -586,7 +594,9 @@ export class DashboardComponent implements OnInit {
 
     if (this.getTimeDiffInSeconds(obj.pingStartTime, index) < this.TEST_MINUTES 
         && this.disabledStart) {
-       let pingStart = performance.now();
+       setTimeout(() => this.setResponseTime(index), this.TEST_INTERVAL);
+       let pingStart = new Date();
+       var cacheBuster = "?nnn=" + pingStart;
         // this.http.get(this.inventory.aws[0].url + 'test.html')
         //   .subscribe((data) => {
         //     let pingEnd: number = performance.now();
@@ -602,13 +612,13 @@ export class DashboardComponent implements OnInit {
         //     this.setResponseTime(index);
         // });
 
-        this.dashboardService.getResponseTime(obj.url).subscribe((data:any ) =>{
-            let pingEnd: number = performance.now();
-            let ping: number = (pingEnd - pingStart);
+        this.dashboardService.getResponseTime(obj.url + 'test.html'+cacheBuster).subscribe((data:any ) =>{
+            let pingEnd = new Date();
+            let ping: number = (pingEnd.getTime() - pingStart.getTime());
             obj.dashboardModel.responseTime.push({'time': new Date(), 'value': Math.round(ping)});
 
             this.responseTimeChart.series[index].addPoint(this.getChartPoint(new Date(), Math.round(ping)));
-            setTimeout(() => this.setResponseTime(index), this.TEST_INTERVAL);
+            // setTimeout(() => this.setResponseTime(index), this.TEST_INTERVAL);
         });
     } else {
       // console.log("Response Time Calculated ==> " + JSON.stringify(obj.dashboardModel.responseTime));
