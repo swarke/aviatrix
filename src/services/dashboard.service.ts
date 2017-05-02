@@ -24,5 +24,15 @@ export class DashboardService {
     const apiRequest: APIRequest = new APIRequest(url, APIMethod.GET);
     return this._apiService.executeAPI(apiRequest);
   }
+
+  getResponseTime(url) {
+    const apiRequest: APIRequest = new APIRequest(url, APIMethod.GET);
+    return this._apiService.executeAPI(apiRequest);
+  }
+
+  getBandwidth(url) {
+    const apiRequest: APIRequest = new APIRequest(url, APIMethod.GET);
+    return this._apiService.executeAPI(apiRequest);
+  }
   
 }

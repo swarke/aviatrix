@@ -3,7 +3,7 @@
     "cloud_name": "AWS",
     "data": [{
       "name": "aviatrix-us-east-1-test1",
-      "label": "US East (N. Virginia)",
+      "region_name": "US East (N. Virginia)",
       "id": "i-04eccf81f71a331c4",
       "dns_name": "ec2-107-22-156-82.compute-1.amazonaws.com",
       "public_ip": "107.22.156.82",
@@ -17,7 +17,7 @@
     },
     {
       "name": "aviatrix-us-west",
-      "label": "US West (Oregon)",
+      "region_name": "US West (Oregon)",
       "id": "i-0627f325230a7e7f0",
       "dns_name": "ec2-34-209-70-236.us-west-2.compute.amazonaws.com",
       "public_ip": "34.209.70.236",

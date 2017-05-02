@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <div class="row mrg-top-15">
-        <div class="col-md-9 pad-right-none">
+        <div class="col-md-8 pad-right-none">
             <div class="card card-radious-none">
                 <div class="card-header">   
                     <!-- <md-select placeholder="Select Cloud">
@@ -13,8 +13,6 @@
                             <h5 class="card-title card-title-margin">Cloud Regions</h5>
                         </div>
                         <div class="col-md-6">
-                            
-
                             <button class="btn btn-primary" (click)="stopTest();" style="float: right;">Stop</button>
                             <button class="btn btn-primary" (click)="startTest();" style="float: right; margin-right: 10px;" [disabled]="disabledStart">Start</button>
                         </div>
@@ -22,7 +20,7 @@
                 </div>
                 <div class="card-block" *ngIf="locations.length > 0">
                     <sebm-google-map [latitude]="lat" [longitude]="lng" 
-                    [scrollwheel]="false" [zoom]="2">
+                    [scrollwheel]="false" [zoom]="2" [streetViewControl]="false"  [disableDefaultUI]="true">
                         <sebm-google-map-marker *ngFor="let m of locations" [latitude]="m.lat" [longitude]="m.lng" (mouseOver)="myclick(m)">
                             <sebm-google-map-info-window [disableAutoPan]="false">
                                 <strong>{{m.label}}</strong>
@@ -32,7 +30,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="card card-radious-none">
                 <div class="card-header">
                     <div class="row">
@@ -42,7 +40,70 @@
                     
                 </div>
                 <div class="card-block test-card-height">
-                    <h6 style="margin-top: 15px;">US East (N. Virginia)</h6>
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Best Region<br> <span *ngIf="null !== bestRegion"> {{bestRegion.region_name}}</span></th>
+                          <th></th>
+                          <!-- <th>Best Region<br>US East (N. Virginia)</th> -->
+                          <!-- <th>Worst Region<br>US East (N. Virginia)</th> -->
+                        </tr>
+                      </thead>
+                      <tbody>
+                      <tr>
+                        <td>Response Time</td>
+                        <td  *ngIf="null !== bestRegion">{{bestRegion.responseTime}} ms</td>
+                        <td  *ngIf="null === bestRegion && disabledStart">Calculating...</td>
+                        <td  *ngIf="null === bestRegion && !disabledStart">NA</td>
+                      </tr>
+                      <tr>
+                        <td>Latency</td>
+                        <td  *ngIf="null !== bestRegion">{{bestRegion.latency}} ms</td>
+                        <td  *ngIf="null === bestRegion && disabledStart">Calculating...</td>
+                        <td  *ngIf="null === bestRegion && !disabledStart">NA</td>
+                      </tr>
+                      <tr>
+                        <td>Bandwidth</td>
+                        <td  *ngIf="null !== bestRegion">{{bestRegion.bandwidth}} mbps</td>
+                        <td  *ngIf="null === bestRegion && disabledStart">Calculating...</td>
+                        <td  *ngIf="null === bestRegion && !disabledStart">NA</td>
+                      </tr>
+                      <!-- <tr><td></td><td></td></tr> -->
+                      </tbody>
+                    </table>
+                    
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Worst Region<br> <span *ngIf="null !== worstRegion"> {{worstRegion.region_name}}</span></th>
+                          <th></th>
+                          <!-- <th>Best Region<br>US East (N. Virginia)</th> -->
+                          <!-- <th>Worst Region<br>US East (N. Virginia)</th> -->
+                        </tr>
+                      </thead>
+                      <tbody>
+                      <tr>
+                        <td>Response Time</td>
+                        <td  *ngIf="null !== worstRegion">{{worstRegion.responseTime}} ms</td>
+                        <td  *ngIf="null === worstRegion && disabledStart">Calculating...</td>
+                        <td  *ngIf="null === worstRegion && !disabledStart">NA</td>
+                      </tr>
+                      <tr>
+                        <td>Latency</td>
+                        <td  *ngIf="null !== worstRegion">{{worstRegion.latency}} ms</td>
+                        <td  *ngIf="null === worstRegion && disabledStart">Calculating...</td>
+                        <td  *ngIf="null === worstRegion && !disabledStart">NA</td>
+                      </tr>
+                      <tr>
+                        <td>Bandwidth</td>
+                        <td  *ngIf="null !== worstRegion">{{worstRegion.bandwidth}} mbps</td>
+                        <td  *ngIf="null === worstRegion && disabledStart">Calculating...</td>
+                        <td  *ngIf="null === worstRegion && !disabledStart">NA</td>
+                      </tr>
+                      <!-- <tr><td></td><td></td></tr> -->
+                      </tbody>
+                    </table>
+                    <!-- <h6 style="margin-top: 15px;">US East (N. Virginia)</h6>
                     <h6 class="card-title card-title-margin">Bandwidth</h6>
                     <h6 class="card-title card-title-margin value-color" *ngIf="bandwidth !=='NA'">{{bandwidth | number}} Mbps</h6>
                     <h6 class="card-title card-title-margin value-color" *ngIf="bandwidth ==='NA'">{{bandwidth}}</h6>
@@ -54,7 +115,7 @@
                     <h6 class="card-title card-title-margin">Response Time</h6>
                      <h6 class="card-title card-title-margin value-color" *ngIf="responseTime !=='NA'">{{responseTime | number}} ms</h6>
                     <h6 class="card-title card-title-margin value-color" *ngIf="responseTime ==='NA'">{{responseTime}}</h6>
-                    <br>
+                    <br> -->
                     <!-- <h6 class="card-title card-title-margin">Packet Loss</h6>
                     <h6 class="card-title card-title-margin value-color">10%</h6><br> -->
                     <!-- <h6 class="card-title card-title-margin">Throughput</h6>
@@ -98,11 +159,15 @@
         <div class="col-md-12">
             <div class="card card-radious-none">
                 <div class="card-header">
-                    <h5 class="card-title card-title-margin">Bandwidth</h5>
+                    <div class="row">
+                        <div class="col-md-6"><h5 class="card-title card-title-margin">Bandwidth</h5></div>
+                        <div class="col-md-6"><img src="../assets/loader.gif" style="float: right; margin-top: 10px;" *ngIf="disabledStart"></div>
+                    </div>
+
                 </div>
                 <div class="card-block">
-                    <chart [options]="packetLossOptions" *ngIf="responseTimeOptions !== null"></chart>
-                     <h6 *ngIf="responseTimeOptions === null">Bandwidth data is not available.</h6>
+                    <chart [options]="bandwidthOptions" (load)="bandwidthInstance($event.context)" *ngIf="bandwidthOptions !== null" style="width: 95%"></chart>
+                     <h6 *ngIf="bandwidthOptions === null">Bandwidth data is not available.</h6>
                 </div>
             </div>
         </div>
