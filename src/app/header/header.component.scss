@@ -1,7 +1,25 @@
 .bg-header {
-	background-color: #333333;
+	background-color: #d1d5d6;
+	box-shadow: 2px 0px 3px rgba(0, 0, 0, 0.5);
+	position: fixed;
+  	top: 0px;
+  	width: inherit;
+  	z-index: 2;
 }
 
 .card-radious-none {
 	border-radius: 0px;
+}
+
+.navbar {
+	padding: 0px !important;
+}
+
+.navbar-brand {
+	padding-top: 0px !important;
+	padding-bottom: 0px !important;
+}
+
+.header-bottom {
+	margin-bottom: 80px;
 }

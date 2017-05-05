@@ -15,7 +15,7 @@ export class DashboardService {
   }
 
   getInventory() {
-    const apiRequest: APIRequest = new APIRequest('src/data/inventory.json', APIMethod.GET);
+    const apiRequest: APIRequest = new APIRequest('data/inventory.json', APIMethod.GET);
     return this._apiService.executeAPI(apiRequest);
   }
 

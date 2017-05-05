@@ -1,9 +1,11 @@
-import { Component, OnInit, } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, Renderer, AfterViewInit  } from '@angular/core';
 import { ChartModule } from 'angular2-highcharts';
 import { DashboardModel} from '../../models';
 import { MapsAPILoader, GoogleMapsAPIWrapper } from 'angular2-google-maps/core';
 import { Response, Http } from '@angular/http';
 import {DashboardService} from '../../services';
+
+declare var jQuery:any;
 
 
 @Component({
@@ -13,7 +15,7 @@ import {DashboardService} from '../../services';
   viewProviders: [DashboardService]
 
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, AfterViewInit  {
   clouds: any;
   options: any;
   latencyOptions: any;
@@ -53,10 +55,16 @@ export class DashboardComponent implements OnInit {
   worstRegion: any;
 
   mapStyles: any;
+
+  @ViewChild('imageDiv') el:ElementRef;
+  @ViewChild('pingImage') elImg:ElementRef;
       
   constructor(private mapsAPILoader : MapsAPILoader,
               private http: Http,
-              private dashboardService: DashboardService) {
+              private dashboardService: DashboardService,
+              private elRef:ElementRef,
+              private rd: Renderer) {
+      // console.log(this.el.nativeElement);      
       this.disabledStart = false;
       this.latencyOptions = null;
       this.responseTimeOptions = null;
@@ -278,6 +286,11 @@ export class DashboardComponent implements OnInit {
     this.getInvetory();
   }
 
+  ngAfterViewInit() {
+    // console.log(this.el.nativeElement);  
+    // console.log("Ele == " + this.elRef.nativeElement);
+  }
+
  getCurrentGeoLocation() {
      let current = this;
       this.getGeolocation().subscribe((geoLocation:   any) => {
@@ -316,7 +329,8 @@ export class DashboardComponent implements OnInit {
     };
   }
 
-  getChartConfig (title: any, unit: any, series: any, chartType: any) {
+  getChartConfig (title: any, unit: any, series: any, chartType: any, 
+                  min: any, max:any, yInterval:any) {
      const options = {
           chart:   { type:  chartType, zoomType:   'xy' },
           title :   { text :   title },
@@ -325,6 +339,11 @@ export class DashboardComponent implements OnInit {
           },
           xAxis:   {
               type:   'datetime',
+              tickInterval: 10000,
+              dateTimeLabelFormats: { // don't display the dummy year
+                second: '%H:%M:%S'
+              },
+              startOnTick: true
           },
           yAxis:   {
                   labels:   {
@@ -332,7 +351,10 @@ export class DashboardComponent implements OnInit {
                   },
                   title:   {
                     text: unit
-                  }
+                  },
+                  min: min,
+                  max: max,
+                  tickInterval: yInterval,
           },
           series: series
       };
@@ -348,13 +370,13 @@ export class DashboardComponent implements OnInit {
     const metricData: any = [];
     for (let index = 0; index < chartData.length; index++) {
       const jsonObj = chartData[index];
-      if (jsonObj.value !== null) {
+      // if (jsonObj.value !== null) {
         const date: Date = new Date(jsonObj.time);
         let yVal = jsonObj.value;
   
         metricData.push([Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(),
          date.getHours(), date.getMinutes(), date.getSeconds()), yVal]);
-      }
+      // }
     }
 
     return metricData;
@@ -400,51 +422,42 @@ export class DashboardComponent implements OnInit {
       object.latencyCompleted = false;
       object.dashboardModel = new DashboardModel();
       object.pingStartTime = new Date();
+      object.currentLatencyIndex = 0;
+      object.currentResponseIndex = 0;
+      object.currentBandwidthIndex = 0;
       
       // Setting up latency chart
+      this.setDataPoint(object.dashboardModel.latency, object);
       latencySeries.push(this.getSeriesData('spline', object.cloud_info.region, this.getChartData(object.dashboardModel.latency)));
       setTimeout(()=>this.setLatency(index),10);
 
       // Setting up rasponse time
+      this.setDataPoint(object.dashboardModel.responseTime, object);
       responseTimeSeries.push(this.getSeriesData('spline', object.cloud_info.region, this.getChartData(object.dashboardModel.responseTime)));
       setTimeout(()=>this.setResponseTime(index),10);
 
       // Setting up bandwidth
+      this.setDataPoint(object.dashboardModel.bandwidth, object);
       badwidthSeries.push(this.getSeriesData('spline', object.cloud_info.region, this.getChartData(object.dashboardModel.bandwidth)));
       setTimeout(()=>this.setBandwith(index),10);
     }
 
-    this.latencyOptions = this.getChartConfig('', 'Miliseconds', latencySeries, 'spline');
-    this.responseTimeOptions = this.getChartConfig('', 'Miliseconds', responseTimeSeries, 'spline');
-    this.bandwidthOptions = this.getChartConfig('', 'MBPS', badwidthSeries, 'spline');
-    
-    // Setting ping start time
-    // this.pingStartTime = new Date();
-
-    // Setting latency chart configuration
-    // let latencySeries: any = [];
-    // this.latencyOptions = null;
-    // this.dashboardModel.latency = [];
-
-    // latencySeries.push(this.getSeriesData('spline', "us-east-1", this.getChartData(this.dashboardModel.latency)));
-    // this.latencyOptions = this.getChartConfig('', 'Miliseconds', latencySeries, 'spline');
-
-    // Calculating latency.
-    // this.setLatency();
-
-    // Calculating bandwidth.
-    // this.setBandwith();
-
-    // Setting chart configuration
-    // let responseTimeSeries: any = [];
-    // this.dashboardModel.responseTime = [];
-    // this.responseTimeOptions = null;
-    // responseTimeSeries.push(this.getSeriesData('spline', "us-east-1", this.getChartData(this.dashboardModel.responseTime)));
-    // this.responseTimeOptions = this.getChartConfig('', 'Miliseconds', responseTimeSeries, 'spline');
- 
-    // Calculating resposne time.
-    // this.setResponseTime();  
+    this.latencyOptions = this.getChartConfig('', 'Miliseconds', latencySeries, 'spline', 0,1300, 200);
+    this.responseTimeOptions = this.getChartConfig('', 'Miliseconds', responseTimeSeries, 'spline', 0, 1300, 200);
+    this.bandwidthOptions = this.getChartConfig('', 'Mbps', badwidthSeries, 'spline', 0, 60, 10);
   }
+
+  setDataPoint(data, obj) {
+    for (var index = 0; index < 6; index++) {
+      if (index == 0) {
+        data.push({'time': new Date(), 'value': null});
+      } else {
+        let date = new Date()
+        date.setSeconds(obj.pingStartTime.getSeconds() + (index * 10));
+        data.push({'time': date, 'value': null});
+      }
+    }
+  }  
 
   /**
    * [getTimeDiff description]
@@ -506,8 +519,11 @@ export class DashboardComponent implements OnInit {
             let speedKbps: any = (speedBps / 1024).toFixed(2);
             let speedMbps = (speedKbps / 1024).toFixed(2);
 
-            obj.dashboardModel.bandwidth.push({'time': new Date(), 'value': speedMbps});
-            this.bandwidthChart.series[index].addPoint(this.getChartPoint(new Date(), parseFloat(speedMbps)));
+            obj.dashboardModel.bandwidth[obj.currentBandwidthIndex].value = speedMbps;
+            this.bandwidthChart.series[index].data[obj.currentBandwidthIndex].update({"y": parseFloat(speedMbps)});
+            obj.currentBandwidthIndex++;
+
+            // this.bandwidthChart.series[index].addPoint(this.getChartPoint(new Date(), parseFloat(speedMbps)));
         });
       } else {
         this.getBandwidth(obj);
@@ -522,7 +538,9 @@ export class DashboardComponent implements OnInit {
     if (obj.dashboardModel.bandwidth.length > 0) {
       let _bandwidth:number = 0;
       for (let index = 0 ; index < obj.dashboardModel.bandwidth.length; index++) {
-        _bandwidth = _bandwidth + parseFloat(obj.dashboardModel.bandwidth[index].value);
+        if(null != obj.dashboardModel.bandwidth[index].value) {
+          _bandwidth = _bandwidth + parseFloat(obj.dashboardModel.bandwidth[index].value);
+        }
       }
      obj.bandwidth =  (_bandwidth / obj.dashboardModel.bandwidth.length).toFixed(2);
     }
@@ -533,11 +551,11 @@ export class DashboardComponent implements OnInit {
    */
   setLatency(index: any) {
     let obj = this.locations[index];
+    let current = this;
     if (this.getTimeDiffInSeconds(obj.pingStartTime, index) < this.TEST_MINUTES 
         && this.disabledStart) {
        setTimeout(() => this.setLatency(index), this.TEST_INTERVAL);
-       let pingStart = new Date();
-       var cacheBuster = "?nnn=" + pingStart;
+       
         // this.http.get(this.inventory.aws[0].url)
         //   .subscribe((data) => {
         //     let pingEnd: number = performance.now();
@@ -550,21 +568,46 @@ export class DashboardComponent implements OnInit {
         //     this.setLatency();
         // });
 
-        this.dashboardService.getLatency(obj.url + cacheBuster).subscribe((data: any ) => {
-            let pingEnd = new Date();
-            let ping: number = (pingEnd.getTime() - pingStart.getTime());
-            obj.dashboardModel.latency.push({'time': new Date(), 'value': Math.round(ping)});
+          // jQuery("#imageDiv").empty();
+          // jQuery("#imageDiv").html("<img id='pingImage' style='display: none'>");
+          // var pingImage = jQuery("#pingImage");
+          // console.log("PingImage: " + pingImage);
+          // pingImage.on("error", function() {
+          //   current.calculateLatency(obj, index, pingStart)
+          // });
+          
+          // let pingStart = new Date();
+          // var cacheBuster = "?nnn=" + pingStart;
+          // pingImage.attr("src", 'http://dynamodb.us-west-1.amazonaws.com/' +'ping'+ cacheBuster);
 
-            this.latencyChart.series[index].addPoint(this.getChartPoint(new Date(), Math.round(ping)));
+        var download = new Image() ;
+        download.onerror = function() {
+          let pingEnd = new Date();
+          let ping: number = (pingEnd.getTime() - pingStart.getTime());
+          obj.dashboardModel.latency[obj.currentLatencyIndex].value = Math.round(ping);
+          current.latencyChart.series[index].data[obj.currentLatencyIndex].update({"y": Math.round(ping)});
+          obj.currentLatencyIndex++;
+          // addPoint(current.getChartPoint(new Date(), Math.round(ping)));
+        }
+
+        let pingStart = new Date();
+        var cacheBuster = "?nnn=" + pingStart;
+        download.src = obj.url +'ping'+ cacheBuster ;
+
+        // this.dashboardService.getLatency(obj.url+ 'ping' + cacheBuster).subscribe((data: any ) => {
+        //     // let pingEnd = new Date();
+        //     // let ping: number = (pingEnd.getTime() - pingStart.getTime());
+        //     // obj.dashboardModel.latency.push({'time': new Date(), 'value': Math.round(ping)});
+
+        //     // this.latencyChart.series[index].addPoint(this.getChartPoint(new Date(), Math.round(ping)));
             
-        }, (error:any) => {
-            // let pingEnd = new Date();
-            // let ping: number = (pingEnd.getTime() - pingStart.getTime());
-            // obj.dashboardModel.latency.push({'time': new Date(), 'value': Math.round(ping)});
+        // }, (error:any) => {
+        //    let pingEnd = new Date();
+        //     let ping: number = (pingEnd.getTime() - pingStart.getTime());
+        //     obj.dashboardModel.latency.push({'time': new Date(), 'value': Math.round(ping)});
 
-            // this.latencyChart.series[index].addPoint(this.getChartPoint(new Date(), Math.round(ping)));
-            // setTimeout(() => this.setLatency(index), this.TEST_INTERVAL);
-        });
+        //     this.latencyChart.series[index].addPoint(this.getChartPoint(new Date(), Math.round(ping)));
+        // });
     } else {
       // console.log("Latency Calculated ==> " + JSON.stringify(obj.dashboardModel.latency));
       this.getLatency(obj);
@@ -579,7 +622,9 @@ export class DashboardComponent implements OnInit {
     if (obj.dashboardModel.latency.length > 0) {
       let _latency:number = 0;
       for (let index = 0 ; index < obj.dashboardModel.latency.length; index++) {
-        _latency = _latency + parseFloat(obj.dashboardModel.latency[index].value);
+        if(null != obj.dashboardModel.latency[index].value) {
+          _latency = _latency + parseFloat(obj.dashboardModel.latency[index].value);
+        }
       }
 
      obj.latency =  (_latency / obj.dashboardModel.latency.length).toFixed(2);
@@ -615,9 +660,9 @@ export class DashboardComponent implements OnInit {
         this.dashboardService.getResponseTime(obj.url + 'test.html'+cacheBuster).subscribe((data:any ) =>{
             let pingEnd = new Date();
             let ping: number = (pingEnd.getTime() - pingStart.getTime());
-            obj.dashboardModel.responseTime.push({'time': new Date(), 'value': Math.round(ping)});
-
-            this.responseTimeChart.series[index].addPoint(this.getChartPoint(new Date(), Math.round(ping)));
+            obj.dashboardModel.responseTime[obj.currentResponseIndex].value = Math.round(ping);
+            this.responseTimeChart.series[index].data[obj.currentResponseIndex].update({"y": Math.round(ping)});
+            obj.currentResponseIndex++;
             // setTimeout(() => this.setResponseTime(index), this.TEST_INTERVAL);
         });
     } else {
@@ -635,7 +680,9 @@ export class DashboardComponent implements OnInit {
     if (obj.dashboardModel.responseTime.length > 0) {
       let _responseTime:number = 0;
       for (let index = 0 ; index < obj.dashboardModel.responseTime.length; index++) {
-        _responseTime = _responseTime + parseFloat(obj.dashboardModel.responseTime[index].value);
+        if(null != obj.dashboardModel.responseTime[index].value) {
+          _responseTime = _responseTime + parseFloat(obj.dashboardModel.responseTime[index].value);
+        }
       }
 
      obj.responseTime =  (_responseTime / obj.dashboardModel.responseTime.length).toFixed(2);
@@ -748,26 +795,26 @@ export class DashboardComponent implements OnInit {
     if (marker.latencyCompleted) {
       latency = marker.latency;
     } else if(marker.dashboardModel && marker.dashboardModel.latency
-              && marker.dashboardModel.latency.length > 0) {
-      latency = marker.dashboardModel.latency[marker.dashboardModel.latency.length -1].value;
+              && marker.dashboardModel.latency.length > 0 && marker.currentLatencyIndex > 0) {
+      latency = marker.dashboardModel.latency[marker.currentLatencyIndex - 1].value;
     }
 
     if (marker.responseCompleted) {
       responseTime = marker.responseTime;
     } else if(marker.dashboardModel && marker.dashboardModel.responseTime
-              && marker.dashboardModel.responseTime.length > 0) {
-      responseTime = marker.dashboardModel.responseTime[marker.dashboardModel.responseTime.length -1].value;
+              && marker.dashboardModel.responseTime.length > 0 && marker.currentResponseIndex > 0) {
+      responseTime = marker.dashboardModel.responseTime[marker.currentResponseIndex - 1].value;
     }
 
     if (marker.bandwidthCompleted) {
       bandwith = marker.bandwidth;
     } else if(marker.dashboardModel && marker.dashboardModel.bandwidth
-              && marker.dashboardModel.bandwidth.length > 0) {
-      bandwith = marker.dashboardModel.bandwidth[marker.dashboardModel.bandwidth.length -1].value;
+              && marker.dashboardModel.bandwidth.length > 0 && marker.currentBandwidthIndex > 0) {
+      bandwith = marker.dashboardModel.bandwidth[marker.currentBandwidthIndex - 1].value;
     }
 
-    return marker.region_name + ((latency === "" ? latency : ",  Latency: " + latency + " ms") 
-                              + (responseTime === "" ? responseTime : ",  Response Time: " + responseTime + " ms")
+    return marker.region_name + (responseTime === "" ? responseTime : ",  Response Time: " + responseTime + " ms")
+                              + ((latency === "" ? latency : ",  Latency: " + latency + " ms") 
                               + (bandwith === "" ? bandwith : ",  Bandwith: " + bandwith + " mbps"));
   }
 
