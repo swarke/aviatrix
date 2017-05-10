@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid" style="margin-top: 55px;">
     <div class="row mrg-top-15">
         <div class="col-md-8 pad-right-none">
             <div class="card card-radious-none">
@@ -10,20 +10,20 @@
                     </md-select> -->
                     <div class="row">
                         <div class="col-md-6">
-                            <h5 class="card-title card-title-margin">Cloud Regions</h5>
+                            <h6 class="card-title card-title-margin">{{leftPanelHeader}}</h6>
                         </div>
                         <div class="col-md-6">
-                            <button class="btn btn-primary" (click)="stopTest();" style="float: right;" [disabled]="!disabledStart">Stop</button>
-                            <button class="btn btn-primary" (click)="startTest();" style="float: right; margin-right: 10px;" [disabled]="disabledStart">Start</button>
+                            <button class="btn btn-primary" (click)="stopTest();" style="float: right;" [disabled]="!disabledStart"> <i class="fa fa-stop" aria-hidden="true"></i>&nbsp;&nbsp; {{properties.STOP}}</button>
+                            <button class="btn btn-primary" (click)="startTest();" style="float: right; margin-right: 10px;" [disabled]="disabledStart"><i class="fa fa-play" aria-hidden="true"></i>&nbsp;&nbsp;{{properties.START}}</button>
                         </div>
                     </div>
                 </div>
-                <div class="card-block" *ngIf="locations.length > 0">
+                <div class="card-block"  style="padding: 0px;" *ngIf="locations.length > 0">
                     <sebm-google-map [latitude]="lat" [longitude]="lng" 
                     [scrollwheel]="false" [zoom]="2" [streetViewControl]="false"  [disableDefaultUI]="false" [styles]="mapStyles">
-                        <sebm-google-map-marker *ngFor="let m of locations" [latitude]="m.lat" [longitude]="m.lng" (mouseOver)="myclick(m)">
-                            <sebm-google-map-info-window [disableAutoPan]="false">
-                                <strong>{{m.label}}</strong>
+                        <sebm-google-map-marker *ngFor="let m of locations" [latitude]="m.lat" [longitude]="m.lng" [iconUrl]="m.iconUrl" (mouseOver)="markerEntered(m, $event)" (mouseOut)="markerOut(m, $event)">
+                            <sebm-google-map-info-window [disableAutoPan]="true" [isOpen]="m.isOpen">
+                                <div [innerHtml]="m.label"></div>
                             </sebm-google-map-info-window>
                         </sebm-google-map-marker>
                     </sebm-google-map>
@@ -34,19 +34,50 @@
             <div class="card card-radious-none">
                 <div class="card-header">
                     <div class="row">
-                        <div class="col-md-6"><h5 class="card-title card-title-margin">Result</h5></div>
-                        <div class="col-md-6"><img src="../assets/loader.gif" style="float: right; margin-top: 10px;" *ngIf="disabledStart"></div>
+                        <div class="col-md-9" style="padding-right: 0px;"><h6 class="card-title card-title-margin">{{properties.RIGHT_PANEL_HEADER}}</h6></div>
+                        <div class="col-md-3" style="text-align: right;">
+                            <i class="fa fa-info-circle fa-lg info-color cursor-pointer" style="margin-top: 10px;" aria-hidden="true"></i>
+                            <span *ngIf="disabledStart">&nbsp;</span>
+                            <img src="../assets/loader.gif" style="float: right; margin-top: 10px;" *ngIf="disabledStart"></div>
                     </div>
-                    
                 </div>
-                <div class="card-block test-card-height">
-                    <table class="table">
+                <div class="card-block test-card-height" style="overflow-y: auto;">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th width="45%"><span class="column-header" (click)="sortBy('region_name')">{{properties.RIGHT_PANEL_REGION_COLUMN_HEADER}} <i class="fa sort-style" 
+                                    [ngClass]="{'fa-sort': sortableColumn != 'region_name', 'fa-sort-asc': (sortableColumn == 'region_name' && !isDesc),                                        'fa-sort-desc': (sortableColumn == 'region_name' && isDesc) }"
+                                    aria-hidden="true"> </i>
+
+                                </span></th>
+
+                                <th width="25%"><span class="column-header" (click)="sortBy('latency')">{{properties.RIGHT_PANEL_LATENCY_COLUMN_HEADER}} <i class="fa sort-style" 
+                                    [ngClass]="{'fa-sort': sortableColumn != 'latency', 'fa-sort-asc': (sortableColumn == 'latency' && !isDesc),                                        'fa-sort-desc': (sortableColumn == 'latency' && isDesc) }"
+                                    aria-hidden="true"> </i></span></th>
+                                
+                                <th width="30%"><span class="column-header" (click)="sortBy('bandwidth')">{{properties.RIGHT_PANEL_THROUGHPUT_COLUMN_HEADER}} <i class="fa sort-style" 
+                                    [ngClass]="{'fa-sort': sortableColumn != 'bandwidth', 'fa-sort-asc': (sortableColumn == 'bandwidth' && !isDesc),                                        'fa-sort-desc': (sortableColumn == 'bandwidth' && isDesc) }"
+                                    aria-hidden="true"> </i></span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let region of locations">
+                                <td>{{region.region_name}}</td>
+                                <td *ngIf="!region.latency && !disabledStart">NA</td>
+                                <td *ngIf="!region.latency && disabledStart">{{readLatestLatency(region)}}</td>
+                                <td  *ngIf="region.latency">{{region.latency}} ms</td>
+
+                                <td *ngIf="!region.bandwidth && !disabledStart">NA</td>
+                                <td *ngIf="region.bandwidth">{{region.bandwidth}} mbps</td>
+                                <td *ngIf="!region.bandwidth && disabledStart">{{readLatestThroughput(region)}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- <table class="table">
                       <thead>
                         <tr>
                           <th>Best Region<br> <span *ngIf="null !== bestRegion"> {{bestRegion.region_name}}</span></th>
                           <th></th>
-                          <!-- <th>Best Region<br>US East (N. Virginia)</th> -->
-                          <!-- <th>Worst Region<br>US East (N. Virginia)</th> -->
                         </tr>
                       </thead>
                       <tbody>
@@ -68,7 +99,6 @@
                         <td  *ngIf="null === bestRegion && disabledStart">Calculating...</td>
                         <td  *ngIf="null === bestRegion && !disabledStart">NA</td>
                       </tr>
-                      <!-- <tr><td></td><td></td></tr> -->
                       </tbody>
                     </table>
                     
@@ -77,8 +107,6 @@
                         <tr>
                           <th>Worst Region<br> <span *ngIf="null !== worstRegion"> {{worstRegion.region_name}}</span></th>
                           <th></th>
-                          <!-- <th>Best Region<br>US East (N. Virginia)</th> -->
-                          <!-- <th>Worst Region<br>US East (N. Virginia)</th> -->
                         </tr>
                       </thead>
                       <tbody>
@@ -100,9 +128,8 @@
                         <td  *ngIf="null === worstRegion && disabledStart">Calculating...</td>
                         <td  *ngIf="null === worstRegion && !disabledStart">NA</td>
                       </tr>
-                      <!-- <tr><td></td><td></td></tr> -->
                       </tbody>
-                    </table>
+                    </table> -->
                     <div id="imageDiv"></div>
                 </div>
             </div>
@@ -111,7 +138,7 @@
     <div class="row mrg-top-15 mrg-bottom-15">
         <div class="col-md-6 pad-right-none">
             <div class="card card-radious-none">
-                <div class="card-header">
+                <!-- <div class="card-header">
                      <div class="row">
                         <div class="col-md-6"><h5 class="card-title card-title-margin">Response Time</h5></div>
                         <div class="col-md-6"><img src="../assets/loader.gif" style="float: right; margin-top: 10px;" *ngIf="disabledStart"></div>
@@ -120,12 +147,25 @@
                 <div class="card-block">
                     <chart [options]="responseTimeOptions" (load)="responseTimeInstance($event.context)" *ngIf="responseTimeOptions !== null"></chart>
                     <h6 *ngIf="responseTimeOptions === null">Response time data is not available.</h6>
+                </div> -->
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-9"><h6 class="card-title card-title-margin">{{properties.LATENCY_CHART_HEADER}}</h6></div>
+                        <div class="col-md-3" style="text-align: right;">
+                            <i class="fa fa-info-circle fa-lg info-color cursor-pointer" style="margin-top: 10px;" aria-hidden="true"></i>
+                            <span *ngIf="disabledStart">&nbsp;</span>
+                            <img src="../assets/loader.gif" style="float: right; margin-top: 10px;" *ngIf="disabledStart"></div>
+                    </div>
+                </div>
+                <div class="card-block" #latencyCard>
+                    <chart [options]="latencyOptions" (load)="latencyInstance($event.context)"  *ngIf="latencyOptions !== null" class="chart-height"></chart>
+                    <h6 *ngIf="latencyOptions === null" style="margin-top: 0px; margin-bottom: 0px; font-weight: 300">{{properties.LATENCY_CHART_DATA_NOT_AVAILABLE}}</h6>
                 </div>
             </div>
         </div>
         <div class="col-md-6">
             <div class="card card-radious-none">
-                <div class="card-header">
+                <!-- <div class="card-header">
                     <div class="row">
                         <div class="col-md-6"><h5 class="card-title card-title-margin">Latency</h5></div>
                         <div class="col-md-6"><img src="../assets/loader.gif" style="float: right; margin-top: 10px;" *ngIf="disabledStart"></div>
@@ -134,11 +174,25 @@
                 <div class="card-block" #latencyCard>
                     <chart [options]="latencyOptions" (load)="latencyInstance($event.context)"  *ngIf="latencyOptions !== null"></chart>
                     <h6 *ngIf="latencyOptions === null">Latency data is not available.</h6>
+                </div> -->
+                 <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-9"><h6 class="card-title card-title-margin">{{properties.THROUGHPUT_CHART_HEADER}}</h6></div>
+                        <div class="col-md-3" style="text-align: right">
+                            <i class="fa fa-info-circle fa-lg info-color cursor-pointer" style="margin-top: 10px;" aria-hidden="true"></i>
+                            <span *ngIf="disabledStart">&nbsp;</span>
+                            <img src="../assets/loader.gif" style="float: right; margin-top: 10px;" *ngIf="disabledStart"></div>
+                    </div>
+
+                </div>
+                <div class="card-block">
+                    <chart [options]="bandwidthOptions" (load)="bandwidthInstance($event.context)" *ngIf="bandwidthOptions !== null" class="chart-height"></chart>
+                     <h6 *ngIf="bandwidthOptions === null" style="margin-top: 0px; margin-bottom: 0px; font-weight: 300">{{properties.THROUGHPUT_CHART_DATA_NOT_AVAILABLE}}</h6>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row mrg-top-15 mrg-bottom-15">
+    <!-- <div class="row mrg-top-15 mrg-bottom-15">
         <div class="col-md-12">
             <div class="card card-radious-none">
                 <div class="card-header">
@@ -154,5 +208,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </div>

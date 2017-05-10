@@ -3,16 +3,21 @@
 }
 
 .sebm-google-map-container {
-  height: 400px;
+  height: 300px;
 }
 
 .test-card-height {
-	height: 438px;
+	height: 300px;
 }
 
 .card-title-margin {
 	margin-top: 5px !important;
 	margin-bottom: 5px !important;
+	font-weight: 400;
+    text-transform: uppercase;
+    opacity: 0.9;
+    font-size: 14px;
+    color: #666666;
 }
 
 .value-color {
@@ -22,4 +27,20 @@
 .card-header {
 	padding-top: 0.40rem !important;
 	padding-bottom: 0.40rem !important;
+}
+.column-header {
+	cursor: pointer; 
+	color: #666666; 
+	font-weight: 500
+}
+.sort-style {
+	opacity: 0.8;
+}
+
+.chart-height {
+	height: 300px;
+}
+
+.info-color {
+	color: #607d8b;
 }

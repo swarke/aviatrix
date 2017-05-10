@@ -14,8 +14,9 @@ export class DashboardService {
   constructor(private _apiService: ApiService) {
   }
 
-  getInventory() {
-    const apiRequest: APIRequest = new APIRequest('data/inventory.json', APIMethod.GET);
+  getInventory(inventoryPath: any) {
+    //'src/data/inventory.json'
+    const apiRequest: APIRequest = new APIRequest(inventoryPath, APIMethod.GET);
     return this._apiService.executeAPI(apiRequest);
   }
 

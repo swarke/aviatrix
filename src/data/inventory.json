@@ -1,7 +1,5 @@
 {
-  "aws": {
-    "cloud_name": "AWS",
-    "data": [{
+  "data": [{
       "name": "aviatrix-us-east-1-test1",
       "region_name": "US East (N. Virginia)",
       "id": "i-04eccf81f71a331c4",
@@ -12,8 +10,8 @@
         "availability_zone": "us-east-1c"
       },
       "url": "http://107.22.156.82/",
-      "lat": 41.283142,
-      "lng": -72.872870
+      "lat": 38.13,
+      "lng": -78.45
     },
     {
       "name": "aviatrix-us-west",
@@ -26,8 +24,8 @@
         "availability_zone": "us-west-2b"
       },
       "url": "http://34.209.70.236/",
-      "lat": 41.468801,
-      "lng": -81.921060
-    }]
-  }
+      "lat": 46.15,
+      "lng": -123.88
+    }
+  ]
 }

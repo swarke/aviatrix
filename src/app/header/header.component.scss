@@ -1,9 +1,9 @@
 .bg-header {
-	background-color: #d1d5d6;
+	background-color: #d1d5d6 !important;
 	box-shadow: 2px 0px 3px rgba(0, 0, 0, 0.5);
 	position: fixed;
   	top: 0px;
-  	width: inherit;
+  	width: 100% ;
   	z-index: 2;
 }
 
@@ -21,5 +21,5 @@
 }
 
 .header-bottom {
-	margin-bottom: 80px;
+	margin-bottom: 60px;
 }

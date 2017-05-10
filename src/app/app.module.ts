@@ -12,6 +12,7 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ApiService } from '../services/api.service';
+import { PropertiesService } from '../services/properties.service';
 
 declare var require: any;
 
@@ -42,6 +43,7 @@ export function highchartsFactory() {
   ],
   providers: [
     ApiService,
+    PropertiesService,
     {  
         provide: HighchartsStatic,
         useFactory: highchartsFactory
