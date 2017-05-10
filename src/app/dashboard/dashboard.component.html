@@ -1,4 +1,4 @@
-<div class="container-fluid" style="margin-top: 55px;">
+<div class="container-fluid" style="margin-top: 60px;">
     <div class="row mrg-top-15">
         <div class="col-md-8 pad-right-none">
             <div class="card card-radious-none">
@@ -13,8 +13,8 @@
                             <h6 class="card-title card-title-margin">{{leftPanelHeader}}</h6>
                         </div>
                         <div class="col-md-6">
-                            <button class="btn btn-primary" (click)="stopTest();" style="float: right;" [disabled]="!disabledStart"> <i class="fa fa-stop" aria-hidden="true"></i>&nbsp;&nbsp; {{properties.STOP}}</button>
-                            <button class="btn btn-primary" (click)="startTest();" style="float: right; margin-right: 10px;" [disabled]="disabledStart"><i class="fa fa-play" aria-hidden="true"></i>&nbsp;&nbsp;{{properties.START}}</button>
+                            <button class="btn btn-stop" (click)="stopTest();" [disabled]="!disabledStart"> <i class="fa fa-stop" aria-hidden="true"></i>&nbsp;&nbsp;{{properties.STOP}}</button>
+                            <button class="btn btn-start" (click)="startTest();" [disabled]="disabledStart"><i class="fa fa-play" aria-hidden="true"></i>&nbsp;&nbsp;{{properties.START}}</button>
                         </div>
                     </div>
                 </div>
@@ -36,9 +36,10 @@
                     <div class="row">
                         <div class="col-md-9" style="padding-right: 0px;"><h6 class="card-title card-title-margin">{{properties.RIGHT_PANEL_HEADER}}</h6></div>
                         <div class="col-md-3" style="text-align: right;">
-                            <i class="fa fa-info-circle fa-lg info-color cursor-pointer" style="margin-top: 10px;" aria-hidden="true"></i>
+                            <img class="loader-style" src="../assets/loader.gif" *ngIf="disabledStart" style="margin-top: -4px;">
                             <span *ngIf="disabledStart">&nbsp;</span>
-                            <img src="../assets/loader.gif" style="float: right; margin-top: 10px;" *ngIf="disabledStart"></div>
+                            <i class="fa fa-info-circle fa-lg info-color cursor-pointer" aria-hidden="true"></i>
+                        </div>
                     </div>
                 </div>
                 <div class="card-block test-card-height" style="overflow-y: auto;">
@@ -152,9 +153,11 @@
                     <div class="row">
                         <div class="col-md-9"><h6 class="card-title card-title-margin">{{properties.LATENCY_CHART_HEADER}}</h6></div>
                         <div class="col-md-3" style="text-align: right;">
-                            <i class="fa fa-info-circle fa-lg info-color cursor-pointer" style="margin-top: 10px;" aria-hidden="true"></i>
+                            <img class="loader-style" src="../assets/loader.gif" *ngIf="disabledStart">
                             <span *ngIf="disabledStart">&nbsp;</span>
-                            <img src="../assets/loader.gif" style="float: right; margin-top: 10px;" *ngIf="disabledStart"></div>
+                             <i class="fa fa-info-circle fa-lg info-color cursor-pointer" aria-hidden="true"></i>
+                        </div>
+
                     </div>
                 </div>
                 <div class="card-block" #latencyCard>
@@ -179,9 +182,10 @@
                     <div class="row">
                         <div class="col-md-9"><h6 class="card-title card-title-margin">{{properties.THROUGHPUT_CHART_HEADER}}</h6></div>
                         <div class="col-md-3" style="text-align: right">
-                            <i class="fa fa-info-circle fa-lg info-color cursor-pointer" style="margin-top: 10px;" aria-hidden="true"></i>
+                            <img class="loader-style" src="../assets/loader.gif" *ngIf="disabledStart">
                             <span *ngIf="disabledStart">&nbsp;</span>
-                            <img src="../assets/loader.gif" style="float: right; margin-top: 10px;" *ngIf="disabledStart"></div>
+                             <i class="fa fa-info-circle fa-lg info-color cursor-pointer" aria-hidden="true"></i>
+                        </div>
                     </div>
 
                 </div>

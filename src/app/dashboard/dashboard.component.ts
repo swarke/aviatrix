@@ -64,6 +64,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   leftPanelHeader:any;
   inventoryPath: any;
   cloudPinPath: any;
+  chartColors: any;
 
   @ViewChild('imageDiv') el:ElementRef;
   @ViewChild('pingImage') elImg:ElementRef;
@@ -76,6 +77,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
               public properties: PropertiesService) {
       // console.log(this.el.nativeElement);  
       this.initLeftPanelHeader();
+      this.chartColors = ['#2196F3', '#F44336'];
       this.latency = properties.NA_TEXT;
       this.bandwidth = properties.NA_TEXT;
       this.responseTime = properties.NA_TEXT;
@@ -371,14 +373,25 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
               data:   data,
               dataLabels : {
                     enabled : false
-              }
+              },
+              shadow: {
+                width: 3,
+                offsetX: 0,
+                offsetY: 0,
+                opacity: 0.06
+            }
     };
   }
 
   getChartConfig (title: any, unit: any, series: any, chartType: any) {
      const options = {
-          chart:   { type:  chartType, zoomType:   'xy' },
+          chart:   { type:  chartType, zoomType:   'xy',
+                      style: {
+                        fontFamily: 'Roboto, sans-serif'
+                      }
+           },
           title :   { text :   title },
+          colors: this.chartColors,
           global :   {
             useUTC :   false,
           },

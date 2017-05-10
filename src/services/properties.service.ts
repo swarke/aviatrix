@@ -47,6 +47,10 @@ export class PropertiesService {
   public GCE_CLOUD_PIN_PATH = '/assets/aws_pin.png';
   public AZURE_CLOUD_PIN_PATH = '/assets/aws_pin.png';
 
+  public AWS_PAGE_TITLE = 'Aviatrix - AWS Throughput and Latency Analyzer';
+  public AZURE_PAGE_TITLE = 'Aviatrix - AZURE Throughput and Latency Analyzer';
+  public GCE_PAGE_TITLE = 'Aviatrix - GCE Throughput and Latency Analyzer';
+
   constructor() {
   }
 }
