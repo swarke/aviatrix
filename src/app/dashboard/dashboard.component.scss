@@ -106,23 +106,33 @@
 }
 
 .btn-download {
-	float: right; 
+	// float: right; 
 	margin-right: 10px; 
-	color: #1E9F91; 
-	background-color: #F0F3F4; 
+	color: #FFFFFF; 
+	background-color: #1E9F91; 
 	cursor: pointer;
 }
 
 .btn-download:hover {
-	float: right; 
+	// float: right; 
 	margin-right: 10px; 
-	color: #1E9F91; 
-	background-color: #F0F3F4; 
+	color: #FFFFFF; 
+	background-color: #1E9F91; 
 	cursor: pointer;
 }
 
 .btn-download:focus, .btn-download.focus {
     outline: 0;
     box-shadow: 0 0 0 2px #1E9F91 !important;
-    color: #1E9F91 !important; 
+    color: #FFFFFF !important; 
+}
+
+.interested-text-style {
+	margin-bottom: 5px !important;
+    line-height: 0px !important;
+    font-weight: 400;
+}
+
+.margin-top-50 {
+	margin-top: 50px;
 }

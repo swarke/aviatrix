@@ -883,7 +883,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
                       '<tr> <th style="text-align: center">'+ this.properties.RIGHT_PANEL_LATENCY_COLUMN_HEADER+'</th> <th style="text-align: center">'+ this.properties.RIGHT_PANEL_THROUGHPUT_COLUMN_HEADER +'</th></tr>' +
                     '</thead>' +
                     '<tbody>' +
-                      '<tr><td style="text-align: center;">'+(latency === "" ? this.properties.NA_TEXT : latency + " " + this.properties.MS) +'</td> <td style="text-align: center;">' + (bandwith === "" ? this.properties.NA_TEXT : bandwith + " " + this.properties.MBPS) +'</td></tr>' +
+                      '<tr><td style="text-align: center;">'+(latency === "" ? this.properties.NA_TEXT : latency) +'</td> <td style="text-align: center;">' + (bandwith === "" ? this.properties.NA_TEXT : bandwith) +'</td></tr>' +
                     '</tbody>' +
                   '</table>';
     }
