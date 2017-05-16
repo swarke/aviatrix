@@ -1,6 +1,6 @@
 <div class="container-fluid" style="margin-top: 60px;">
     <div class="row mrg-top-15">
-        <div class="col-md-8 pad-right-none">
+        <div class="col-md-7 pad-right-none">
             <div class="card card-radious-none">
                 <div class="card-header">   
                     <!-- <md-select placeholder="Select Cloud">
@@ -30,15 +30,15 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-5">
             <div class="card card-radious-none">
                 <div class="card-header">
                     <div class="row">
-                        <div class="col-md-9" style="padding-right: 0px;"><h6 class="card-title card-title-margin">{{properties.RIGHT_PANEL_HEADER}}</h6></div>
+                        <div class="col-md-9" style="padding-right: 0px;">
+                        <h6 class="card-title card-title-margin">{{properties.RIGHT_PANEL_HEADER}} <span>&nbsp;  <i class="fa fa-info-circle fa-lg info-color cursor-pointer" aria-hidden="true" mdTooltip="{{properties.RIGHT_PANEL_TOOLTIP}}"></i></span></h6>                 
+                        </div>
                         <div class="col-md-3" style="text-align: right;">
-                            <img class="loader-style" src="../assets/loader.gif" *ngIf="disabledStart" style="margin-top: -4px;">
-                            <span *ngIf="disabledStart">&nbsp;</span>
-                            <i class="fa fa-info-circle fa-lg info-color cursor-pointer" aria-hidden="true"></i>
+                            <img class="loader-style" src="../assets/loader.gif" *ngIf="disabledStart">
                         </div>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th width="45%"><span class="column-header" (click)="sortBy('region_name')">{{properties.RIGHT_PANEL_REGION_COLUMN_HEADER}} <i class="fa sort-style" 
+                                <th width="40%"><span class="column-header" (click)="sortBy('region_name')">{{properties.RIGHT_PANEL_REGION_COLUMN_HEADER}} <i class="fa sort-style" 
                                     [ngClass]="{'fa-sort': sortableColumn != 'region_name', 'fa-sort-asc': (sortableColumn == 'region_name' && !isDesc),                                        'fa-sort-desc': (sortableColumn == 'region_name' && isDesc) }"
                                     aria-hidden="true"> </i>
 
@@ -56,7 +56,7 @@
                                     [ngClass]="{'fa-sort': sortableColumn != 'latency', 'fa-sort-asc': (sortableColumn == 'latency' && !isDesc),                                        'fa-sort-desc': (sortableColumn == 'latency' && isDesc) }"
                                     aria-hidden="true"> </i></span></th>
                                 
-                                <th width="30%"><span class="column-header" (click)="sortBy('bandwidth')">{{properties.RIGHT_PANEL_THROUGHPUT_COLUMN_HEADER}} <i class="fa sort-style" 
+                                <th width="35%"><span class="column-header" (click)="sortBy('bandwidth')">{{properties.RIGHT_PANEL_THROUGHPUT_COLUMN_HEADER}} <i class="fa sort-style" 
                                     [ngClass]="{'fa-sort': sortableColumn != 'bandwidth', 'fa-sort-asc': (sortableColumn == 'bandwidth' && !isDesc),                                        'fa-sort-desc': (sortableColumn == 'bandwidth' && isDesc) }"
                                     aria-hidden="true"> </i></span></th>
                             </tr>
@@ -66,10 +66,10 @@
                                 <td>{{region.region_name}}</td>
                                 <td *ngIf="!region.latency && !disabledStart">NA</td>
                                 <td *ngIf="!region.latency && disabledStart">{{readLatestLatency(region)}}</td>
-                                <td  *ngIf="region.latency">{{region.latency}} ms</td>
+                                <td  *ngIf="region.latency">{{region.latency}}</td>
 
                                 <td *ngIf="!region.bandwidth && !disabledStart">NA</td>
-                                <td *ngIf="region.bandwidth">{{region.bandwidth}} mbps</td>
+                                <td *ngIf="region.bandwidth">{{region.bandwidth}}</td>
                                 <td *ngIf="!region.bandwidth && disabledStart">{{readLatestThroughput(region)}}</td>
                             </tr>
                         </tbody>
@@ -83,6 +83,7 @@
                       </thead>
                       <tbody>
                       <tr>
+
                         <td>Response Time</td>
                         <td  *ngIf="null !== bestRegion">{{bestRegion.responseTime}} ms</td>
                         <td  *ngIf="null === bestRegion && disabledStart">Calculating...</td>
@@ -151,18 +152,16 @@
                 </div> -->
                 <div class="card-header">
                     <div class="row">
-                        <div class="col-md-9"><h6 class="card-title card-title-margin">{{properties.LATENCY_CHART_HEADER}}</h6></div>
+                        <div class="col-md-9"><h6 class="card-title card-title-margin">{{properties.LATENCY_CHART_HEADER}} <span>&nbsp; <i class="fa fa-info-circle fa-lg info-color cursor-pointer" aria-hidden="true" mdTooltip="{{properties.LATENCY_CHART_TOOLTIP}}" mdTooltipPosition="right"></i></span></h6></div>
                         <div class="col-md-3" style="text-align: right;">
                             <img class="loader-style" src="../assets/loader.gif" *ngIf="disabledStart">
-                            <span *ngIf="disabledStart">&nbsp;</span>
-                             <i class="fa fa-info-circle fa-lg info-color cursor-pointer" aria-hidden="true"></i>
                         </div>
 
                     </div>
                 </div>
                 <div class="card-block" #latencyCard>
                     <chart [options]="latencyOptions" (load)="latencyInstance($event.context)"  *ngIf="latencyOptions !== null" class="chart-height"></chart>
-                    <h6 *ngIf="latencyOptions === null" style="margin-top: 0px; margin-bottom: 0px; font-weight: 300">{{properties.LATENCY_CHART_DATA_NOT_AVAILABLE}}</h6>
+                    <h6 *ngIf="latencyOptions === null" style="margin-top: 0px; margin-bottom: 0px; font-weight: 300">Click <a href="#" (click)="startTest();"> Start </a> to run.</h6>
                 </div>
             </div>
         </div>
@@ -180,21 +179,25 @@
                 </div> -->
                  <div class="card-header">
                     <div class="row">
-                        <div class="col-md-9"><h6 class="card-title card-title-margin">{{properties.THROUGHPUT_CHART_HEADER}}</h6></div>
+                        <div class="col-md-9"><h6 class="card-title card-title-margin">{{properties.THROUGHPUT_CHART_HEADER}}  <span>&nbsp; <i class="fa fa-info-circle fa-lg info-color cursor-pointer" aria-hidden="true" mdTooltip="{{properties.THROUGHPUT_PANEL_TOOLTIP}}" mdTooltipPosition="right"></i></span></h6></div>
                         <div class="col-md-3" style="text-align: right">
                             <img class="loader-style" src="../assets/loader.gif" *ngIf="disabledStart">
-                            <span *ngIf="disabledStart">&nbsp;</span>
-                             <i class="fa fa-info-circle fa-lg info-color cursor-pointer" aria-hidden="true"></i>
                         </div>
                     </div>
 
                 </div>
                 <div class="card-block">
                     <chart [options]="bandwidthOptions" (load)="bandwidthInstance($event.context)" *ngIf="bandwidthOptions !== null" class="chart-height"></chart>
-                     <h6 *ngIf="bandwidthOptions === null" style="margin-top: 0px; margin-bottom: 0px; font-weight: 300">{{properties.THROUGHPUT_CHART_DATA_NOT_AVAILABLE}}</h6>
+                     <h6 *ngIf="bandwidthOptions === null" style="margin-top: 0px; margin-bottom: 0px; font-weight: 300">Click <a href="#" (click)="startTest();"> Start </a> to run.</h6>
                 </div>
             </div>
         </div>
+    </div>
+    <div class="row mrg-top-15 mrg-bottom-15">
+      <div class="col-md-12" style="text-align: right">
+        <a class="btn btn-download" href="http://aviatrix.com/download/" target="_blank"><i class="fa fa-download" aria-hidden="true"></i>&nbsp;&nbsp;{{properties.DOWNLOAD_AVIATRIX}}</a>
+
+      </div>
     </div>
     <!-- <div class="row mrg-top-15 mrg-bottom-15">
         <div class="col-md-12">

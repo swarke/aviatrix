@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, Renderer, AfterViewInit  } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, Renderer, AfterViewInit, ViewEncapsulation } from '@angular/core';
 import { ChartModule } from 'angular2-highcharts';
 import { DashboardModel} from '../../models';
 import { MapsAPILoader, GoogleMapsAPIWrapper,
@@ -16,8 +16,8 @@ declare var jQuery:any;
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
-  viewProviders: [DashboardService]
-
+  viewProviders: [DashboardService],
+  encapsulation: ViewEncapsulation.None
 })
 export class DashboardComponent implements OnInit, AfterViewInit  {
   clouds: any;
@@ -39,7 +39,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   dashboardModel: DashboardModel;
   pingStartTime: any =  null;
 
-  TEST_MINUTES: number = 30;
+  TEST_MINUTES: number = 35;
   TEST_INTERVAL: number = 5000;
 
   latency: any;
@@ -483,6 +483,8 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
       object.currentResponseIndex = 0;
       object.currentBandwidthIndex = 0;
       object.throughputCallIndex = undefined;
+      object.firstLatencyPass = false;
+      object.firstBandwidthPass = false;
       
       // Setting up latency chart
       this.setDataPoint(object.dashboardModel.latency, object);
@@ -576,22 +578,29 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
             let speedKbps: any = (speedBps / 1024).toFixed(2);
             let speedMbps = (speedKbps / 1024).toFixed(2);
 
-            obj.dashboardModel.bandwidth[obj.currentBandwidthIndex].value = parseFloat(speedMbps);
-            this.bandwidthChart.series[index].data[obj.currentBandwidthIndex].update({"y": parseFloat(speedMbps)});
-            obj.currentBandwidthIndex++;
+            if (obj.firstBandwidthPass) {
+              obj.dashboardModel.bandwidth[obj.currentBandwidthIndex].value = parseFloat(speedMbps);
+              this.bandwidthChart.series[index].data[obj.currentBandwidthIndex].update({"y": parseFloat(speedMbps)});
+              obj.currentBandwidthIndex++;
+            
 
-            // console.log("Region: " + obj.region_name + " Current index: " + obj.currentBandwidthIndex + " call index: " + obj.throughputCallIndex);
-            if(obj.currentBandwidthIndex > obj.throughputCallIndex && obj.currentBandwidthIndex > 5) {
-              this.getBandwidth(obj);
-              obj.bandwidthCompleted = true;
-              setTimeout(() => this.isProcessCompleted(), 10);
+              // console.log("Region: " + obj.region_name + " Current index: " + obj.currentBandwidthIndex + " call index: " + obj.throughputCallIndex);
+              if(obj.currentBandwidthIndex > 5) {
+                this.getBandwidth(obj);
+                obj.bandwidthCompleted = true;
+                setTimeout(() => this.isProcessCompleted(), 10);
+              }
+            } else {
+              obj.firstBandwidthPass = true;
             }
         });
       } else {
-        // this.getBandwidth(obj);
-        // obj.bandwidthCompleted = true;
-        // setTimeout(() => this.isProcessCompleted(), 10);
-      }
+          if (!this.disabledStart) {
+            this.getBandwidth(obj);
+            obj.bandwidthCompleted = true;
+            setTimeout(() => this.isProcessCompleted(), 5);
+          }
+        }
   }
 
   /**
@@ -632,16 +641,22 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
         // pingImage.attr("src", 'http://dynamodb.us-west-1.amazonaws.com/' +'ping'+ cacheBuster);
 
         var download = new Image() ;
-        download.onerror = function() {
-          let pingEnd = new Date();
-          let ping: number = (pingEnd.getTime() - pingStart.getTime());
-          obj.dashboardModel.latency[obj.currentLatencyIndex].value = Math.round(ping);
-          current.latencyChart.series[index].data[obj.currentLatencyIndex].update({"y": Math.round(ping)});
-          obj.currentLatencyIndex++;
-        }
-
         let pingStart = new Date();
         var cacheBuster = "?nnn=" + pingStart;
+        download.onerror = function() {
+          if (obj.firstLatencyPass) {
+              let pingEnd = new Date();
+              let ping: number = (pingEnd.getTime() - pingStart.getTime());
+              obj.dashboardModel.latency[obj.currentLatencyIndex].value = Math.round(ping);
+              current.latencyChart.series[index].data[obj.currentLatencyIndex].update({"y": Math.round(ping)});
+              obj.currentLatencyIndex++;
+              if (obj.currentLatencyIndex > 5) {
+                obj.latencyCompleted = true;
+              }
+          } else {
+              obj.firstLatencyPass = true;
+          }
+        }
         download.src = obj.url +'ping'+ cacheBuster ;
 
         // this.dashboardService.getLatency(obj.url+ 'ping' + cacheBuster).subscribe((data: any ) => {
@@ -659,8 +674,11 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
         //     this.latencyChart.series[index].addPoint(this.getChartPoint(new Date(), Math.round(ping)));
         // });
     } else {
-      this.getLatency(obj);
-      obj.latencyCompleted = true;
+       this.getLatency(obj);
+       obj.latencyCompleted = true;
+      if(!this.disabledStart) {
+        setTimeout(() => this.isProcessCompleted(), 5);
+      }
     }
   }
 
@@ -745,11 +763,14 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
     let processCompleted: boolean = false;
     for(let index = 0; index < this.locations.length; index++) {
       let object: any = this.locations[index];
+      // console.log("Region: " + object.region_name + " Latency completed: " + object.latencyCompleted + " Th completed: " + object.bandwidthCompleted);
+      
       if (object.latencyCompleted 
           && object.bandwidthCompleted) {
         processCompleted = true;
       } else {
         processCompleted = false;
+        break;
       }
     }
 
@@ -876,10 +897,10 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
    */
   readLatestLatency(obj) {
     if (obj.latencyCompleted && obj.latency) {
-      return  obj.latency  +" " + this.properties.MS;
+      return  obj.latency;
     } else if(obj.dashboardModel && obj.dashboardModel.latency
               && obj.dashboardModel.latency.length > 0 && obj.currentLatencyIndex > 0) {
-      return obj.dashboardModel.latency[obj.currentLatencyIndex - 1].value +" " + this.properties.MS;
+      return obj.dashboardModel.latency[obj.currentLatencyIndex - 1].value;
     }
 
     return this.properties.NA_TEXT;
@@ -887,10 +908,10 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
 
   readLatestThroughput(obj) {
     if (obj.bandwidthCompleted && obj.bandwidth) {
-      return obj.bandwidth  +" " + this.properties.MBPS;
+      return obj.bandwidth;
     } else if(obj.dashboardModel && obj.dashboardModel.bandwidth
               && obj.dashboardModel.bandwidth.length > 0 && obj.currentBandwidthIndex > 0) {
-      return obj.dashboardModel.bandwidth[obj.currentBandwidthIndex - 1].value +" " + this.properties.MBPS;
+      return obj.dashboardModel.bandwidth[obj.currentBandwidthIndex - 1].value;
     }
 
      return this.properties.NA_TEXT;

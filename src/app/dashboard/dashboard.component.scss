@@ -20,7 +20,7 @@
     // color: #666666;
     
 	font-size: 14px !important;
-	color: rgba(0,0,0,0.87) !important;
+	color: #757575 !important;
 	letter-spacing: 0.19px !important;
 	line-height: 18px !important;
 
@@ -51,12 +51,12 @@
 
 .info-color {
 	color: rgba(0,0,0,0.64);
-	margin-top: 10px;
+	// margin-top: 10px;
 }
 
 .loader-style {
 	// float: right;
-	margin-top: 0px;
+	margin-top: 5px;
 }
 
 .card {
@@ -99,4 +99,30 @@
 
 .fa-lg {
     font-size: 1.2em !important;
+}
+
+.mat-tooltip {
+    font-size: 14px !important;
+}
+
+.btn-download {
+	float: right; 
+	margin-right: 10px; 
+	color: #1E9F91; 
+	background-color: #F0F3F4; 
+	cursor: pointer;
+}
+
+.btn-download:hover {
+	float: right; 
+	margin-right: 10px; 
+	color: #1E9F91; 
+	background-color: #F0F3F4; 
+	cursor: pointer;
+}
+
+.btn-download:focus, .btn-download.focus {
+    outline: 0;
+    box-shadow: 0 0 0 2px #1E9F91 !important;
+    color: #1E9F91 !important; 
 }

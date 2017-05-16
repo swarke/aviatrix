@@ -17,13 +17,13 @@
       "name": "aviatrix-us-west",
       "region_name": "US West (Oregon)",
       "id": "i-0627f325230a7e7f0",
-      "dns_name": "ec2-34-209-70-236.us-west-2.compute.amazonaws.com",
-      "public_ip": "34.209.70.236",
+      "dns_name": "ec2-34-210-149-138.us-west-2.compute.amazonaws.com",
+      "public_ip": "34.210.149.138",
       "cloud_info": {
         "region": "us-west-2b",
         "availability_zone": "us-west-2b"
       },
-      "url": "http://34.209.70.236/",
+      "url": "http://34.210.149.138/",
       "lat": 46.15,
       "lng": -123.88
     }

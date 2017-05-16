@@ -13,6 +13,8 @@ import { HeaderComponent } from './header/header.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ApiService } from '../services/api.service';
 import { PropertiesService } from '../services/properties.service';
+import {PopoverModule} from "ngx-popover";
+import { StarRatingModule } from 'angular-star-rating';
 
 declare var require: any;
 
@@ -36,6 +38,8 @@ export function highchartsFactory() {
     HttpModule,
     MaterialModule,
     ChartModule,
+    PopoverModule,
+    StarRatingModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyDvSnAZNrXrmyEurdnijIl9BPYhaT706Ns'
     })
