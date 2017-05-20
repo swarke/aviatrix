@@ -8,11 +8,12 @@ import { Injectable, Inject } from '@angular/core';
 export class PropertiesService {
 
   // Header
-  public AWS_TOOL_NAME: string = 'AWS Latency & Throughput Analyzer';
-  public AZURE_TOOL_NAME: string = 'AZURE Latency & Throughput Analyzer';
-  public GCE_TOOL_NAME: string = 'GCE Latency & Throughput Analyzer';
+  public AWS_TOOL_NAME: string = 'AWS cloud speed test';
+  public AZURE_TOOL_NAME: string = 'AZURE cloud speed test';
+  public GCE_TOOL_NAME: string = 'GCE cloud speed test';
   public LINK_FEEDBACK: string = 'Feedback';
 
+  public READY_TO_IMPLEMENT: string ='Ready to implement hybird cloud';
   public DOWNLOAD_AVIATRIX: string = 'Download Aviatrix!';
 
   public LEFT_PANEL_AWS_REGION: string  = 'AWS REGIONS';
@@ -59,6 +60,7 @@ export class PropertiesService {
   public LATENCY_CHART_TOOLTIP: string = "Measures latency from the browser to cloud regions. Use latency to determine deployment of latency sensitive applications.";
   public THROUGHPUT_PANEL_TOOLTIP: string = "Measures throughput from the browser to cloud regions. Use throughput data for data intensive applications.";
 
+  public SHARE_POST: string ='Check out the free tool on cloudnetworkingtools.com!';
 
   constructor() {
   }

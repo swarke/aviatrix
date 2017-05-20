@@ -3,11 +3,6 @@
         <div class="col-md-7 pad-right-none">
             <div class="card card-radious-none">
                 <div class="card-header">   
-                    <!-- <md-select placeholder="Select Cloud">
-                        <md-option *ngFor="let cloud of clouds" [value]="cloud.value">
-                            {{ cloud.viewValue }}
-                        </md-option>
-                    </md-select> -->
                     <div class="row">
                         <div class="col-md-6">
                             <h6 class="card-title card-title-margin">{{leftPanelHeader}}</h6>
@@ -18,15 +13,59 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-block"  style="padding: 0px;" *ngIf="locations.length > 0">
-                    <sebm-google-map [latitude]="lat" [longitude]="lng" 
-                    [scrollwheel]="false" [zoom]="2" [streetViewControl]="false"  [disableDefaultUI]="false" [styles]="mapStyles">
-                        <sebm-google-map-marker *ngFor="let m of locations" [latitude]="m.lat" [longitude]="m.lng" [iconUrl]="m.iconUrl" (mouseOver)="markerEntered(m, $event)" (mouseOut)="markerOut(m, $event)">
-                            <sebm-google-map-info-window [disableAutoPan]="true" [isOpen]="m.isOpen">
+                <div class="card-block"  style="padding: 0px;"> 
+                <!-- *ngIf="userLocation.latitude && locations.length > 0" -->
+                    <div id="map" style="height: 300px;"></div>
+                <!-- *ngIf="userLocation.latitude && locations.length > 0" -->
+                    <!-- Google map implementation -->
+                    <!-- <agm-map [latitude]="0" [longitude]="768"
+                    [scrollwheel]="false" [zoom]="1" [streetViewControl]="false"  [disableDefaultUI]="false" [styles]="mapStyles" [usePanning] = 'false'>
+                        <agm-marker *ngIf="userLocation.latitude" [latitude]="userLocation.latitude" [longitude]="userLocation.longitude" [iconUrl]="userLocation.iconUrl" [optimized]="false" (mouseOver)="markerEntered(userLocation, $event, false)" (mouseOut)="markerOut(userLocation, $event, false)">
+
+                        </agm-marker>
+
+                        <agm-marker *ngFor="let m of locations" [latitude]="m.lat" [longitude]="m.lng" [iconUrl]="m.iconUrl" [optimized]="false" (mouseOver)="markerEntered(m, $event, true)" (mouseOut)="markerOut(m, $event, true)">
+                            <agm-info-window [disableAutoPan]="true" [isOpen]="m.isOpen">
                                 <div [innerHtml]="m.label"></div>
-                            </sebm-google-map-info-window>
-                        </sebm-google-map-marker>
-                    </sebm-google-map>
+                            </agm-info-window>
+                        </agm-marker>
+
+                        <agm-polyline [geodesic] = 'true' [strokeWeight]='1' *ngFor="let m of locations" [strokeColor]='m.color'>
+                             <agm-polyline-point [latitude]="userLocation.latitude" [longitude]="userLocation.longitude">
+                             </agm-polyline-point>
+                             <agm-polyline-point [latitude]="m.lat" [longitude]="m.lng">
+                             </agm-polyline-point>
+                        </agm-polyline>
+                    </agm-map> -->
+
+                    <!-- OSM implementation -->
+                    <!-- <aol-map [height]="'300px'">
+                        <aol-view [zoom]="1" [minZoom]="1">
+                            <aol-coordinate [x]="5.795122" [y]="45.210225" [srid]="'EPSG:4326'"></aol-coordinate>
+                        </aol-view>
+                        <aol-interaction-default></aol-interaction-default>
+                        <aol-layer-tile>
+                            <aol-source-osm></aol-source-osm>
+                        </aol-layer-tile>
+                    </aol-map> -->
+
+                    <!-- Leaflet implementation -->
+
+                    <!-- <leaf-element [zoom]=1 [minZoom]=1>
+                        <layer-element [slippyLayer]="'http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png'"></layer-element>
+                        <leaflet-group [name]="'markers'">
+                            <marker-element [lat]="userLocation.latitude" [lon]="userLocation.latitude" [iconUrl]="userLocation.iconUrl">
+                            </marker-element>
+                            <marker-element *ngFor="let m of locations" [lat]="m.lat" [lon]="m.lng" [iconUrl]="m.iconUrl" [mouseover]="markerEntered(m, false)">
+                            </marker-element>
+                        </leaflet-group>
+                        <leaflet-group> 
+                            <polyline-element *ngFor="let m of locations" [latlngs]="[[userLocation.latitude, userLocation.latitude],[m.lat, m.lng]]" [Options]="{'interactive': false, 'weight': 2, 'color': m.color}">
+                            </polyline-element>
+                        </leaflet-group>
+
+   
+                    </leaf-element> -->
                 </div>
             </div>
         </div>
@@ -42,17 +81,28 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-block test-card-height" style="overflow-y: auto;">
-                    <table class="table table-striped">
+                <div class="card-block test-card-height" style="overflow-y: auto; padding-top: 0px;">
+                    <div class="row">
+                    <div class="col-md-7" style="margin-bottom: 5px;">Best region for latency sensitive apps </div>
+                    <div class="col-md-5" *ngIf="!bestLatencyRegion">NA</div>
+                    <div class="col-md-5" *ngIf="bestLatencyRegion">{{bestLatencyRegion.region_name}}</div>
+                    </div>
+                    <div class="row">
+                       <div class="col-md-7"> Best region for data intesive apps </div>
+                       <div class="col-md-5" *ngIf="!bestBandwidthRegion">NA</div>
+                       <div class="col-md-5" *ngIf="bestBandwidthRegion">{{bestBandwidthRegion.region_name}}</div>
+
+                    </div>
+                    <table class="table table-striped" style="margin-top: 10px;">
                         <thead>
                             <tr>
-                                <th width="40%"><span class="column-header" (click)="sortBy('region_name')">{{properties.RIGHT_PANEL_REGION_COLUMN_HEADER}} <i class="fa sort-style" 
+                                <th width="35%"><span class="column-header" (click)="sortBy('region_name')">{{properties.RIGHT_PANEL_REGION_COLUMN_HEADER}} <i class="fa sort-style" 
                                     [ngClass]="{'fa-sort': sortableColumn != 'region_name', 'fa-sort-asc': (sortableColumn == 'region_name' && !isDesc),                                        'fa-sort-desc': (sortableColumn == 'region_name' && isDesc) }"
                                     aria-hidden="true"> </i>
 
                                 </span></th>
 
-                                <th width="25%"><span class="column-header" (click)="sortBy('latency')">{{properties.RIGHT_PANEL_LATENCY_COLUMN_HEADER}} <i class="fa sort-style" 
+                                <th width="30%"><span class="column-header" (click)="sortBy('latency')">{{properties.RIGHT_PANEL_LATENCY_COLUMN_HEADER}} <i class="fa sort-style" 
                                     [ngClass]="{'fa-sort': sortableColumn != 'latency', 'fa-sort-asc': (sortableColumn == 'latency' && !isDesc),                                        'fa-sort-desc': (sortableColumn == 'latency' && isDesc) }"
                                     aria-hidden="true"> </i></span></th>
                                 
@@ -160,7 +210,7 @@
                     </div>
                 </div>
                 <div class="card-block" #latencyCard>
-                    <chart [options]="latencyOptions" (load)="latencyInstance($event.context)"  *ngIf="latencyOptions !== null" class="chart-height"></chart>
+                    <chart [options]="latencyOptions" (load)="latencyInstance($event.context)"  *ngIf="latencyOptions !== null" class="chart-height" style="width: 95%"></chart>
                     <h6 *ngIf="latencyOptions === null" style="margin-top: 0px; margin-bottom: 0px; font-weight: 300">Click <a href="#" (click)="startTest();"> Start </a> to run.</h6>
                 </div>
             </div>
@@ -195,7 +245,7 @@
     </div>
     <div class="row margin-top-50 mrg-bottom-15">
       <div class="col-md-12 center">
-        <h5 class="interested-text-style">Interested in Cloud Networking?</h5><br/>
+        <h5 class="interested-text-style">{{properties.READY_TO_IMPLEMENT}}</h5><br/>
         <a class="btn btn-download" href="http://aviatrix.com/download/" target="_blank"><i class="fa fa-download" aria-hidden="true"></i>&nbsp;&nbsp;{{properties.DOWNLOAD_AVIATRIX}}</a>
 
       </div>

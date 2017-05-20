@@ -46,7 +46,7 @@
 }
 
 .chart-height {
-	height: 300px;
+	height: 300px !important;
 }
 
 .info-color {
@@ -135,4 +135,32 @@
 
 .margin-top-50 {
 	margin-top: 50px;
+}
+
+.map-container {
+	height: 300px;
+}
+
+.leaflet-container {
+	z-index: 1;
+}
+
+.leaflet-marker-icon {
+	height: 39px !important; 
+	width: 22px !important;
+	margin-left: -11px !important;
+    margin-top: -39px !important;
+}
+
+.leaflet-popup {
+	bottom: 10px !important;
+}
+
+.leaflet-popup-close-button {
+	display: none;
+	opacity: 0;
+}
+
+.leaflet-control-attribution {
+	display: none !important;
 }

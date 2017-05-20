@@ -3,20 +3,22 @@ import { ChartModule } from 'angular2-highcharts';
 import { DashboardModel} from '../../models';
 import { MapsAPILoader, GoogleMapsAPIWrapper,
          NoOpMapsAPILoader,
-         MouseEvent, 
-         SebmGoogleMapMarker } from 'angular2-google-maps/core';
+         MouseEvent
+       } from '@agm/core-src/src/core';
 import { Response, Http } from '@angular/http';
 import {DashboardService, PropertiesService} from '../../services';
+import { SourceVectorComponent, LayerVectorComponent, MapComponent  } from 'angular2-openlayers';
 
 import { CLOUD_TOOL, AWS_INVENTORY_PATH, AZURE_INVENTORY_PATH, GCE_INVENTORY_PATH} from '../app-config';
-
 declare var jQuery:any;
+
+declare const L: any;
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
-  viewProviders: [DashboardService],
+  viewProviders: [DashboardService, SourceVectorComponent, LayerVectorComponent, MapComponent ],
   encapsulation: ViewEncapsulation.None
 })
 export class DashboardComponent implements OnInit, AfterViewInit  {
@@ -58,6 +60,9 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   bestRegion: any;
   worstRegion: any;
 
+  bestLatencyRegion: any;
+  bestBandwidthRegion: any;
+
   mapStyles: any;
   isDesc: boolean;
   sortableColumn: any;
@@ -65,6 +70,12 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   inventoryPath: any;
   cloudPinPath: any;
   chartColors: any;
+  userLocation: any;
+
+  public zoom = 15;
+  public opacity = 1.0;
+  public width = 5;
+  text = '';
 
   @ViewChild('imageDiv') el:ElementRef;
   @ViewChild('pingImage') elImg:ElementRef;
@@ -77,7 +88,11 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
               public properties: PropertiesService) {
       // console.log(this.el.nativeElement);  
       this.initLeftPanelHeader();
-      this.chartColors = ['#2196F3', '#F44336'];
+      this.chartColors = ['#2196F3', '#F44336', '#FF609E', '#14936C', '#00FF4F', '#A99000',
+                          '#E8C21A', '#673AB7', '#3D495A', '#536DFE', '#C3429B', '#C33A38', 
+                          '#02BCA1', '#25DB67', '#6F9900', '#E69500', '#D792F1', '#83A1CD', 
+                          '#0E7BBC', '#81D4FA'];
+      this.userLocation = {};
       this.latency = properties.NA_TEXT;
       this.bandwidth = properties.NA_TEXT;
       this.responseTime = properties.NA_TEXT;
@@ -109,6 +124,8 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
      this.selectedRegions = [];
      this.bestRegion = null;
      this.worstRegion = null;
+     this.bestLatencyRegion = null;
+     this.bestBandwidthRegion = null;
      this.mapStyles = [
                           {
                               "elementType": "geometry",
@@ -307,10 +324,31 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   }
 
   ngOnInit() {
-    this.getInvetory();
+    // this.userLocation.latitude = 18.5990891;                    
+    // this.userLocation .longitude = 73.7722048;  
+    // this.userLocation.isOpen = false;
+    // this.userLocation.label = 'User Location'
+    // this.userLocation.iconUrl = '/assets/user_pin.png';
+
   }
 
   ngAfterViewInit() {
+
+     let self = this;
+
+    
+   
+    if (navigator.geolocation){
+      navigator.geolocation.getCurrentPosition(function(position){                                                              
+        self.userLocation.latitude = position.coords.latitude;                    
+        self.userLocation .longitude = position.coords.longitude;  
+        self.userLocation.isOpen = false;
+        self.userLocation.label = 'User Location'
+        self.userLocation.iconUrl = '/assets/user_pin.png';
+        console.log("Lat: " + self.userLocation.latitude + "Long " +  self.userLocation .longitude +  "Position: " + JSON.stringify(position));
+        self.getInvetory();         
+      });
+    }
   }
 
   initLeftPanelHeader() {
@@ -355,15 +393,33 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
    return this.http.get('http://ipinfo.io/json');
   };
 
-  markerEntered(marker: any, event: any) {
-    marker.label = this.updateMarkerLabel(marker);
-    marker.isOpen = true;
-    this.updateChartOnMarker(marker, true);
+  markerEntered(map, marker: any, event: any, isCloudPin: boolean) {
+    // if (isCloudPin) {
+      // marker.label = this.updateMarkerLabel(marker);
+      // marker.isOpen = true;
+      // this.updateChartOnMarker(marker, true);
+    // } else {
+      // marker.isOpen = true;
+    // }
+    this.text = 'test';
+    // event.target.openPopup();
+
+    var popup = L.popup()
+   .setLatLng([18.5990891, 73.7722048]) 
+   .setContent(this.text)
+   .openOn(map);
+
+    return marker.label;
   };
 
-  markerOut(marker: any, event: any) {
-    marker.isOpen = false;
-    this.updateChartOnMarker(marker, false)  
+  markerOut(marker: any, event: any, isCloudPin: boolean) {
+    // if (isCloudPin) {
+    //   marker.isOpen = false;
+    //   this.updateChartOnMarker(marker, false);
+    // } else {
+    //   marker.isOpen = false;
+    // }
+    event.target.closePopup();
   }
  
   getSeriesData(chartType: any, name: any, data: any) {
@@ -458,8 +514,8 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
     this.latency =  this.properties.NA_TEXT;
     this.responseTime = this.properties.NA_TEXT;
     this.bandwidth = this.properties.NA_TEXT;
-    this.bestRegion = null;
-    this.worstRegion = null;
+    this.bestLatencyRegion = null;
+    this.bestBandwidthRegion = null;
 
     // Setting latency chart configuration
     let latencySeries: any = [];
@@ -759,12 +815,40 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
     }
   }
 
+  getBestLatencyAndBandwidth() {
+    for (let index = 0; index < this.locations.length; index++) {
+      let object: any = this.locations[index];
+      if (this.bestLatencyRegion === null) {
+        this.bestLatencyRegion = object;
+      } else {
+        if(object.latency < this.bestLatencyRegion.latency) {
+          this.bestLatencyRegion = object;
+        }
+      }
+
+      if (this.bestBandwidthRegion === null) {
+        this.bestBandwidthRegion = object;
+      } else {
+        if(object.bandwidth > this.bestBandwidthRegion.bandwidth) {
+          this.bestBandwidthRegion = object;
+        }
+      }
+    }
+  }
+
   isProcessCompleted() {
     let processCompleted: boolean = false;
     for(let index = 0; index < this.locations.length; index++) {
       let object: any = this.locations[index];
       // console.log("Region: " + object.region_name + " Latency completed: " + object.latencyCompleted + " Th completed: " + object.bandwidthCompleted);
-      
+      if(object.latencyCompleted) {
+        this.getLatency(object);
+      }
+
+      if(object.bandwidthCompleted) {
+        this.getBandwidth(object);
+      }
+
       if (object.latencyCompleted 
           && object.bandwidthCompleted) {
         processCompleted = true;
@@ -775,6 +859,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
     }
 
     if (processCompleted) {
+      this.getBestLatencyAndBandwidth();
       this.disabledStart = false;
     } else {
         setTimeout(() => this.isProcessCompleted(), 10);
@@ -831,8 +916,11 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
          console.log("Cloud Pin Path: " + this.cloudPinPath);
          
          obj.iconUrl= this.cloudPinPath;
+         obj.color = this.chartColors[index];
          this.locations.push(obj);
         }
+
+        this.generateMap();
       },
         (error: any) => this.handleError(error)
       );
@@ -976,6 +1064,79 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
         }
       }
     }
+  }
+
+  generateMap() {
+    let self = this;
+    var map = L.map('map').setView([self.userLocation.latitude, self.userLocation.longitude], 1);
+    map.options.minZoom = 1;
+
+    L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
+    }).addTo(map);
+
+    var userIcon = L.icon({
+        iconUrl: self.userLocation.iconUrl,
+        iconSize: [22, 39],
+    });
+
+    var userMarker = L.marker([self.userLocation.latitude, self.userLocation.longitude], {'icon': userIcon});
+
+    userMarker.addTo(map)
+        .bindPopup('User Location');
+       
+    userMarker.on('mouseover', function (e) {
+      this.openPopup();
+    });
+    userMarker.on('mouseout', function (e) {
+       this.closePopup();
+    });
+
+    for(let index = 0; index < this.locations.length; index++ ) {
+      let object = this.locations[index];
+
+      var markerIcon = L.icon({
+        iconUrl: object.iconUrl,
+        iconSize: [22, 39],
+      });
+
+      var marker = L.marker([object.lat, object.lng], {'icon': markerIcon});
+
+      marker.addTo(map);
+      var layerPopup = null;
+      marker.on('mouseover', function (e) {
+        var content = self.updateMarkerLabel(object);
+        self.updateChartOnMarker(object, true);
+        layerPopup = L.popup()
+           .setLatLng([object.lat, object.lng])
+           .setContent(content)
+            .openOn(map);
+
+      });
+      marker.on('mouseout', function (e) {
+        if(layerPopup) {
+          self.updateChartOnMarker(object, false);
+          map.closePopup(layerPopup);
+        }
+      });
+
+      var polyline = L.polyline([[self.userLocation.latitude, self.userLocation.longitude], [object.lat, object.lng]], {color: object.color}).addTo(map);
+      // zoom the map to the polyline
+      polyline.addTo(map);
+
+      // var path = L.curve(['M',[self.userLocation.latitude, self.userLocation.longitude],
+      //     'V',[48.40003249610685],
+      //     'L',[object.lat, object.lng],'Z'],
+      //     {color:object.color,fill:true}).addTo(map);
+      // L.Polyline.Arc([self.userLocation.latitude, self.userLocation.longitude], [object.lat, object.lng]).addTo(map);
+    }
+
+    // var pathOne = L.curve(['M',[50.14874640066278,14.106445312500002],
+    //          'Q',[51.67255514839676,16.303710937500004],
+    //            [50.14874640066278,18.676757812500004],
+    //          'T',[49.866316729538674,25.0927734375]], {animate: 3000}).addTo(map);
+
+
+
   }
 
 }
