@@ -12,13 +12,14 @@ import { CLOUD_TOOL} from '../app-config';
 export class HeaderComponent implements OnInit {
   
   toolName: string = '';
-  title
+  postText: string = '';
   constructor(public properties: PropertiesService,
   			  private titleService: Title) {
   	this.initToolName();
   }
 
   ngOnInit() {
+    this.postText = this.toolName + '<br/>' + this.properties.SHARE_POST;
   }
 
   initToolName() {

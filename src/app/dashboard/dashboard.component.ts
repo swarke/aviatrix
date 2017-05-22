@@ -1,10 +1,10 @@
 import { Component, OnInit, ElementRef, ViewChild, Renderer, AfterViewInit, ViewEncapsulation } from '@angular/core';
 import { ChartModule } from 'angular2-highcharts';
 import { DashboardModel} from '../../models';
-import { MapsAPILoader, GoogleMapsAPIWrapper,
-         NoOpMapsAPILoader,
-         MouseEvent
-       } from '@agm/core-src/src/core';
+// import { MapsAPILoader, GoogleMapsAPIWrapper,
+//          NoOpMapsAPILoader,
+//          MouseEvent
+//        } from '@agm/core-src/src/core';
 import { Response, Http } from '@angular/http';
 import {DashboardService, PropertiesService} from '../../services';
 import { SourceVectorComponent, LayerVectorComponent, MapComponent  } from 'angular2-openlayers';
@@ -13,6 +13,10 @@ import { CLOUD_TOOL, AWS_INVENTORY_PATH, AZURE_INVENTORY_PATH, GCE_INVENTORY_PAT
 declare var jQuery:any;
 
 declare const L: any;
+
+declare const google: any;
+
+declare const AmCharts: any;
 
 @Component({
   selector: 'app-dashboard',
@@ -76,11 +80,12 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   public opacity = 1.0;
   public width = 5;
   text = '';
+  hoveredObject = null;
 
   @ViewChild('imageDiv') el:ElementRef;
   @ViewChild('pingImage') elImg:ElementRef;
       
-  constructor(private mapsAPILoader : MapsAPILoader,
+  constructor( //private mapsAPILoader : MapsAPILoader,
               private http: Http,
               private dashboardService: DashboardService,
               private elRef:ElementRef,
@@ -333,22 +338,59 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   }
 
   ngAfterViewInit() {
-
-     let self = this;
-
-    
+    let self = this;
    
-    if (navigator.geolocation){
-      navigator.geolocation.getCurrentPosition(function(position){                                                              
-        self.userLocation.latitude = position.coords.latitude;                    
-        self.userLocation .longitude = position.coords.longitude;  
+    this.getGeolocation().subscribe((success: any) => {
+      try {
+        let geoLocations =  JSON.parse(success._body);
+
+        self.userLocation.latitude = geoLocations.latitude;                    
+        self.userLocation.longitude = geoLocations.longitude;  
         self.userLocation.isOpen = false;
-        self.userLocation.label = 'User Location'
-        self.userLocation.iconUrl = '/assets/user_pin.png';
-        console.log("Lat: " + self.userLocation.latitude + "Long " +  self.userLocation .longitude +  "Position: " + JSON.stringify(position));
-        self.getInvetory();         
-      });
-    }
+        self.userLocation.label = 'User Location';
+        self.userLocation.iconUrl = '/assets/updated_user_pin.png';
+        console.log("Lat: " + self.userLocation.latitude + " Long " +  self.userLocation .longitude);
+        self.userLocation.address = geoLocations.region_name + ', ' + geoLocations.country_name;
+        // var geocoder = geocoder = new google.maps.Geocoder();
+        //   var latlng = new google.maps.LatLng(self.userLocation.latitude, self.userLocation.longitude);
+        //   geocoder.geocode({ 'latLng': latlng }, function (results, status) {
+        //       if (status == google.maps.GeocoderStatus.OK) {
+        //           if (results[1]) {
+        //               self.userLocation.address = results[1].formatted_address;
+        //           }
+        //       }            
+        // });
+        console.log(geoLocations);
+      } catch(ex) {
+      }
+
+      self.getInvetory();
+
+    });
+
+    // if (navigator.geolocation){
+    //   navigator.geolocation.getCurrentPosition(function(position){                                                              
+    //     self.userLocation.latitude = position.coords.latitude;                    
+    //     self.userLocation.longitude = position.coords.longitude;  
+    //     self.userLocation.isOpen = false;
+    //     self.userLocation.label = 'User Location'
+    //     self.userLocation.iconUrl = '/assets/user_pin.png';
+    //     console.log("Lat: " + self.userLocation.latitude + " Long " +  self.userLocation .longitude);
+        
+    //     var geocoder = geocoder = new google.maps.Geocoder();
+    //       var latlng = new google.maps.LatLng(self.userLocation.latitude, self.userLocation.longitude);
+    //       geocoder.geocode({ 'latLng': latlng }, function (results, status) {
+    //           if (status == google.maps.GeocoderStatus.OK) {
+    //               if (results[1]) {
+    //                   self.userLocation.address = results[1].formatted_address;
+    //               }
+    //           }            
+    //     });
+
+    //     self.getInvetory();
+      
+    //   });
+    // }
   }
 
   initLeftPanelHeader() {
@@ -390,7 +432,8 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   }
 
   getGeolocation() {
-   return this.http.get('http://ipinfo.io/json');
+   // return this.http.post('https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyDCa1LUe1vOczX1hO_iGYgyo8p_jYuGOPU', {});
+   return this.http.get("https://freegeoip.net/json/");
   };
 
   markerEntered(map, marker: any, event: any, isCloudPin: boolean) {
@@ -821,7 +864,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
       if (this.bestLatencyRegion === null) {
         this.bestLatencyRegion = object;
       } else {
-        if(object.latency < this.bestLatencyRegion.latency) {
+        if(parseFloat(object.latency) < parseFloat(this.bestLatencyRegion.latency)) {
           this.bestLatencyRegion = object;
         }
       }
@@ -829,7 +872,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
       if (this.bestBandwidthRegion === null) {
         this.bestBandwidthRegion = object;
       } else {
-        if(object.bandwidth > this.bestBandwidthRegion.bandwidth) {
+        if(parseFloat(object.bandwidth) > parseFloat(this.bestBandwidthRegion.bandwidth)) {
           this.bestBandwidthRegion = object;
         }
       }
@@ -920,7 +963,8 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
          this.locations.push(obj);
         }
 
-        this.generateMap();
+        // this.generateMap();
+        this.generateAmMap();
       },
         (error: any) => this.handleError(error)
       );
@@ -965,10 +1009,10 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
     if(latency === "" && bandwith === "") {
       content = "<strong>" + marker.region_name +"</strong>";
     } else {
-      content = '<table class="table table-striped">' +
+      content = '<table class="table table-bordered" width="100%">' +
                     '<thead>' + 
                       '<tr> <th style="text-align: center; border-top: none" colspan="2">'+ marker.region_name +'</th></tr>' +
-                      '<tr> <th style="text-align: center">'+ this.properties.RIGHT_PANEL_LATENCY_COLUMN_HEADER+'</th> <th style="text-align: center">'+ this.properties.RIGHT_PANEL_THROUGHPUT_COLUMN_HEADER +'</th></tr>' +
+                      '<tr> <th style="text-align: center">'+ "Latency <br> (msec)"+'</th> <th style="text-align: center">'+ 'Throughput <br> (mbps)' +'</th></tr>' +
                     '</thead>' +
                     '<tbody>' +
                       '<tr><td style="text-align: center;">'+(latency === "" ? this.properties.NA_TEXT : latency) +'</td> <td style="text-align: center;">' + (bandwith === "" ? this.properties.NA_TEXT : bandwith) +'</td></tr>' +
@@ -991,7 +1035,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
       return obj.dashboardModel.latency[obj.currentLatencyIndex - 1].value;
     }
 
-    return this.properties.NA_TEXT;
+    return this.properties.CALCULATING_TEXT;
   }
 
   readLatestThroughput(obj) {
@@ -1002,7 +1046,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
       return obj.dashboardModel.bandwidth[obj.currentBandwidthIndex - 1].value;
     }
 
-     return this.properties.NA_TEXT;
+     return this.properties.CALCULATING_TEXT;
   }
 
   sortBy (property) {
@@ -1068,7 +1112,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
 
   generateMap() {
     let self = this;
-    var map = L.map('map').setView([self.userLocation.latitude, self.userLocation.longitude], 1);
+    var map = L.map('map', { zoomControl:false }).setView([self.userLocation.latitude, self.userLocation.longitude], 1);
     map.options.minZoom = 1;
 
     L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
@@ -1081,14 +1125,21 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
 
     var userMarker = L.marker([self.userLocation.latitude, self.userLocation.longitude], {'icon': userIcon});
 
-    userMarker.addTo(map)
-        .bindPopup('User Location');
-       
+    userMarker.addTo(map);
+
+    var userPopup = null;
+    
     userMarker.on('mouseover', function (e) {
-      this.openPopup();
+      userPopup = L.popup()
+           .setLatLng([self.userLocation.latitude, self.userLocation.longitude])
+           .setContent(self.userLocation.address ? self.userLocation.address : "NA")
+            .openOn(map);
     });
+
     userMarker.on('mouseout', function (e) {
-       this.closePopup();
+      if(userPopup) {
+          map.closePopup(userPopup);
+        }
     });
 
     for(let index = 0; index < this.locations.length; index++ ) {
@@ -1119,26 +1170,120 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
         }
       });
 
-      var polyline = L.polyline([[self.userLocation.latitude, self.userLocation.longitude], [object.lat, object.lng]], {color: object.color}).addTo(map);
-      // zoom the map to the polyline
+      var polyline = L.polyline([[self.userLocation.latitude, self.userLocation.longitude], [object.lat, object.lng]], {color: object.color, weight: 1}).addTo(map);
       polyline.addTo(map);
 
-      // var path = L.curve(['M',[self.userLocation.latitude, self.userLocation.longitude],
-      //     'V',[48.40003249610685],
-      //     'L',[object.lat, object.lng],'Z'],
-      //     {color:object.color,fill:true}).addTo(map);
-      // L.Polyline.Arc([self.userLocation.latitude, self.userLocation.longitude], [object.lat, object.lng]).addTo(map);
+
+      // L.Polyline.Arc([self.userLocation.latitude, self.userLocation.longitude], [object.lat, object.lng], {color: object.color,  weight: 1,
+      // vertices: 50}).addTo(map);
     }
-
-    // var pathOne = L.curve(['M',[50.14874640066278,14.106445312500002],
-    //          'Q',[51.67255514839676,16.303710937500004],
-    //            [50.14874640066278,18.676757812500004],
-    //          'T',[49.866316729538674,25.0927734375]], {animate: 3000}).addTo(map);
-
-
-
   }
 
+  generateAmMap() {
+    let self = this;
+
+    var lines = [];
+    var images = [];
+
+    var userImg= {
+          "id": "user",
+          "imageURL": self.userLocation.iconUrl,
+          "width": 22,
+          "height": 22,
+          "title": self.userLocation.address ? self.userLocation.address : "NA",
+          "latitude": self.userLocation.latitude,
+          "longitude": self.userLocation.longitude,
+          "scale": 1
+    }
+
+    images.push(userImg);
+
+    for(let index = 0; index < this.locations.length; index++) {
+      let object = this.locations[index];
+
+      // Creating lines
+      var line = {
+          "latitudes": [ self.userLocation.latitude, object.lat ],
+          "longitudes": [ self.userLocation.longitude, object.lng ],
+          "color": object.color,
+          "arc": -0.85,
+          "thickness" : 2
+      };
+      
+      lines.push(line);
+
+      var regionImg= {
+          "id": object.cloud_info.region,
+          "imageURL": object.iconUrl,
+          "width": 22,
+          "height": 39,
+          "title": function() {
+            var content = self.updateMarkerLabel(object);
+            self.hoveredObject = object;
+            self.updateChartOnMarker(object, true);
+            return content;
+          },
+          "latitude": object.lat,
+          "longitude": object.lng,
+          "scale": 1
+      }
+
+      images.push(regionImg);
+    }
+
+    var map = AmCharts.makeChart( "map", {
+      "type": "map",
+      "theme": "light",
+      "dataProvider": {
+        "map": "worldLow",
+        "zoomLevel": 1.4,
+        "lines": lines,
+        "images": images
+      },
+
+      "areasSettings": {
+        alpha: 0.5,
+        unlistedAreasColor: '#BBBBBB'
+      },
+
+      "imagesSettings": {
+        color: '#585869',
+        rollOverColor: '#585869',
+        selectedColor: '#585869'
+      },
+
+      "linesSettings": {
+        "arc": -0.7, // this makes lines curved. Use value from -1 to 1
+        "arrow": "middle",
+        "arrowSize": 6,
+        color: '#585869',
+        thickness: 2,
+        alpha: 0.7,
+        balloonText: '',
+        bringForwardOnHover: false
+      },
+      "zoomControl": {
+        "gridHeight": 100,
+        "draggerAlpha": 1,
+        "gridAlpha": 0.2,
+        "zoomControlEnabled": true, 
+        "panControlEnabled": false
+      },
+
+      "backgroundZoomsToTop": true,
+      "linesAboveImages": true,
+      
+    } );
+ 
+    map.addListener("rollOutMapObject", function (event) {
+       if(event && event.mapObject) {
+         if(event.mapObject.objectType === "MapImage" && self.hoveredObject) {
+           self.updateChartOnMarker(self.hoveredObject, false);
+           self.hoveredObject = null;
+         }
+       }
+    });
+  }
 }
 
 // just an interface for type safety.

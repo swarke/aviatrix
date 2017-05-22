@@ -20,11 +20,17 @@ export class DashboardService {
   }
 
   getInventory(inventoryPath: any) {
-    //'src/data/inventory.json'
-    const apiRequest: APIRequest = new APIRequest('data/inventory.json', APIMethod.GET);
+    //'data/inventory.json'
+    const apiRequest: APIRequest = new APIRequest(inventoryPath, APIMethod.GET);
     return this._apiService.executeAPI(apiRequest);
   }
 
+
+getGeolocation() {
+   const apiRequest: APIRequest = new APIRequest('https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyDCa1LUe1vOczX1hO_iGYgyo8p_jYuGOPU', APIMethod.POST);
+    return this._apiService.executeAPI(apiRequest);
+   // return this.http.post(, {});
+  };
 
   getLatency(url) {
     const apiRequest: APIRequest = new APIRequest(url, APIMethod.GET);

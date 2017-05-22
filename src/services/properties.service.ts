@@ -8,12 +8,12 @@ import { Injectable, Inject } from '@angular/core';
 export class PropertiesService {
 
   // Header
-  public AWS_TOOL_NAME: string = 'AWS cloud speed test';
-  public AZURE_TOOL_NAME: string = 'AZURE cloud speed test';
-  public GCE_TOOL_NAME: string = 'GCE cloud speed test';
+  public AWS_TOOL_NAME: string = 'AWS Cloud Speed Test';
+  public AZURE_TOOL_NAME: string = 'AZURE Cloud Speed Test';
+  public GCE_TOOL_NAME: string = 'GCE Cloud Speed Test';
   public LINK_FEEDBACK: string = 'Feedback';
 
-  public READY_TO_IMPLEMENT: string ='Ready to implement hybird cloud';
+  public READY_TO_IMPLEMENT: string ='Ready to implement hybrid cloud';
   public DOWNLOAD_AVIATRIX: string = 'Download Aviatrix!';
 
   public LEFT_PANEL_AWS_REGION: string  = 'AWS REGIONS';
@@ -39,7 +39,9 @@ export class PropertiesService {
   public MILISECONDS = 'miliseconds';
   public MBPS: string = 'mbps';
 
-  public START: string = 'Start';
+  public CALCULATING_TEXT = 'Calculating';
+
+  public START: string = 'Begin Speed Test';
   public STOP: string = 'Stop';
 
   public NA_LATITUDE: number = 46.0730555556;

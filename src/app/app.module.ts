@@ -6,7 +6,7 @@ import { MaterialModule } from '@angular/material';
 import 'hammerjs';
 import { ChartModule } from 'angular2-highcharts';
 import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
-import { AgmCoreModule } from '@agm/core-src/src/core';
+import { AgmCoreModule } from 'angular2-google-maps/core';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -17,9 +17,9 @@ import {PopoverModule} from "ngx-popover";
 import { StarRatingModule } from 'angular-star-rating';
 import { AngularOpenlayersModule } from 'angular2-openlayers';
 // import { ngxLeafletModule } from 'ngx.leaflet.components/ngx.leaflet.module';
-import { CandTLeafletComponent } from 'ngx.leaflet.components';
-import { CandTLeafletService } from 'ngx.leaflet.components';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+// import { CandTLeafletComponent } from 'ngx.leaflet.components';
+// import { CandTLeafletService } from 'ngx.leaflet.components';
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {ShareButtonsModule} from 'ngx-sharebuttons';
 
 declare var require: any;
@@ -37,7 +37,7 @@ export function highchartsFactory() {
     AppComponent,
     HeaderComponent,
     DashboardComponent,
-    CandTLeafletComponent
+    // CandTLeafletComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +48,7 @@ export function highchartsFactory() {
     PopoverModule,
     StarRatingModule,
     AngularOpenlayersModule,
-    BrowserAnimationsModule,
+    // BrowserAnimationsModule,
     // ngxLeafletModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyDvSnAZNrXrmyEurdnijIl9BPYhaT706Ns'
@@ -59,7 +59,7 @@ export function highchartsFactory() {
   providers: [
     ApiService,
     PropertiesService,
-    CandTLeafletService,
+    // CandTLeafletService,
     {  
         provide: HighchartsStatic,
         useFactory: highchartsFactory
