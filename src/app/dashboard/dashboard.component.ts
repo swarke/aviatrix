@@ -1,13 +1,8 @@
 import { Component, OnInit, ElementRef, ViewChild, Renderer, AfterViewInit, ViewEncapsulation } from '@angular/core';
 import { ChartModule } from 'angular2-highcharts';
 import { DashboardModel} from '../../models';
-// import { MapsAPILoader, GoogleMapsAPIWrapper,
-//          NoOpMapsAPILoader,
-//          MouseEvent
-//        } from '@agm/core-src/src/core';
 import { Response, Http } from '@angular/http';
 import {DashboardService, PropertiesService} from '../../services';
-import { SourceVectorComponent, LayerVectorComponent, MapComponent  } from 'angular2-openlayers';
 
 import { CLOUD_TOOL, AWS_INVENTORY_PATH, AZURE_INVENTORY_PATH, GCE_INVENTORY_PATH} from '../app-config';
 declare var jQuery:any;
@@ -20,9 +15,9 @@ declare const AmCharts: any;
 
 @Component({
   selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss'],
-  viewProviders: [DashboardService, SourceVectorComponent, LayerVectorComponent, MapComponent ],
+  templateUrl: './dashboard.component.html?v=${new Date().getTime()}',
+  styleUrls: ['./dashboard.component.scss?v=${new Date().getTime()}'],
+  viewProviders: [DashboardService],
   encapsulation: ViewEncapsulation.None
 })
 export class DashboardComponent implements OnInit, AfterViewInit  {
@@ -130,190 +125,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
      this.bestRegion = null;
      this.worstRegion = null;
      this.bestLatencyRegion = null;
-     this.bestBandwidthRegion = null;
-     this.mapStyles = [
-                          {
-                              "elementType": "geometry",
-                              "stylers": [{
-                                "color": "#f5f5f5"
-                              }]
-                          },
-                          {
-                            "elementType": "labels",
-                            "stylers": [
-                              {
-                                "visibility": "off"
-                              }
-                            ]
-                          },
-                          {
-                            "elementType": "labels.icon",
-                            "stylers": [
-                              {
-                                "visibility": "off"
-                              }
-                            ]
-                          },
-                          {
-                            "elementType": "labels.text.fill",
-                            "stylers": [
-                              {
-                                "color": "#616161"
-                              }
-                            ]
-                          },
-                          {
-                            "elementType": "labels.text.stroke",
-                            "stylers": [
-                              {
-                                "color": "#f5f5f5"
-                              }
-                            ]
-                          },
-                          {
-                            "featureType": "administrative",
-                            "elementType": "geometry",
-                            "stylers": [{
-                              "visibility": "off"
-                            }]
-                          },
-                          {
-                            "featureType": "administrative.land_parcel",
-                            "stylers": [{
-                              "visibility": "off"
-                            }]
-                          },
-                          {
-                            "featureType": "administrative.land_parcel",
-                            "elementType": "labels.text.fill",
-                            "stylers": [{
-                              "color": "#bdbdbd"
-                            }]
-                          },
-                          {
-                            "featureType": "administrative.neighborhood",
-                            "stylers": [{
-                              "visibility": "off"
-                            }]
-                          },
-                          {
-                            "featureType": "road",
-                            "stylers": [{
-                              "visibility": "off"
-                            }]
-                          },
-                          {
-                            "featureType": "road",
-                            "elementType": "geometry",
-                            "stylers": [{
-                              "color": "#ffffff"
-                            }]
-                          },
-                          {
-                            "featureType": "road",
-                            "elementType": "labels.icon",
-                            "stylers": [{
-                              "visibility": "off"
-                            }]
-                          },
-                          {
-                            "featureType": "road.arterial",
-                            "elementType": "labels.text.fill",
-                            "stylers": [{
-                              "color": "#757575"
-                            }]
-                          },
-                          {
-                            "featureType": "road.highway",
-                            "elementType": "geometry",
-                            "stylers": [{
-                              "color": "#dadada"
-                            }]
-                          },
-                          {
-                            "featureType": "road.highway",
-                            "elementType": "labels.text.fill",
-                            "stylers": [{
-                              "color": "#616161"
-                            }]
-                          },
-                          {
-                            "featureType": "road.local",
-                            "elementType": "labels.text.fill",
-                            "stylers": [{
-                              "color": "#9e9e9e"
-                            }]
-                            },
-                            {
-                              "featureType": "transit",
-                              "stylers": [{
-                                "visibility": "off"
-                              }]
-                            },
-                            {
-                              "featureType": "transit.line",
-                              "elementType": "geometry",
-                              "stylers": [{
-                                "color": "#e5e5e5"
-                              }]
-                            },
-                            {
-                              "featureType": "transit.station",
-                              "elementType": "geometry",
-                              "stylers": [{
-                                "color": "#eeeeee"
-                              }]
-                            },
-                            {
-                              "featureType": "water",
-                              "elementType": "geometry",
-                              "stylers": [{
-                                "color": "#c9c9c9"
-                              }]
-                            },
-                            {
-                              "featureType": "water",
-                              "elementType": "labels.text.fill",
-                              "stylers": [{
-                                "color": "#9e9e9e"
-                              }]
-                            },
-                            {
-                              "featureType": "poi",
-                              "stylers": [{
-                                "visibility": "off"
-                              }]
-                            },
-                            {
-                              "featureType": "poi",
-                              "elementType": "geometry",
-                              "stylers": [{
-                                "color": "#eeeeee"
-                              }]
-                            },
-                            {
-                              "featureType": "poi",
-                              "elementType": "labels.text.fill",
-                              "stylers": [{
-                                "color": "#757575"
-                              }]
-                            },
-                            {
-                              "featureType": "poi.park",
-                              "elementType": "geometry",
-                              "stylers": [{
-                                "color": "#e5e5e5"
-                              }]
-                            },
-                            {
-                              "featureType": "poi.park",
-                              "elementType": "labels.text.fill",
-                              "stylers": [{
-                                "color": "#9e9e9e"
-                              }]
-                            }
-                         ];
-
+   
   }
 
   latencyInstance(chartInstance) {
@@ -349,7 +161,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
         self.userLocation.isOpen = false;
         self.userLocation.label = 'User Location';
         self.userLocation.iconUrl = '/assets/updated_user_pin.png';
-        console.log("Lat: " + self.userLocation.latitude + " Long " +  self.userLocation .longitude);
+        // console.log("Lat: " + self.userLocation.latitude + " Long " +  self.userLocation .longitude);
         self.userLocation.address = geoLocations.region_name + ', ' + geoLocations.country_name;
         // var geocoder = geocoder = new google.maps.Geocoder();
         //   var latlng = new google.maps.LatLng(self.userLocation.latitude, self.userLocation.longitude);
@@ -360,7 +172,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
         //           }
         //       }            
         // });
-        console.log(geoLocations);
+        // console.log(geoLocations);
       } catch(ex) {
       }
 
@@ -956,7 +768,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
          let obj = this.inventory.data[index];
          obj.label = obj.region_name;
          obj.isOpen = false;
-         console.log("Cloud Pin Path: " + this.cloudPinPath);
+         // console.log("Cloud Pin Path: " + this.cloudPinPath);
          
          obj.iconUrl= this.cloudPinPath;
          obj.color = this.chartColors[index];
@@ -1220,7 +1032,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
           "title": function() {
             var content = self.updateMarkerLabel(object);
             self.hoveredObject = object;
-            self.updateChartOnMarker(object, true);
+            setTimeout(()=>self.updateChartOnMarker(object, true),3);
             return content;
           },
           "latitude": object.lat,
@@ -1249,7 +1061,10 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
       "imagesSettings": {
         color: '#585869',
         rollOverColor: '#585869',
-        selectedColor: '#585869'
+        selectedColor: '#585869',
+        "pauseDuration": 0.2,
+        "animationDuration": 2.5,
+        "adjustAnimationSpeed": true
       },
 
       "linesSettings": {

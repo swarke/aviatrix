@@ -13,7 +13,7 @@ export class PropertiesService {
   public GCE_TOOL_NAME: string = 'GCE Cloud Speed Test';
   public LINK_FEEDBACK: string = 'Feedback';
 
-  public READY_TO_IMPLEMENT: string ='Ready to implement hybrid cloud';
+  public READY_TO_IMPLEMENT: string ='Ready to implement hybrid cloud?';
   public DOWNLOAD_AVIATRIX: string = 'Download Aviatrix!';
 
   public LEFT_PANEL_AWS_REGION: string  = 'AWS REGIONS';
@@ -42,7 +42,7 @@ export class PropertiesService {
   public CALCULATING_TEXT = 'Calculating';
 
   public START: string = 'Begin Speed Test';
-  public STOP: string = 'Stop';
+  public STOP: string = 'Stop Speed Test';
 
   public NA_LATITUDE: number = 46.0730555556;
   public NA_LONGITUDE: number = -100.546666667;
@@ -58,9 +58,9 @@ export class PropertiesService {
   public AZURE_PAGE_TITLE = 'Aviatrix - AZURE Throughput and Latency Analyzer';
   public GCE_PAGE_TITLE = 'Aviatrix - GCE Throughput and Latency Analyzer';
 
-  public RIGHT_PANEL_TOOLTIP: string = "Aviatrix tool measures network connectivity data from your browser to cloud regions. Use this data to confidently plan cloud deployments.";
-  public LATENCY_CHART_TOOLTIP: string = "Measures latency from the browser to cloud regions. Use latency to determine deployment of latency sensitive applications.";
-  public THROUGHPUT_PANEL_TOOLTIP: string = "Measures throughput from the browser to cloud regions. Use throughput data for data intensive applications.";
+  public RIGHT_PANEL_TOOLTIP: string = "Aviatrix tool measures network connectivity data from your browser to cloud regions. Use this data to confidently plan cloud deployments. To measure network performance from your data center to the cloud, open the browser in the data center.";
+  public LATENCY_CHART_TOOLTIP: string = "Measures latency from the browser to cloud regions. Use latency to determine deployment of latency sensitive applications. To measure network performance from your data center to the cloud, open the browser in the data center.";
+  public THROUGHPUT_PANEL_TOOLTIP: string = "Measures throughput from the browser to cloud regions. Use throughput data for data intensive applications. To measure network performance from your data center to the cloud, open the browser in the data center.";
 
   public SHARE_POST: string ='Check out the free tool on cloudnetworkingtools.com!';
 

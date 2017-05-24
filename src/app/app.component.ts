@@ -8,5 +8,8 @@ import { PropertiesService } from '../services';
   viewProviders: [PropertiesService]
 })
 export class AppComponent {
-  title = 'AvaiTrix works!';
+ 
+ constructor() {
+ 	
+ }
 }
