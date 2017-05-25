@@ -166,7 +166,7 @@
 }
 
 .sb-button button {
-	width: 30px !important;
+	width: 25px !important;
 	padding: 0px !important;
 }
 
@@ -178,4 +178,8 @@
 .amcharts-chart-div a {
 	display: none !important;
 	opacity: 0 !important;
+}
+
+.sb-style .sb-button {
+    width: 30px;
 }

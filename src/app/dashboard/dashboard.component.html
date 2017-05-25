@@ -89,11 +89,11 @@
 
                                 </span></th>
 
-                                <th width="30%"><span class="column-header" (click)="sortBy('latency')">{{properties.RIGHT_PANEL_LATENCY_COLUMN_HEADER}} <i class="fa sort-style" 
+                                <th width="30%" style="padding-left: 2px;"><span class="column-header" (click)="sortBy('latency')">{{properties.RIGHT_PANEL_LATENCY_COLUMN_HEADER}} <i class="fa sort-style" 
                                     [ngClass]="{'fa-sort': sortableColumn != 'latency', 'fa-sort-asc': (sortableColumn == 'latency' && !isDesc),                                        'fa-sort-desc': (sortableColumn == 'latency' && isDesc) }"
                                     aria-hidden="true"> </i></span></th>
                                 
-                                <th width="35%"><span class="column-header" (click)="sortBy('bandwidth')">{{properties.RIGHT_PANEL_THROUGHPUT_COLUMN_HEADER}} <i class="fa sort-style" 
+                                <th width="35%" style="padding-left: 0px;"><span class="column-header" (click)="sortBy('bandwidth')">{{properties.RIGHT_PANEL_THROUGHPUT_COLUMN_HEADER}} <i class="fa sort-style" 
                                     [ngClass]="{'fa-sort': sortableColumn != 'bandwidth', 'fa-sort-asc': (sortableColumn == 'bandwidth' && !isDesc),                                        'fa-sort-desc': (sortableColumn == 'bandwidth' && isDesc) }"
                                     aria-hidden="true"> </i></span></th>
                             </tr>
@@ -122,13 +122,13 @@
                                 <tr *ngFor="let region of locations">
                                     <td style="width:35%">{{region.region_name}}</td>
                                     
-                                    <td style="width: 30%" *ngIf="!region.latency && !disabledStart">{{properties.NA_TEXT}}</td>
-                                    <td style="width: 30%" *ngIf="!region.latency && disabledStart">{{readLatestLatency(region)}}</td>
-                                    <td style="width: 30%" *ngIf="region.latency">{{region.latency}}</td>
+                                    <td style="width: 30%; padding-left: 15px" *ngIf="!region.latency && !disabledStart">{{properties.NA_TEXT}}</td>
+                                    <td style="width: 30%; padding-left: 15px" *ngIf="!region.latency && disabledStart">{{readLatestLatency(region)}}</td>
+                                    <td style="width: 30%; padding-left: 15px" *ngIf="region.latency">{{region.latency}}</td>
 
-                                    <td style="width: 35%" *ngIf="!region.bandwidth && !disabledStart">{{properties.NA_TEXT}}</td>
-                                    <td style="width: 35%" *ngIf="region.bandwidth">{{region.bandwidth}}</td>
-                                    <td style="width: 35%" *ngIf="!region.bandwidth && disabledStart">{{readLatestThroughput(region)}}</td>
+                                    <td style="width: 35%; padding-left: 15px" *ngIf="!region.bandwidth && !disabledStart">{{properties.NA_TEXT}}</td>
+                                    <td style="width: 35%; padding-left: 15px" *ngIf="region.bandwidth">{{region.bandwidth}}</td>
+                                    <td style="width: 35%; padding-left: 15px" *ngIf="!region.bandwidth && disabledStart">{{readLatestThroughput(region)}}</td>
                                 </tr>
                             </tbody>
                         </table>

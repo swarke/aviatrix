@@ -868,10 +868,20 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
     let direction = this.isDesc ? 1 : -1;
 
     this.locations.sort(function(a, b) {
-        if(a[property] < b[property]) {
+       let aProp = null;
+       let bProp = null;
+       if(property !== 'region_name') {
+         aProp = parseFloat(a[property]);
+         bProp = parseFloat(b[property]);
+       } else {
+         aProp = a[property];
+         bProp = b[property];
+       }
+
+        if(aProp < bProp) {
             return -1 * direction;
         }
-        else if( a[property] > b[property]) {
+        else if( aProp > bProp) {
             return 1 * direction;
         }
         else{

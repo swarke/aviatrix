@@ -34,7 +34,7 @@ export class PropertiesService {
 
   public CLICK_START_TO_RUN: string = 'Click Start to run.';
 
-  public NA_TEXT: string = 'NA';
+  public NA_TEXT: string = 'N/A';
   public MS:string = 'ms';
   public MILISECONDS = 'miliseconds';
   public MBPS: string = 'mbps';
