@@ -1008,6 +1008,8 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
 
     var lines = [];
     var images = [];
+    var planeSVG = "m2,106h28l24,30h72l-44,-133h35l80,132h98c21,0 21,34 0,34l-98,0 -80,134h-35l43,-133h-71l-24,30h-28l15,-47";
+
 
     var userImg= {
           "id": "user",
@@ -1027,6 +1029,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
 
       // Creating lines
       var line = {
+          "id": "line" + index,
           "latitudes": [ self.userLocation.latitude, object.lat ],
           "longitudes": [ self.userLocation.longitude, object.lng ],
           "color": object.color,
@@ -1053,7 +1056,21 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
       }
 
       images.push(regionImg);
+
+      // images.push({
+      //   "imageURL": 'assets/E24725.svg',
+      //   "positionOnLine": 0,
+      //   "color": "#585869",
+      //   "animateAlongLine": true,
+      //   "lineId": "line" + index,
+      //   "flipDirection": true,
+      //   "loop": true,
+      //   "scale": 0.03,
+      //   "positionScale": 1.8
+      // });
     }
+
+    
 
     var map = AmCharts.makeChart( "map", {
       "type": "map",
@@ -1076,7 +1093,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
         selectedColor: '#585869',
         "pauseDuration": 0.2,
         "animationDuration": 2.5,
-        "adjustAnimationSpeed": true
+        "adjustAnimationSpeed": false
       },
 
       "linesSettings": {
@@ -1087,7 +1104,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
         thickness: 2,
         alpha: 0.7,
         balloonText: '',
-        bringForwardOnHover: false
+        bringForwardOnHover: false,
       },
       "zoomControl": {
         "gridHeight": 100,
