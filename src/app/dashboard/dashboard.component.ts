@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, Renderer, AfterViewInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, Renderer, AfterViewInit, ViewEncapsulation, Input } from '@angular/core';
 import { ChartModule } from 'angular2-highcharts';
 import { DashboardModel} from '../../models';
 import { Response, Http } from '@angular/http';
@@ -22,6 +22,7 @@ declare const AmCharts: any;
 })
 export class DashboardComponent implements OnInit, AfterViewInit  {
   clouds: any;
+  @Input() tool: string;
   options: any;
   latencyOptions: any;
   responseTimeOptions: any;
@@ -87,7 +88,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
               private rd: Renderer,
               public properties: PropertiesService) {
       // console.log(this.el.nativeElement);  
-      this.initLeftPanelHeader();
+      
       this.chartColors = ['#2196F3', '#F44336', '#FF609E', '#14936C', '#00FF4F', '#A99000',
                           '#E8C21A', '#673AB7', '#3D495A', '#536DFE', '#C3429B', '#C33A38', 
                           '#02BCA1', '#25DB67', '#6F9900', '#E69500', '#D792F1', '#83A1CD', 
@@ -150,6 +151,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   }
 
   ngAfterViewInit() {
+    this.initLeftPanelHeader();
     let self = this;
    
     this.getGeolocation().subscribe((success: any) => {
@@ -206,15 +208,15 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   }
 
   initLeftPanelHeader() {
-    if(CLOUD_TOOL.toUpperCase() === 'AWS') {
+    if(this.tool.toUpperCase() === this.properties.AWS) {
      this.leftPanelHeader = this.properties.LEFT_PANEL_AWS_REGION;
      this.inventoryPath = AWS_INVENTORY_PATH;
      this.cloudPinPath = this.properties.AWS_CLOUD_PIN_PATH;
-    } else if(CLOUD_TOOL.toUpperCase() === "AZURE") {
+    } else if(this.tool.toUpperCase() === this.properties.AZURE) {
      this.leftPanelHeader = this.properties.LEFT_PANEL_AZURE_REGION;
      this.inventoryPath = AZURE_INVENTORY_PATH;
      this.cloudPinPath = this.properties.AZURE_CLOUD_PIN_PATH;
-    } else  if(CLOUD_TOOL.toUpperCase() === 'GCE') {
+    } else  if(this.tool.toUpperCase() === this.properties.GCE) {
      this.leftPanelHeader = this.properties.LEFT_PANEL_GCE_REGION;
      this.inventoryPath = GCE_INVENTORY_PATH;
      this.cloudPinPath = this.properties.GCE_CLOUD_PIN_PATH;

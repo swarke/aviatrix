@@ -6,7 +6,6 @@ import { AzureComponent } from './azure/azure.component';
 const AppRoutes: Routes = [
 	{ path: 'aws/speedtest', component: AWSComponent },
 	{ path: 'azure/speedtest', component: AzureComponent},
-	{ path: '**', redirectTo: 'aws/speedtest', pathMatch: 'full' }
 ];
 export const appRoutingProviders: any[] = [];
-export const AppRoutingModule = RouterModule.forRoot(AppRoutes, { useHash: true });
+export const AppRoutingModule = RouterModule.forRoot(AppRoutes);

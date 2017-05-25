@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { PropertiesService } from '../../services';
 import { CLOUD_TOOL} from '../app-config';
@@ -11,29 +12,19 @@ import { CLOUD_TOOL} from '../app-config';
 })
 export class HeaderComponent implements OnInit {
   
-  toolName: string = '';
-  postText: string = '';
   constructor(public properties: PropertiesService,
-  			  private titleService: Title) {
+  			  private titleService: Title,
+          private router: Router,
+          private route:ActivatedRoute
+          ) {
+    console.log(this.route);
   	this.initToolName();
   }
 
   ngOnInit() {
-    this.postText = this.toolName + '<br/>' + this.properties.SHARE_POST;
   }
 
   initToolName() {
-    if(CLOUD_TOOL.toUpperCase() === 'AWS') {
- 		this.toolName = this.properties.AWS_TOOL_NAME;
- 		// this.titleService.setTitle(this.properties.AWS_PAGE_TITLE);
-    } else if(CLOUD_TOOL.toUpperCase() === 'AZURE') {
-		this.toolName = this.properties.AZURE_TOOL_NAME;
-		// this.titleService.setTitle(this.properties.AZURE_PAGE_TITLE);
-    } else  if(CLOUD_TOOL.toUpperCase() === 'GCE') {
-	    this.toolName = this.properties.GCE_TOOL_NAME;
-	    // this.titleService.setTitle(this.properties.GCE_PAGE_TITLE);
-    }
-
     this.titleService.setTitle('Cloud Network Tools (powered by Aviatrix)');
   }
 

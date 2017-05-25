@@ -7,7 +7,12 @@ import { Injectable, Inject } from '@angular/core';
  */
 export class PropertiesService {
 
+  // TOOL
+  public AWS:string = 'AWS';
+  public AZURE:string = 'AZURE'; 
+  public GCE:string = 'GCE'; 
   // Header
+  public TOOL_TAG:string = 'Reinventing Networking...for the Cloud';
   public AWS_TOOL_NAME: string = 'AWS Cloud Speed Test';
   public AZURE_TOOL_NAME: string = 'AZURE Cloud Speed Test';
   public GCE_TOOL_NAME: string = 'GCE Cloud Speed Test';
@@ -64,6 +69,15 @@ export class PropertiesService {
 
   public SHARE_POST: string ='Check out the free tool on cloudnetworkingtools.com!';
 
+  currentTool: string = null;
   constructor() {
+  }
+
+  setcurrentTool(currentTool) {
+    this.currentTool = currentTool;
+  }
+
+  getCurerntTool() {
+    return this.currentTool;
   }
 }

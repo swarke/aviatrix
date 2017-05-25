@@ -15,6 +15,7 @@ export class AWSComponent {
   constructor(private http: Http,
               private dashboardService: DashboardService,
               public properties: PropertiesService) {
+    properties.setcurrentTool(properties.AWS_TOOL_NAME);
   }
 
 
