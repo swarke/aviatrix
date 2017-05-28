@@ -8,4 +8,4 @@ const AppRoutes: Routes = [
 	{ path: 'azure/speedtest', component: AzureComponent},
 ];
 export const appRoutingProviders: any[] = [];
-export const AppRoutingModule = RouterModule.forRoot(AppRoutes);
+export const AppRoutingModule = RouterModule.forRoot(AppRoutes, { useHash: true });
