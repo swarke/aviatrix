@@ -11,17 +11,24 @@ import { CLOUD_TOOL} from '../app-config';
   encapsulation: ViewEncapsulation.None
 })
 export class HeaderComponent implements OnInit {
-  
+  tool: string;
+  isLanding: boolean;
   constructor(public properties: PropertiesService,
   			  private titleService: Title,
           private router: Router,
           private route:ActivatedRoute
           ) {
+    this.tool = properties.getCurerntTool();
     console.log(this.route);
   	this.initToolName();
   }
 
   ngOnInit() {
+    if(this.tool) {
+      this.isLanding = false;
+    } else {
+       this.isLanding  = true;
+    }
   }
 
   initToolName() {

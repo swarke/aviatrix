@@ -12,6 +12,7 @@ import { HeaderComponent } from './header/header.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AWSComponent } from './aws/aws.component';
 import { AzureComponent } from './azure/azure.component';
+import { LandingComponent } from './landing/landing.component';
 
 import { ApiService } from '../services/api.service';
 import { PropertiesService } from '../services/properties.service';
@@ -36,7 +37,8 @@ export function highchartsFactory() {
     HeaderComponent,
     DashboardComponent,
     AWSComponent,
-    AzureComponent
+    AzureComponent,
+    LandingComponent
   ],
   imports: [
     BrowserModule,

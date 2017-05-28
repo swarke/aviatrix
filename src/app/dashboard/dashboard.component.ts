@@ -246,7 +246,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   }
 
   getGeolocation() {
-   // return this.http.post('https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyDCa1LUe1vOczX1hO_iGYgyo8p_jYuGOPU', {});
+   // return this.http.post('https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyAR4IoI4f6xgOmaaoQnLOLnhkgJ2RgIzyw', {});
    return this.http.get("https://freegeoip.net/json/");
   };
 

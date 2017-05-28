@@ -15,11 +15,12 @@
  -->
 
 <nav class="navbar navbar-toggleable-md navbar-light bg-faded bg-header">
- <a class="navbar-brand" href="http://aviatrix.com/products/" target="_blank"><img src="/assets/aviatrix-logo-final-bold.png" width="160" height="50" class="d-inline-block align-top image-responsive" alt="AvaiTrix"></a>
- <div id="navbarNav">
+  <div class="logo">
+    <a href="/">&nbsp;<img src="/assets/aviatrix-logo-final-bold.png" width="200" height="56" class="d-inline-block align-top image-responsive" alt="AvaiTrix" style="background-size: 200px 56p; margin-left: 86px; margin-top: 44px;"></a>
+  </div>
+ <div id="navbarNav" style="margin-top: 52px; background: #c65030;">
    <ul class="navbar-nav">
-     <li class="nav-item">
-
+     <!-- <li class="nav-item" *ngIf="!isLanding">
         <span class="tag-line">
             {{properties.TOOL_TAG}}
         </span>
@@ -29,12 +30,18 @@
         <span class="tool-name">
            {{properties.getCurerntTool()}} 
         </span>
-     </li>
+     </li> -->
+     <!-- <li class="nav-item" *ngIf="isLanding">
+        <a href="/docs/" class="tag-menu" style="margin-left: 300px;">Docs</a>
+        <a href="/demo/" class="tag-menu" >See a Demo</a>
+        <a href="/sandbox/" class="tag-menu" class="tag-menu" >Sandbox</a>
+        <a href="/download/" class="tag-menu" style="border: 1px solid #fff;">Download</a>
+     </li> -->
   <!--   <span class="cursor-pointer" style="position: absolute; right:20px; font-size: 16px; color: #1E9F91" [popover]="myPopover">
         <i class="material-icons" style="position: absolute; margin-top: 2px; margin-left: -25px;" data-toggle="popover" data-content="And here">chat</i><span style="font-weight: 500;">&nbsp;{{properties.LINK_FEEDBACK}}</span>
     </span> -->
 
-    <div class="material-sharebuttons" style="position: absolute; right:20px; margin-top: -20px;">
+    <div class="material-sharebuttons" style="position: absolute; right:20px; margin-top: -20px;" *ngIf="!isLanding">
       <!-- <shareButton class="facebook" [sbTitle]="toolName" [sbDescription]='properties.SHARE_POST'><i class="fa fa-facebook"></i></shareButton> -->
       <!-- <shareButton shareButton="twitter"><i class="fa fa-twitter"></i></shareButton> -->
       <!-- <shareButton shareButton="linkedin"><i class="fa fa-linkedin"></i></shareButton> -->
@@ -98,4 +105,3 @@
    </ul>
  </div>
 </nav>
-<!-- 209e91 -->
