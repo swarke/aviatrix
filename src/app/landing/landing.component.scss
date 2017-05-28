@@ -1986,16 +1986,14 @@ a.burnt-orange:visited {
     color: #e24301;
     }
 
-.rust-orange,
-a.rust-orange:link,
-a.rust-orange:visited {
+.rust-orange, a.rust-orange:link, a.rust-orange:visited {
     color: #c14d25;
     }
 
 
 a.hover:hover,
 a.hover:active {
-    color: #ee7500;
+    color: #ee7500; 
     }
 
 a.underhover:hover,
@@ -2088,11 +2086,7 @@ h6.medium {
     font-weight: normal;
     }
 
-.bold,
-p.bold,
-h4.bold,
-h5.bold,
-h6.bold {
+.bold, p.bold, h4.bold, h5.bold, h6.bold {
     font-family: "Yoga Sans Bold";
     font-weight: normal;
     }
@@ -2433,6 +2427,8 @@ div.marquee.customer {
     padding: 0px 0px 0px 0px;
     height: 550px;
     }
+
+
 
 @media all and (max-width: 1050px) {
 div.marquee.customer {
@@ -2949,6 +2945,7 @@ div#header-desktop div#nav-primary div.nav-container a.primary {
     text-transform: uppercase;
     letter-spacing: 1.5px;
     color: #ddd;
+    float: left;
     display: block;
     transition-property: all;
     transition-duration: .2s;
@@ -3879,3 +3876,10 @@ div#contact-bar h6 {
     float: left;
     }
 
+
+.network-white {
+    background-image: url('/assets/marquee-network-white.jpg');
+    background-position: 50% 50%;
+    background-size: cover;
+    height: 365px;
+    }
