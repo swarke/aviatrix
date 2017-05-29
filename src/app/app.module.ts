@@ -9,6 +9,8 @@ import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from './footer/footer.component';
+import { LandingComponent } from './landing/landing.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AWSComponent } from './aws/aws.component';
 import { AzureComponent } from './azure/azure.component';
@@ -34,6 +36,8 @@ export function highchartsFactory() {
   declarations: [
     AppComponent,
     HeaderComponent,
+    LandingComponent,
+    FooterComponent,
     DashboardComponent,
     AWSComponent,
     AzureComponent
