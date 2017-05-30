@@ -168,7 +168,7 @@
                 </div>
                 <div class="card-block">
                     <chart [options]="bandwidthOptions" (load)="bandwidthInstance($event.context)" *ngIf="bandwidthOptions !== null" class="chart-height"></chart>
-                     <h6 *ngIf="bandwidthOptions === null" style="margin-top: 0px; margin-bottom: 0px; font-weight: 300">Click <a href="#" (click)="startTest();"> Start </a> to run.</h6>
+                     <h6 *ngIf="bandwidthOptions === null" style="margin-top: 0px; margin-bottom: 0px; font-weight: 300">Click <a href="javascript():;" (click)="startTest();"> Start </a> to run.</h6>
                 </div>
             </div>
         </div>

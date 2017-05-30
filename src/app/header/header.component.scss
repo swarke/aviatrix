@@ -41,6 +41,7 @@
 	letter-spacing: 0.19px;
 	line-height: 20px;
 	margin-left: 20px;
+	margin-left: 362px;
 }
 
 .separator {
@@ -48,11 +49,10 @@
 }
 
 .tool-name {
-	font-weight: 420;
-	font-size: 16px;
+	font-size: 25px;
 	color: white;
 	letter-spacing: 0.19px;
-	line-height: 100px;
+	line-height: 20px;
 }
 
 .popover {
@@ -166,3 +166,74 @@
     position: relative;
 }
 
+/* 1.1 Web Fonts */
+
+@font-face {
+    font-family: 'Yoga Sans Hairline';
+	src: url('/assets/fonts/YogaSansOT-Hairline.woff') format('woff');
+	}
+
+@font-face {
+    font-family: 'Yoga Sans Hairline Italic';
+	src: url('/assets/fonts/YogaSansOT-HairlineItalic.woff') format('woff');
+	}
+
+@font-face {
+    font-family: 'Yoga Sans Thin';
+	src: url('/assets/fonts/YogaSansOT-Thin.woff') format('woff');
+	}
+
+@font-face {
+    font-family: 'Yoga Sans Thin Italic';
+	src: url('/assets/fonts/YogaSansOT-ThinItalic.woff') format('woff');
+	}
+
+@font-face {
+    font-family: 'Yoga Sans Light';
+	src: url('/assets/fonts/YogaSansOT-Light.woff') format('woff');
+	}
+
+@font-face {
+    font-family: 'Yoga Sans Light Italic';
+	src: url('/assets/fonts/YogaSansOT-LightItalic.woff') format('woff');
+	}
+
+@font-face {
+    font-family: 'Yoga Sans';
+	src: url('/assets/fonts/YogaSansOT.woff') format('woff');
+	}
+
+@font-face {
+    font-family: 'Yoga Sans Italic';
+	src: url('/assets/fonts/YogaSansOT-Italic.woff') format('woff');
+	}
+
+@font-face {
+    font-family: 'Yoga Sans Medium';
+	src: url('/assets/fonts/YogaSansOT-Medium.woff') format('woff');
+	}
+
+@font-face {
+    font-family: 'Yoga Sans Medium Italic';
+	src: url('/assets/fonts/YogaSansOT-MediumItalic.woff') format('woff');
+	}
+
+@font-face {
+    font-family: 'Yoga Sans Bold';
+	src: url('/assets/fonts/YogaSansOT-Bold.woff') format('woff');
+	}
+
+@font-face {
+    font-family: 'Yoga Sans Bold Italic';
+	src: url('/assets/fonts/YogaSansOT-BoldItalic.woff') format('woff');
+	}
+
+a.primary {
+	font-family: "Yoga Sans Light";
+	color: #fff;
+	}
+
+a.primary.selected {
+	font-family: "Yoga Sans Bold";
+	color: #fff;
+	}
