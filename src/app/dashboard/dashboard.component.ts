@@ -1016,7 +1016,9 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
           "imageURL": self.userLocation.iconUrl,
           "width": 22,
           "height": 22,
-          "title": self.userLocation.address != 'undefined, undefined' ? '<b>You are here</b><br>' + self.userLocation.address : "NA",
+          "title": function() {
+           return self.userLocation.address ? '<b>You are here</b><br>' + self.userLocation.address : "NA";
+         },
           "latitude": self.userLocation.latitude,
           "longitude": self.userLocation.longitude,
           "scale": 1
@@ -1110,7 +1112,8 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
       "linesAboveImages": true,
       
     } );
- 
+   
+    map.balloon.textAlign = 'left';
     map.addListener("rollOutMapObject", function (event) {
        if(event && event.mapObject) {
          if(event.mapObject.objectType === "MapImage" && self.hoveredObject) {
