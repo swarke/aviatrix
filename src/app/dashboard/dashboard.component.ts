@@ -1098,22 +1098,14 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
 
       "linesSettings": {
         "arc": -0.7, // this makes lines curved. Use value from -1 to 1
-        "arrow": "middle",
-        "arrowSize": 6,
+        // "arrow": "middle",
+        // "arrowSize": 6,
         color: '#585869',
         thickness: 2,
         alpha: 0.7,
         balloonText: '',
         bringForwardOnHover: false,
       },
-      "zoomControl": {
-        "gridHeight": 100,
-        "draggerAlpha": 1,
-        "gridAlpha": 0.2,
-        "zoomControlEnabled": true, 
-        "panControlEnabled": false
-      },
-
       "backgroundZoomsToTop": true,
       "linesAboveImages": true,
       
