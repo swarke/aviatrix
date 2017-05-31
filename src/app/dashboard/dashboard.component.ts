@@ -158,22 +158,22 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
       try {
         let geoLocations =  JSON.parse(success._body);
 
-        self.userLocation.latitude = geoLocations.latitude;                    
-        self.userLocation.longitude = geoLocations.longitude;  
+        self.userLocation.latitude = geoLocations.location.lat;
+        self.userLocation.longitude = geoLocations.location.lng;
         self.userLocation.isOpen = false;
         self.userLocation.label = 'User Location';
         self.userLocation.iconUrl = '/assets/updated_user_pin.png';
         // console.log("Lat: " + self.userLocation.latitude + " Long " +  self.userLocation .longitude);
         self.userLocation.address = geoLocations.region_name + ', ' + geoLocations.country_name;
-        // var geocoder = geocoder = new google.maps.Geocoder();
-        //   var latlng = new google.maps.LatLng(self.userLocation.latitude, self.userLocation.longitude);
-        //   geocoder.geocode({ 'latLng': latlng }, function (results, status) {
-        //       if (status == google.maps.GeocoderStatus.OK) {
-        //           if (results[1]) {
-        //               self.userLocation.address = results[1].formatted_address;
-        //           }
-        //       }            
-        // });
+        var geocoder = geocoder = new google.maps.Geocoder();
+          var latlng = new google.maps.LatLng(self.userLocation.latitude, self.userLocation.longitude);
+          geocoder.geocode({ 'latLng': latlng }, function (results, status) {
+              if (status == google.maps.GeocoderStatus.OK) {
+                  if (results[1]) {
+                      self.userLocation.address = results[1].formatted_address;
+                  }
+              }
+        });
         // console.log(geoLocations);
       } catch(ex) {
       }
@@ -246,8 +246,8 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   }
 
   getGeolocation() {
-   // return this.http.post('https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyDCa1LUe1vOczX1hO_iGYgyo8p_jYuGOPU', {});
-   return this.http.get("https://freegeoip.net/json/");
+   return this.http.post('https://www.googleapis.com/geolocation/v1/geolocate?key=' + this.properties.GOOGLE_API_KEY, {});
+   // return this.http.get("https://freegeoip.net/json/");
   };
 
   markerEntered(map, marker: any, event: any, isCloudPin: boolean) {
@@ -1016,7 +1016,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
           "imageURL": self.userLocation.iconUrl,
           "width": 22,
           "height": 22,
-          "title": self.userLocation.address ? self.userLocation.address : "NA",
+          "title": self.userLocation.address ? '<b>You are here</b><br>' + self.userLocation.address : "NA",
           "latitude": self.userLocation.latitude,
           "longitude": self.userLocation.longitude,
           "scale": 1

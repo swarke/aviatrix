@@ -54,14 +54,14 @@
                 </div>
                 <div class="card-block test-card-height" style="padding-top: 0px;">
                     <div class="row" style="margin-bottom: 25px; margin-left: 0px;">
-                        <div class="col-md-6" style="font-size: 20px; text-align: left;     border-left: solid 6px #26db68; padding-left: 10px;">
+                        <div class="col-md-6" style="font-size: 18px; text-align: left;     border-left: solid 6px #26db68; padding-left: 10px;">
                             <span *ngIf="!bestLatencyRegion && !disabledStart">{{properties.NA_TEXT}}</span>
                             <span *ngIf="!bestLatencyRegion && disabledStart">{{properties.CALCULATING_TEXT}}</span>
                             <span *ngIf="bestLatencyRegion && !disabledStart">{{bestLatencyRegion.region_name}}</span>
                             <br>
                             <span style="font-size: 12px;">Best region for latency sensitive apps</span>
                         </div>
-                        <div class="col-md-6" style="font-size: 20px; text-align: left;     border-left: solid 6px #03bca1; padding-left: 10px;">
+                        <div class="col-md-6" style="font-size: 18px; text-align: left;     border-left: solid 6px #03bca1; padding-left: 10px;">
                             <span *ngIf="!bestBandwidthRegion && !disabledStart">{{properties.NA_TEXT}}</span>
                             <span *ngIf="!bestBandwidthRegion && disabledStart">{{properties.CALCULATING_TEXT}}</span>
                             <span *ngIf="bestBandwidthRegion && !disabledStart">{{bestBandwidthRegion.region_name}}</span>
@@ -151,7 +151,7 @@
                 </div>
                 <div class="card-block" #latencyCard>
                     <chart [options]="latencyOptions" (load)="latencyInstance($event.context)"  *ngIf="latencyOptions !== null" class="chart-height"></chart>
-                    <h6 *ngIf="latencyOptions === null" style="margin-top: 0px; margin-bottom: 0px; font-weight: 300">Click <a href="javascript:function() { return false; }" (click)="startTest();"> Start </a> to run.</h6>
+                    <h6 *ngIf="latencyOptions === null" style="margin-top: 0px; margin-bottom: 0px; font-weight: 300">Click <a href="javascript:void(0)" (click)="startTest();"> Start </a> to run.</h6>
                 </div>
             </div>
         </div>
@@ -168,7 +168,7 @@
                 </div>
                 <div class="card-block">
                     <chart [options]="bandwidthOptions" (load)="bandwidthInstance($event.context)" *ngIf="bandwidthOptions !== null" class="chart-height"></chart>
-                     <h6 *ngIf="bandwidthOptions === null" style="margin-top: 0px; margin-bottom: 0px; font-weight: 300">Click <a href="javascript:function() { return false; }" (click)="startTest();"> Start </a> to run.</h6>
+                     <h6 *ngIf="bandwidthOptions === null" style="margin-top: 0px; margin-bottom: 0px; font-weight: 300">Click <a href="javascript:void(0)" (click)="startTest();"> Start </a> to run.</h6>
                 </div>
             </div>
         </div>
