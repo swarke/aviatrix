@@ -1016,7 +1016,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
           "imageURL": self.userLocation.iconUrl,
           "width": 22,
           "height": 22,
-          "title": self.userLocation.address ? '<b>You are here</b><br>' + self.userLocation.address : "NA",
+          "title": self.userLocation.address != 'undefined, undefined' ? '<b>You are here</b><br>' + self.userLocation.address : "NA",
           "latitude": self.userLocation.latitude,
           "longitude": self.userLocation.longitude,
           "scale": 1
