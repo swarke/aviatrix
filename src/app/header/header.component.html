@@ -1,176 +1,53 @@
-<!-- <div class="container-fluid header-bottom">
-    <div class="row">
-        <div class="col-md-12 pad-left-right-none bg-header">
-            <nav class="navbar bg-header">
-                <a class="navbar-brand" href="http://aviatrix.com/" target="_blank">
-                    <img src="/assets/aviatrix-logo-final-bold.png" width="160" height="50" class="d-inline-block align-top image-responsive" alt="AvaiTrix">
-                </a>
-                <span style="font-size: 16px; color: #4a6471; margin-top: 20px;">
-                     AWS Latency & Throughput Analyzer
-                </span>
-            </nav>
-        </div>
-    </div>
-</div>
- -->
-<div class="row" style="font-family: Yoga Sans Thin;">
-<nav class="navbar navbar-toggleable-md navbar-light bg-faded bg-header" style="height: 100px;">
+<div id="header-desktop">
 
-  <div class="logo">
-    <a href="http://aviatrix.com/" class="logo-cloud-networking-tools-reverse">&nbsp;</a>
+<!-- Orange -->
+  <div class="panel" id="orange">
+    <div class="content">
+      <div id="logo">
+        <a href="/" id="logo-cloud-networking-tools-reverse">&nbsp;</a>
+      </div>
+
+      <div id="nav-tools">
+        &nbsp;
+      </div>
+    </div>  
   </div>
- <div id="navbarNav">
-   <ul class="navbar-nav">
-     <li class="nav-item">
-     <div style="margin-top: 55px;">
-       <span class="tool-name" style="margin-left: 380px;">
-           {{properties.getCurerntTool()}} 
-        </span>
-     </div>
-        
-     </li>
-  <!--   <span class="cursor-pointer" style="position: absolute; right:20px; font-size: 16px; color: #1E9F91" [popover]="myPopover">
-        <i class="material-icons" style="position: absolute; margin-top: 2px; margin-left: -25px;" data-toggle="popover" data-content="And here">chat</i><span style="font-weight: 500;">&nbsp;{{properties.LINK_FEEDBACK}}</span>
-    </span> -->
-
-<!-- start share buttons -->
-    <!-- <div class="material-sharebuttons" style="position: absolute; right:20px; margin-top: 15px; "> -->
-      <!-- <shareButton class="facebook" [sbTitle]="toolName" [sbDescription]='properties.SHARE_POST'><i class="fa fa-facebook"></i></shareButton> -->
-      <!-- <shareButton shareButton="twitter"><i class="fa fa-twitter"></i></shareButton> -->
-      <!-- <shareButton shareButton="linkedin"><i class="fa fa-linkedin"></i></shareButton> -->
-      <!-- <share-buttons 
-       [pinterest]="pintTemp"
-       [google]="googleTemp"
-       [tumblr]="tumblrTemp"
-       [whatsApp]="whatsTemp"
-       [reddit]="false"
-       [stumbleUpOn]="false"
-       [title]="toolName"
-       [description]="properties.SHARE_POST"
-       [url]="'http://cloudnetworkingtools.com'"
-
-></share-buttons> -->
-
-    <!-- </div> -->
-    <!-- end share buttons -->
-     <popover-content #myPopover
-         placement="bottom"
-        [closeOnClickOutside]="true">
-        <div class="row">
-          <div class="col-md-12 mrg-top-10">
-           <h6 class="feedback-header"> WE WOULD LOVE TO HEAR YOUR FEEDBACK</h6>
-          </div>
-           <div class="col-md-12 rate-us">
-            <label class="font-weight-500">Rate us!</label>
-          </div>
-          <div class="col-md-6 rate-comp">
-            <star-rating-comp   [starType]="'svg'" [hoverEnabled]="true" [space]="'between'">
-            </star-rating-comp>
-          </div>
-        </div>
-
-        <div class="row mrg-top-10">
-          <div class="col-md-6">
-            <label class="font-weight-500">First Name</label>
-            <input type="text" name="firstName" id="firstName" [ngModel]="firstName" class="form-control">
-          </div>
-          <div class="col-md-6">
-            <label class="font-weight-500">Last Name</label>
-            <input type="text" name="lastName" id="lastName" [ngModel]="lastName" class="form-control">
-          </div>
-          
-          <div class="col-md-12 mrg-top-10">
-            <label class="font-weight-500">Email<span style="color: red">*</span></label>
-            <input type="text" name="email" id="email" [ngModel]="email" class="form-control">
-          </div>
-          
-          <div class="col-md-12 mrg-top-10">
-            <label class="font-weight-500">Comment</label>
-            <textarea name="comment" id="comment" [ngModel]="comment" class="form-control"></textarea>
-          </div>
-
-          <div class="col-md-12 mrg-top-10">
-           <button class="btn btn-feedback full-width">Submit</button>
-          </div>
-
-        </div>
-    </popover-content>
-   </ul>
- </div>
-
-</nav>
-</div>
-<!-- <div class="row dark-gray" style="margin-top: 100px;">
-    <div class="col-md-3" style="padding: 18px 16px 16px 16px;">
-      <a href="/">{{properties.TOOL_TAG}}</a>
-    </div>
-  </div> -->
-<!-- 209e91 -->
 
 
-
-<div class="row" style="background: #545454; height: 50px; font-family: Yoga Sans Thin;">
-    <div class="col-md-3" style="padding: 18px 16px 16px 16px;">
-      <span class="tools" style="width: 367px; cursor: text;">{{properties.TOOL_TAG}}</span>
-    </div>
-    <div class="col-md-9">
-      <!-- <a href="/" class="primary selected">Home</a>
-      <a href="/" class="primary">Online Tools</a>
-      <a href="/" class="primary">Contact Us</a> -->
-      <!-- <div class="nav-container" style="text-transform: uppercase; color: #ddd; cursor: pointer;">
-        <a href="/" class="primary selected">Home</a>
+<!-- Dark Gray -->
+  <div id="dark-gray">
+    <div class="content">
+      <div id="tagline">
+        <span> {{properties.TOOL_TAG}}</span>
       </div>
-      <div class="nav-container" id="nav-products">
-        <a href="/" class="primary ">Online Tools</a>
-        <div class="nav-menu right">
-          <div class="columns">
-            <div class="column">
-              <a href="aws/speedtest" class="secondary">Amazon Web Services Network Performance&nbsp;Test</a>
-              <a href="azure/speedtest" class="secondary">Microsoft Azure Network Performance&nbsp;Test</a>
+
+      <div id="nav-primary">
+
+        <!-- Home -->
+        <div class="nav-container" id="nav-products">
+          <a href="/" class="primary ">Home</a>
+        </div>
+
+        <!-- Tools -->
+        <div class="nav-container" id="nav-about">
+          <a href="tools.php" class="primary selected">Online Tools</a>
+          <div class="nav-menu right">
+            <div class="columns">
+              <div class="column">
+                <a href="http://www.cloudnetworkingtools.com/#/aws/speedtest" class="secondary">Amazon Web Services Network Performance&nbsp;Test</a>
+                <a href="http://www.cloudnetworkingtools.com/#/azure/speedtest" class="secondary">Microsoft Azure Network Performance&nbsp;Test</a>
+              </div>
+              <div class="clear"></div>
             </div>
-            <div class="clear"></div>
           </div>
         </div>
-      </div>
-      <div class="nav-container" id="nav-products">
-        <a href="http://www.aviatrix.com/contact/" class="primary ">Contact Us</a>
-      </div>
 
+        <!-- Contact -->
+        <div class="nav-container" id="nav-products">
+          <a href="http://www.aviatrix.com/contact/" class="primary ">Contact Us</a>
+        </div>
 
-
-      <!-- Home -->
-      <div class="row">
-      <div class="col-md-2">
-
-        <a href="#" style="margin: 0px -4px 0px 1px; padding: 18px 16px 16px 34px; font-family: Yoga Sans Thin; font-size: 14px; line-height: 16px; text-transform: uppercase;     letter-spacing: 1.5px; color: #ddd; display: block; transition-property: all;     transition-duration: .2s; transition-timing-function: ease; position: relative; cursor: pointer;">Home</a>
       </div>
-      <div class="col-md-2">
-        <a href="javascript:function() { return false; }" style="margin: 0px -4px 0px -70px; padding: 18px 16px 16px 16px; font-family: Yoga Sans Bold; font-size: 14px; line-height: 16px; text-transform: uppercase;     letter-spacing: 1.5px; color: #fff; display: block; transition-property: all;     transition-duration: .2s; transition-timing-function: ease; position: relative; cursor: pointer;" >Online Tools</a>
-        <!-- <div>
-            <a href="#/aws/speedtest" class="secondary">Amazon Web Services Network Performance&nbsp;Test</a>
-            <a href="#/azure/speedtest" class="secondary">Microsoft Azure Network Performance&nbsp;Test</a>
-        </div> -->
-      </div>
-      <div class="col-md-2">
-        <a href="http://www.aviatrix.com/contact/" style="margin: 18px -4px 0px -92px; padding: 0px 16px 16px 16px; font-family: Yoga Sans Thin; font-size: 14px; line-height: 16px; text-transform: uppercase; letter-spacing: 1.5px; color: #ddd; display: block; transition-property: all;     transition-duration: .2s; transition-timing-function: ease; position: relative; cursor: pointer;">Contact Us</a>
-      </div>
-      </div>
-        
-        
-
-      <div>
-        
-        <!-- <div class="nav-menu right">
-          <div class="columns">
-            <div class="column">
-              <a href="#" class="secondary">Amazon Web Services Network Performance&nbsp;Test</a>
-              <a href="#" class="secondary">Microsoft Azure Network Performance&nbsp;Test</a>
-            </div>
-            <div class="clear"></div>
-          </div>
-        </div> -->
-      </div>
-
-      
     </div>
+  </div>
 </div>
