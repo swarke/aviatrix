@@ -217,12 +217,12 @@ h3.small {
 	}
 
 h4 {
-	margin: 10px 0px 10px 0px;
-	font-family: "Yoga Sans Bold";
-    font-weight: normal;
-	font-size: 26px;
-	line-height: 28px;
-	color: #000;
+	margin: 10px 0px 10px 0px !important;
+	font-family: "Yoga Sans Bold" !important;
+    font-weight: normal !important;
+	font-size: 26px !important;
+	line-height: 28px !important;
+	color: #000 !important;
 	}
 
 h4.small {

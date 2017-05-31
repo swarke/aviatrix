@@ -20,7 +20,7 @@
 
 
 div.marquee {
-	padding: 20px 0px 0px 0px;
+	/* padding: 20px 0px 0px 0px; */
 	height: 210px;
 	position: relative;
 	background-size: cover;
@@ -133,42 +133,42 @@ div.marquee.customer {
 
 @media all and (min-width: 651px) {
 div.marquee#about {
-	background-image: url('/assets/marquees/marquee-about.jpg');
+	background-image: url('/assets/marquee-about.jpg');
 	background-position: 50% 40%;
 	}
 
 div.marquee#customer-hyatt {
-	background-image: url('/assets/marquees/marquee-hyatt.jpg');
+	background-image: url('/assets/marquee-hyatt.jpg');
 	background-position: 50% 100%;
 	}
 
 div.marquee#customer-gree {
-	background-image: url('/assets/marquees/marquee-gree.jpg');
+	background-image: url('/assets/marquee-gree.jpg');
 	background-position: 50% 50%;
 	}
 
 div.marquee#customer-robert-half {
-	background-image: url('/assets/marquees/marquee-robert-half.jpg');
+	background-image: url('/assets/marquee-robert-half.jpg');
 	background-position: 50% 50%;
 	}
 
 div.marquee#customers {
-	background-image: url('/assets/marquees/marquee-customers.jpg');
+	background-image: url('/assets/marquee-customers.jpg');
 	background-position: 50% 90%;
 	}
 
 div.marquee#network-brown {
-	background-image: url('/assets/marquees/marquee-network-brown.jpg');
+	background-image: url('/assets/marquee-network-brown.jpg');
 	background-position: 50% 60%;
 	}
 
 div.marquee#network-orange {
-	background-image: url('/assets/marquees/marquee-network-orange.jpg');
+	background-image: url('/assets/marquee-network-orange.jpg');
 	background-position: 50% 80%;
 	}
 
 div.marquee#network-white {
-	background-image: url('/assets/marquees/marquee-network-white.jpg');
+	background-image: url('/assets/marquee-network-white.jpg');
 	background-position: 50% 50%;
 	}
 
@@ -177,17 +177,17 @@ div.marquee.short#network-white {
 	}
 
 div.marquee#keyboard {
-	background-image: url('/assets/marquees/marquee-keyboard.jpg');
+	background-image: url('/assets/marquee-keyboard.jpg');
 	background-position: 50% 75%;
 	}
 
 div.marquee#laptop-huddle {
-	background-image: url('/assets/marquees/marquee-laptop-huddle.jpg');
+	background-image: url('/assets/marquee-laptop-huddle.jpg');
 	background-position: 50% 20%;
 	}
 
 div.marquee#resources {
-	background-image: url('/assets/marquees/marquee-resources.jpg');
+	background-image: url('/assets/marquee-resources.jpg');
 	background-position: 50% 10%;
 	}
 	}
@@ -197,57 +197,57 @@ div.marquee#resources {
 
 @media all and (max-width: 650px) {
 div.marquee#about {
-	background-image: url('/assets/marquees/marquee-about.jpg');
+	background-image: url('/assets/marquee-about.jpg');
 	background-position: 50% 40%;
 	}
 
 div.marquee#customer-hyatt {
-	background-image: url('/assets/marquees/marquee-hyatt.jpg');
+	background-image: url('/assets/marquee-hyatt.jpg');
 	background-position: 50% 100%;
 	}
 
 div.marquee#customer-gree {
-	background-image: url('/assets/marquees/marquee-gree.jpg');
+	background-image: url('/assets/marquee-gree.jpg');
 	background-position: 50% 50%;
 	}
 
 div.marquee#customer-robert-half {
-	background-image: url('/assets/marquees/marquee-robert-half.jpg');
+	background-image: url('/assets/marquee-robert-half.jpg');
 	background-position: 50% 50%;
 	}
 
 div.marquee#customers {
-	background-image: url('/assets/marquees/marquee-customers.jpg');
+	background-image: url('/assets/marquee-customers.jpg');
 	background-position: 50% 90%;
 	}
 
 div.marquee#network-brown {
-	background-image: url('/assets/marquees/marquee-network-brown.jpg');
+	background-image: url('/assets/marquee-network-brown.jpg');
 	background-position: 50% 50%;
 	}
 
 div.marquee#network-orange {
-	background-image: url('/assets/marquees/marquee-network-orange.jpg');
+	background-image: url('/assets/marquee-network-orange.jpg');
 	background-position: 50% 80%;
 	}
 
 div.marquee#network-white {
-	background-image: url('/assets/marquees/marquee-network-white.jpg');
+	background-image: url('/assets/marquee-network-white.jpg');
 	background-position: 20% 50%;
 	}
 
 div.marquee#keyboard {
-	background-image: url('/assets/marquees/marquee-keyboard.jpg');
+	background-image: url('/assets/marquee-keyboard.jpg');
 	background-position: 50% 75%;
 	}
 
 div.marquee#laptop-huddle {
-	background-image: url('/assets/marquees/marquee-laptop-huddle.jpg');
+	background-image: url('/assets/marquee-laptop-huddle.jpg');
 	background-position: 50% 20%;
 	}
 
 div.marquee#resources {
-	background-image: url('/assets/marquees/marquee-resources.jpg');
+	background-image: url('/assets/marquee-resources.jpg');
 	background-position: 50% 10%;
 	}
 	}
