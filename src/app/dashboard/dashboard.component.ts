@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, Renderer, AfterViewInit, ViewEncapsulation, Input } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewEncapsulation, Input } from '@angular/core';
 import { ChartModule } from 'angular2-highcharts';
 import { DashboardModel} from '../../models';
 import { Response, Http } from '@angular/http';
@@ -78,16 +78,9 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   text = '';
   hoveredObject = null;
 
-  @ViewChild('imageDiv') el:ElementRef;
-  @ViewChild('pingImage') elImg:ElementRef;
-      
-  constructor( //private mapsAPILoader : MapsAPILoader,
-              private http: Http,
+  constructor(private http: Http,
               private dashboardService: DashboardService,
-              private elRef:ElementRef,
-              private rd: Renderer,
               public properties: PropertiesService) {
-      // console.log(this.el.nativeElement);  
       
       this.chartColors = ['#2196F3', '#F44336', '#FF609E', '#14936C', '#00FF4F', '#A99000',
                           '#E8C21A', '#673AB7', '#3D495A', '#536DFE', '#C3429B', '#C33A38', 
@@ -160,11 +153,13 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
 
         self.userLocation.latitude = geoLocations.location.lat;
         self.userLocation.longitude = geoLocations.location.lng;
+
         self.userLocation.isOpen = false;
-        self.userLocation.label = 'User Location';
+        // self.userLocation.label = 'User Location';
         self.userLocation.iconUrl = '/assets/updated_user_pin.png';
         // console.log("Lat: " + self.userLocation.latitude + " Long " +  self.userLocation .longitude);
-        self.userLocation.address = geoLocations.region_name + ', ' + geoLocations.country_name;
+
+        // self.userLocation.address = geoLocations.region_name + ', ' + geoLocations.country_name;
         var geocoder = geocoder = new google.maps.Geocoder();
           var latlng = new google.maps.LatLng(self.userLocation.latitude, self.userLocation.longitude);
           geocoder.geocode({ 'latLng': latlng }, function (results, status) {
@@ -250,35 +245,6 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
    // return this.http.get("https://freegeoip.net/json/");
   };
 
-  markerEntered(map, marker: any, event: any, isCloudPin: boolean) {
-    // if (isCloudPin) {
-      // marker.label = this.updateMarkerLabel(marker);
-      // marker.isOpen = true;
-      // this.updateChartOnMarker(marker, true);
-    // } else {
-      // marker.isOpen = true;
-    // }
-    this.text = 'test';
-    // event.target.openPopup();
-
-    var popup = L.popup()
-   .setLatLng([18.5990891, 73.7722048]) 
-   .setContent(this.text)
-   .openOn(map);
-
-    return marker.label;
-  };
-
-  markerOut(marker: any, event: any, isCloudPin: boolean) {
-    // if (isCloudPin) {
-    //   marker.isOpen = false;
-    //   this.updateChartOnMarker(marker, false);
-    // } else {
-    //   marker.isOpen = false;
-    // }
-    event.target.closePopup();
-  }
- 
   getSeriesData(chartType: any, name: any, data: any) {
     return {
               type:   chartType,
@@ -378,9 +344,6 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
     let latencySeries: any = [];
 
     // Setting latency chart configuration
-    // let responseTimeSeries: any = [];
-
-    // Setting latency chart configuration
     let badwidthSeries: any = [];
 
 
@@ -391,32 +354,25 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
       object.latency = null;
       object.bandwidth = null;
       object.dashboardModel = new DashboardModel();
-      object.pingStartTime = new Date();
       object.currentLatencyIndex = 0;
       object.currentResponseIndex = 0;
       object.currentBandwidthIndex = 0;
       object.throughputCallIndex = undefined;
       object.firstLatencyPass = false;
       object.firstBandwidthPass = false;
-      
+      object.pingStartTime = new Date();
       // Setting up latency chart
       this.setDataPoint(object.dashboardModel.latency, object);
       latencySeries.push(this.getSeriesData('spline', object.cloud_info.region, this.getChartData(object.dashboardModel.latency)));
       setTimeout(()=>this.setLatency(index),10);
 
-      // // Setting up rasponse time
-      // this.setDataPoint(object.dashboardModel.responseTime, object);
-      // responseTimeSeries.push(this.getSeriesData('spline', object.cloud_info.region, this.getChartData(object.dashboardModel.responseTime)));
-      // setTimeout(()=>this.setResponseTime(index),10);
-
-      // Setting up bandwidth
+      // Setting up bandwidth(throughput)
       this.setDataPoint(object.dashboardModel.bandwidth, object);
       badwidthSeries.push(this.getSeriesData('spline', object.cloud_info.region, this.getChartData(object.dashboardModel.bandwidth)));
       setTimeout(()=>this.setBandwith(index),10);
     }
 
     this.latencyOptions = this.getChartConfig('', this.properties.MILISECONDS, latencySeries, 'spline');
-    // this.responseTimeOptions = this.getChartConfig('', 'Miliseconds', responseTimeSeries, 'spline');
     this.bandwidthOptions = this.getChartConfig('', this.properties.MBPS, badwidthSeries, 'spline');
   }
 
@@ -540,18 +496,6 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
     if (this.getTimeDiffInSeconds(obj.pingStartTime, index) < this.TEST_MINUTES 
         && this.disabledStart) {
        setTimeout(() => this.setLatency(index), this.TEST_INTERVAL);
-     
-        // jQuery("#imageDiv").empty();
-        // jQuery("#imageDiv").html("<img id='pingImage' style='display: none'>");
-        // var pingImage = jQuery("#pingImage");
-        // console.log("PingImage: " + pingImage);
-        // pingImage.on("error", function() {
-        //   current.calculateLatency(obj, index, pingStart)
-        // });
-        
-        // let pingStart = new Date();
-        // var cacheBuster = "?nnn=" + pingStart;
-        // pingImage.attr("src", 'http://dynamodb.us-west-1.amazonaws.com/' +'ping'+ cacheBuster);
 
         var download = new Image() ;
         let pingStart = new Date();
@@ -572,20 +516,6 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
         }
         download.src = obj.url +'ping'+ cacheBuster ;
 
-        // this.dashboardService.getLatency(obj.url+ 'ping' + cacheBuster).subscribe((data: any ) => {
-        //     // let pingEnd = new Date();
-        //     // let ping: number = (pingEnd.getTime() - pingStart.getTime());
-        //     // obj.dashboardModel.latency.push({'time': new Date(), 'value': Math.round(ping)});
-
-        //     // this.latencyChart.series[index].addPoint(this.getChartPoint(new Date(), Math.round(ping)));
-            
-        // }, (error:any) => {
-        //    let pingEnd = new Date();
-        //     let ping: number = (pingEnd.getTime() - pingStart.getTime());
-        //     obj.dashboardModel.latency.push({'time': new Date(), 'value': Math.round(ping)});
-
-        //     this.latencyChart.series[index].addPoint(this.getChartPoint(new Date(), Math.round(ping)));
-        // });
     } else {
        this.getLatency(obj);
        obj.latencyCompleted = true;
@@ -651,27 +581,6 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
     }
   }
 
-  setRegionComparison() {
-    for (let index = 0; index < this.locations.length; index++) {
-      let object: any = this.locations[index];
-      if (this.bestRegion === null) {
-        this.bestRegion = object;
-      } else {
-        if(object.responseTime < this.bestRegion.responseTime) {
-          this.bestRegion = object;
-        }
-      }
-
-      if (this.worstRegion === null) { 
-        this.worstRegion = object;
-      } else {
-        if(object.responseTime > this.worstRegion.responseTime) {
-          this.worstRegion = object;
-        }
-      }
-    }
-  }
-
   getBestLatencyAndBandwidth() {
     for (let index = 0; index < this.locations.length; index++) {
       let object: any = this.locations[index];
@@ -721,56 +630,15 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
     } else {
         setTimeout(() => this.isProcessCompleted(), 10);
     }
-
-    // if (processCompleted && this.bestRegion === null && this.worstRegion === null) {
-    //   this.disabledStart = false;
-    //   this.setRegionComparison();
-    // } else {
-    //   if (this.bestRegion === null && this.worstRegion === null) {
-    //     setTimeout(() => this.isProcessCompleted(), 10);
-    //   }
-    // }
   }
 
-  /**
-   * [setThroughput description]
-   * @param {[type]} bandwidth [description]
-   * @param {[type]} time      [description]
-   * @param {[type]} duration  [description]
-   */
-  // setThroughput(bandwidth, time, duration) {
-  //   var seconds = ((time % 60000) / 1000)
-  //   var _bandwidth = (bandwidth / seconds);
-  //   let speedBps: any = (_bandwidth / duration).toFixed(2);
-  //   let speedKbps: any = (speedBps / 1024).toFixed(2);
-  //   let speedMbps = (speedKbps / 1024).toFixed(2);
-  //   this.dashboardModel.throughput.push({'time': time, 'value': speedMbps});
-  // }
-
-  /**
-   * [getThroughput description]
-   */
-  // getThroughput() {
-  //   if (this.dashboardModel.throughput.length > 0) {
-  //     let _throughput:number = 0;
-  //     for (let index = 0 ; index < this.dashboardModel.throughput.length; index++) {
-  //       _throughput = _throughput + parseFloat(this.dashboardModel.throughput[index].value);
-  //     }
-
-  //    this.throughput =  _throughput / this.dashboardModel.throughput.length;
-  //   }
-  // }
-
   getInvetory() {
-
     this.dashboardService.getInventory(this.inventoryPath).subscribe((inventory: any) => {
         this.inventory = JSON.parse(inventory);
-        // this.getCurrentGeoLocation();
         for(let index = 0; index < this.inventory.data.length; index++) {
          let obj = this.inventory.data[index];
          obj.label = obj.region_name;
          obj.isOpen = false;
-         // console.log("Cloud Pin Path: " + this.cloudPinPath);
          
          obj.iconUrl= this.cloudPinPath;
          obj.color = this.chartColors[index];
@@ -804,12 +672,6 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
       latency = marker.dashboardModel.latency[marker.currentLatencyIndex - 1].value;
     }
 
-    // if (marker.responseCompleted) {
-    //   responseTime = marker.responseTime;
-    // } else if(marker.dashboardModel && marker.dashboardModel.responseTime
-    //           && marker.dashboardModel.responseTime.length > 0 && marker.currentResponseIndex > 0) {
-    //   responseTime = marker.dashboardModel.responseTime[marker.currentResponseIndex - 1].value;
-    // }
 
     if (marker.bandwidthCompleted && marker.bandwidth) {
       bandwith = marker.bandwidth;
@@ -820,7 +682,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
 
     let content = "";
 
-    if(latency === "" && bandwith === "") {
+    if(latency == "" && bandwith == "") {
       content = "<strong>" + marker.region_name +"</strong>";
     } else {
       content = '<table class="table table-bordered" width="100%">' +
@@ -829,7 +691,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
                       '<tr> <th style="text-align: center">'+ "Latency <br> (msec)"+'</th> <th style="text-align: center">'+ 'Throughput <br> (mbps)' +'</th></tr>' +
                     '</thead>' +
                     '<tbody>' +
-                      '<tr><td style="text-align: center;">'+(latency === "" ? this.properties.NA_TEXT : latency) +'</td> <td style="text-align: center;">' + (bandwith === "" ? this.properties.NA_TEXT : bandwith) +'</td></tr>' +
+                      '<tr><td style="text-align: center;">'+(latency == "" ? this.properties.NA_TEXT : latency) +'</td> <td style="text-align: center;">' + (bandwith == "" ? this.properties.NA_TEXT : bandwith) +'</td></tr>' +
                     '</tbody>' +
                   '</table>';
     }
@@ -864,7 +726,6 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   }
 
   sortBy (property) {
-    // console.log(property);
     this.sortableColumn = property;
     this.isDesc = !this.isDesc; //change the direction    
     let direction = this.isDesc ? 1 : -1;
@@ -872,7 +733,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
     this.locations.sort(function(a, b) {
        let aProp = null;
        let bProp = null;
-       if(property !== 'region_name') {
+       if(property != 'region_name') {
          aProp = parseFloat(a[property]);
          bProp = parseFloat(b[property]);
        } else {
@@ -909,28 +770,30 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
               dataLabels: {
                   enabled: true
               }
-            });
+            }, false);
 
             this.bandwidthChart.series[index].update({
               dataLabels: {
                   enabled: true
               }
-            });
+            }, false);
           } else {
             this.latencyChart.series[index].update({
               dataLabels: {
                   enabled: false
               }
-            });
+            }, false);
 
             this.bandwidthChart.series[index].update({
               dataLabels: {
                   enabled: false
               }
-            });
+            }, false);
           }
         }
       }
+      this.latencyChart.redraw();
+      this.bandwidthChart.redraw();    
     }
   }
 
@@ -1019,6 +882,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
           "title": function() {
            return self.userLocation.address ? '<b>You are here</b><br>' + self.userLocation.address : "NA";
          },
+
           "latitude": self.userLocation.latitude,
           "longitude": self.userLocation.longitude,
           "scale": 1
@@ -1047,10 +911,12 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
           "width": 22,
           "height": 39,
           "title": function() {
-            var content = self.updateMarkerLabel(object);
-            self.hoveredObject = object;
-            setTimeout(()=>self.updateChartOnMarker(object, true),3);
-            return content;
+            if(!self.hoveredObject || self.hoveredObject.id != object.cloud_info.region) {
+              self.hoveredObject = object;
+              self.hoveredObject.content = self.updateMarkerLabel(object);
+            } 
+            
+            return self.hoveredObject.content;
           },
           "latitude": object.lat,
           "longitude": object.lng,
@@ -1065,7 +931,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
       //   "color": "#585869",
       //   "animateAlongLine": true,
       //   "lineId": "line" + index,
-      //   "flipDirection": true,
+      //   // "flipDirection": true,
       //   "loop": true,
       //   "scale": 0.03,
       //   "positionScale": 1.8
@@ -1108,20 +974,45 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
         balloonText: '',
         bringForwardOnHover: false,
       },
+
       "backgroundZoomsToTop": true,
       "linesAboveImages": true,
       
     } );
    
-    map.balloon.textAlign = 'left';
-    map.addListener("rollOutMapObject", function (event) {
+   map.balloon.textAlign = 'left';
+ 
+   map.addListener("rollOverMapObject", function (event) {
+     if(event && event.mapObject) {
+       if(event.mapObject.objectType == "MapImage") {
+         let region  = self.getRegionForImage(event.mapObject.id);
+         if(region) {
+           self.updateChartOnMarker(region, true);
+         }
+       }
+     }
+   });
+
+   map.addListener("rollOutMapObject", function (event) {
        if(event && event.mapObject) {
-         if(event.mapObject.objectType === "MapImage" && self.hoveredObject) {
-           self.updateChartOnMarker(self.hoveredObject, false);
-           self.hoveredObject = null;
+         if(event.mapObject.objectType == "MapImage") {
+           let region  = self.getRegionForImage(event.mapObject.id);
+           if(region) {
+             self.updateChartOnMarker(region, false);
+           }
          }
        }
     });
+  }
+
+  getRegionForImage(regionId) {
+    for(let index = 0; index < this.locations.length; index++) {
+      let location = this.locations[index];
+      if(location.cloud_info.region === regionId) {
+        return location;
+      }
+    }
+    return null;
   }
 }
 

@@ -69,7 +69,9 @@ export class PropertiesService {
 
   public SHARE_POST: string ='Check out the free tool on cloudnetworkingtools.com!';
 
-  public GOOGLE_API_KEY: string ='AIzaSyD9N5DDr-Lzla4dTHE2ZpysyxkMtZFBpUo';
+  public GOOGLE_API_KEY: string = 'AIzaSyAAPCDwjWqAyGu01LSKytb4tQIjQSrKw30';  // For development
+  // public GOOGLE_API_KEY: string = 'AIzaSyD9N5DDr-Lzla4dTHE2ZpysyxkMtZFBpUo'; // For Production key
+
 
   currentTool: string = null;
   constructor() {
