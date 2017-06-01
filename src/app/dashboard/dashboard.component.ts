@@ -175,6 +175,8 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
 
       self.getInvetory();
 
+    }, (error: any) => {
+      self.getInvetory();
     });
 
     // if (navigator.geolocation){
@@ -241,7 +243,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   }
 
   getGeolocation() {
-   return this.http.post('https://www.googleapis.com/geolocation/v1/geolocate?key=' + this.properties.GOOGLE_API_KEY, {});
+   return this.http.post('https://www.googleapis.com/geolocation/v1/geolocate?key=' + '', {});
    // return this.http.get("https://freegeoip.net/json/");
   };
 
@@ -874,36 +876,40 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
     var planeSVG = "m2,106h28l24,30h72l-44,-133h35l80,132h98c21,0 21,34 0,34l-98,0 -80,134h-35l43,-133h-71l-24,30h-28l15,-47";
 
 
-    var userImg= {
-          "id": "user",
-          "imageURL": self.userLocation.iconUrl,
-          "width": 22,
-          "height": 22,
-          "title": function() {
-           return self.userLocation.address ? '<b>You are here</b><br>' + self.userLocation.address : "NA";
-         },
+    if(self.userLocation.latitude && self.userLocation.longitude) {
+      var userImg= {
+            "id": "user",
+            "imageURL": self.userLocation.iconUrl,
+            "width": 22,
+            "height": 22,
+            "title": function() {
+             return self.userLocation.address ? '<b>You are here</b><br>' + self.userLocation.address : "NA";
+           },
 
-          "latitude": self.userLocation.latitude,
-          "longitude": self.userLocation.longitude,
-          "scale": 1
+            "latitude": self.userLocation.latitude,
+            "longitude": self.userLocation.longitude,
+            "scale": 1
+      }
+
+      images.push(userImg);
     }
-
-    images.push(userImg);
 
     for(let index = 0; index < this.locations.length; index++) {
       let object = this.locations[index];
 
+      if(self.userLocation.latitude && self.userLocation.longitude) {
       // Creating lines
-      var line = {
-          "id": "line" + index,
-          "latitudes": [ self.userLocation.latitude, object.lat ],
-          "longitudes": [ self.userLocation.longitude, object.lng ],
-          "color": object.color,
-          "arc": -0.85,
-          "thickness" : 2
-      };
-      
-      lines.push(line);
+        var line = {
+            "id": "line" + index,
+            "latitudes": [ self.userLocation.latitude, object.lat ],
+            "longitudes": [ self.userLocation.longitude, object.lng ],
+            "color": object.color,
+            "arc": -0.85,
+            "thickness" : 2
+        };
+        
+        lines.push(line);
+      }
 
       var regionImg= {
           "id": object.cloud_info.region,
