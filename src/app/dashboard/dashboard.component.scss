@@ -67,10 +67,11 @@
 
 .btn-start {
 	float: right; 
-	margin-right: 10px; 
-	color: #2196F3; 
-	background-color: #FFFFFF; 
+	// margin-right: 10px; 
+	color: #FFFFFF;
+    background-color: #2196F3;
 	cursor: pointer;
+    margin-top: -8px;
 }
 
 .btn-start:disabled {
@@ -83,10 +84,11 @@
 
 .btn-stop {
 	float: right; 
-	margin-right: 10px; 
-	color: #F44336; 
-	background-color: #FFFFFF; 
+	// margin-right: 10px; 
+	color: #FFFFFF; 
+	background-color: #F44336; 
 	cursor: pointer;
+	margin-top: -8px;
 }
 
 .btn-stop:disabled {
