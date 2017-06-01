@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, EventEmitter } from '@angular/core';
 import { Response } from '@angular/http';
 import { APIRequest, APIUrls } from '../models';
 import { APIMethod, ApiService } from './api.service';
@@ -15,9 +15,15 @@ declare const AWS: any;
  */
 export class DashboardService {
 
+  public bestLatencyRegion: any;
+  // dataString$ = this.bestLatencyRegion.asObservable();
+  public bestBandwidthRegion: any;
+  bestRegions: EventEmitter<any> = new EventEmitter<any>();
   constructor(private _apiService: ApiService,
               private properties: PropertiesService) {
     //this.createAWS();
+    this.bestBandwidthRegion = null;
+    this.bestLatencyRegion = null;
     
   }
 
@@ -48,5 +54,23 @@ export class DashboardService {
     const apiRequest: APIRequest = new APIRequest(url, APIMethod.GET);
     return this._apiService.executeAPI(apiRequest);
   }
+
+  emitBestLatencyRegion(bestLatencyRegion: any) {
+    // this.bestLatencyRegion = bestLatencyRegion;
+    this.bestRegions.emit(bestLatencyRegion);
+  }
+  getBestLatencyRegion() {
+    return this.bestRegions;
+     // return this.navchange;
+   }
+
+   emitBestBandwidthRegion(bestBandwidthRegion: any) {
+    this.bestBandwidthRegion = bestBandwidthRegion;
+  }
+  getBestBandwidthRegion() {
+     return this.bestBandwidthRegion;
+   }
+
+   
 
 }

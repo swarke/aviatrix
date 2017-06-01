@@ -1,8 +1,10 @@
 import { Component, OnInit, AfterViewInit, ViewEncapsulation, Input } from '@angular/core';
+import { ModalComponent } from '../modal/modal.component';
 import { ChartModule } from 'angular2-highcharts';
 import { DashboardModel} from '../../models';
 import { Response, Http } from '@angular/http';
-import {DashboardService, PropertiesService} from '../../services';
+import { DashboardService, PropertiesService } from '../../services';
+import { MdDialog } from '@angular/material';
 
 import { CLOUD_TOOL, AWS_INVENTORY_PATH, AZURE_INVENTORY_PATH, GCE_INVENTORY_PATH} from '../app-config';
 declare var jQuery:any;
@@ -80,12 +82,14 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
 
   constructor(private http: Http,
               private dashboardService: DashboardService,
-              public properties: PropertiesService) {
+              public properties: PropertiesService,
+              public dialog: MdDialog) {
       
       this.chartColors = ['#2196F3', '#F44336', '#FF609E', '#14936C', '#00FF4F', '#A99000',
                           '#E8C21A', '#673AB7', '#3D495A', '#536DFE', '#C3429B', '#C33A38', 
                           '#02BCA1', '#25DB67', '#6F9900', '#E69500', '#D792F1', '#83A1CD', 
                           '#0E7BBC', '#81D4FA'];
+      
       this.userLocation = {};
       this.latency = properties.NA_TEXT;
       this.bandwidth = properties.NA_TEXT;
@@ -119,7 +123,6 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
      this.bestRegion = null;
      this.worstRegion = null;
      this.bestLatencyRegion = null;
-   
   }
 
   latencyInstance(chartInstance) {
@@ -331,6 +334,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   /**
    * Starts test for calculating the statistics.
    */
+
   startTest() {
     // Disabling start button
     this.disabledStart = true;
@@ -592,8 +596,9 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
         if(parseFloat(object.latency) < parseFloat(this.bestLatencyRegion.latency)) {
           this.bestLatencyRegion = object;
         }
-      }
 
+      }
+       
       if (this.bestBandwidthRegion === null) {
         this.bestBandwidthRegion = object;
       } else {
@@ -601,6 +606,11 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
           this.bestBandwidthRegion = object;
         }
       }
+      // this.dashboardModel.bestBandwidthRegion = this.bestBandwidthRegion;
+      // this.dashboardModel.bestLatencyRegion = this.bestLatencyRegion;
+      // this.properties.setBestLatencyRegion(this.bestLatencyRegion);
+      // this.properties.setBestBandwidthRegion(this.bestBandwidthRegion);
+      // console.log('jjjjjj', this.properties.getBestLatencyRegion());
     }
   }
 
@@ -626,9 +636,17 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
       }
     }
 
-    if (processCompleted) {
+    if (processCompleted && this.disabledStart) {
       this.getBestLatencyAndBandwidth();
       this.disabledStart = false;
+      this.dashboardService.emitBestLatencyRegion(this.bestLatencyRegion);
+      this.dashboardService.emitBestBandwidthRegion(this.bestBandwidthRegion);
+      console.log('Dashboard: bestLatencyRegion', this.dashboardService.getBestLatencyRegion());
+      console.log('Dashboard: bestBandwidthRegion', this.dashboardService.getBestBandwidthRegion());
+      console.log('Before Modal pop called Dashboard');
+      this.dialog.open(ModalComponent);
+      console.log('After Modal pop called Dashboard');
+
     } else {
         setTimeout(() => this.isProcessCompleted(), 10);
     }

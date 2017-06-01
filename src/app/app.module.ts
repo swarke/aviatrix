@@ -14,6 +14,7 @@ import { LandingComponent } from './landing/landing.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AWSComponent } from './aws/aws.component';
 import { AzureComponent } from './azure/azure.component';
+import { ModalComponent } from './modal/modal.component';
 
 import { ApiService } from '../services/api.service';
 import { PropertiesService } from '../services/properties.service';
@@ -21,6 +22,8 @@ import {PopoverModule} from "ngx-popover";
 import { StarRatingModule } from 'angular-star-rating';
 import {ShareButtonsModule} from 'ngx-sharebuttons';
 import { AppRoutingModule, appRoutingProviders} from './app-routing.module';
+
+
 
 declare var require: any;
 
@@ -40,7 +43,8 @@ export function highchartsFactory() {
     FooterComponent,
     DashboardComponent,
     AWSComponent,
-    AzureComponent
+    AzureComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
@@ -53,6 +57,7 @@ export function highchartsFactory() {
     StarRatingModule,
     ShareButtonsModule.forRoot()
   ],
+  entryComponents: [ModalComponent],
   providers: [
     ApiService,
     PropertiesService,
