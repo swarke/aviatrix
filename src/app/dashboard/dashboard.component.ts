@@ -4,7 +4,7 @@ import { ChartModule } from 'angular2-highcharts';
 import { DashboardModel} from '../../models';
 import { Response, Http } from '@angular/http';
 import { DashboardService, PropertiesService } from '../../services';
-import { MdDialog } from '@angular/material';
+import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
 
 import { CLOUD_TOOL, AWS_INVENTORY_PATH, AZURE_INVENTORY_PATH, GCE_INVENTORY_PATH} from '../app-config';
 declare var jQuery:any;
@@ -124,6 +124,13 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
      this.worstRegion = null;
      this.bestLatencyRegion = null;
   }
+
+  openDialog() {
+   let config = new MdDialogConfig();
+   let dialogRef:MdDialogRef<ModalComponent> = this.dialog.open(ModalComponent, config);
+   dialogRef.componentInstance.bestLatencyRegion = this.bestLatencyRegion;
+   dialogRef.componentInstance.bestBandwidthRegion = this.bestBandwidthRegion;
+ }
 
   latencyInstance(chartInstance) {
     this.latencyChart = chartInstance;
@@ -606,11 +613,6 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
           this.bestBandwidthRegion = object;
         }
       }
-      // this.dashboardModel.bestBandwidthRegion = this.bestBandwidthRegion;
-      // this.dashboardModel.bestLatencyRegion = this.bestLatencyRegion;
-      // this.properties.setBestLatencyRegion(this.bestLatencyRegion);
-      // this.properties.setBestBandwidthRegion(this.bestBandwidthRegion);
-      // console.log('jjjjjj', this.properties.getBestLatencyRegion());
     }
   }
 
@@ -639,14 +641,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
     if (processCompleted && this.disabledStart) {
       this.getBestLatencyAndBandwidth();
       this.disabledStart = false;
-      this.dashboardService.emitBestLatencyRegion(this.bestLatencyRegion);
-      this.dashboardService.emitBestBandwidthRegion(this.bestBandwidthRegion);
-      console.log('Dashboard: bestLatencyRegion', this.dashboardService.getBestLatencyRegion());
-      console.log('Dashboard: bestBandwidthRegion', this.dashboardService.getBestBandwidthRegion());
-      console.log('Before Modal pop called Dashboard');
-      this.dialog.open(ModalComponent);
-      console.log('After Modal pop called Dashboard');
-
+      this.openDialog();
     } else {
         setTimeout(() => this.isProcessCompleted(), 10);
     }
