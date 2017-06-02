@@ -27,6 +27,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   @Input() tool: string;
   options: any;
   latencyOptions: any;
+  isTestCompleted: boolean;
   responseTimeOptions: any;
   bandwidthOptions: any;
   packetLossOptions: any;
@@ -123,6 +124,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
      this.bestRegion = null;
      this.worstRegion = null;
      this.bestLatencyRegion = null;
+     this.isTestCompleted = false;
   }
 
   openDialog() {
@@ -345,6 +347,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   startTest() {
     // Disabling start button
     this.disabledStart = true;
+    this.isTestCompleted = false;
 
     // Reseting statistics.
     this.latency =  this.properties.NA_TEXT;
@@ -638,7 +641,8 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
       }
     }
 
-    if (processCompleted && this.disabledStart) {
+    if (processCompleted && !this.isTestCompleted) {
+      this.isTestCompleted = true;
       this.getBestLatencyAndBandwidth();
       this.disabledStart = false;
       this.openDialog();
