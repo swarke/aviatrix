@@ -1,0 +1,48 @@
+<div *ngIf="bestBandwidthRegion && bestLatencyRegion">
+    <div class="row" align="center" style="margin-top: 25px;">
+        <div class="col-md-6">
+            <img src="/assets/ic_cloud.png" style="width: 60px; height: 35px; margin-left: auto;    margin-right: auto; display: block;">
+        </div>
+        <div class="col-md-6">
+            <img src="/assets/ic_speedometer.png" style="width: 85px; height: 25px; margin-left: auto; margin-right: auto; display: block;">
+        </div>
+    </div>
+    <div class="row" align="center" style="margin-top: 15px;">
+        <div class="col-md-6">
+            <span style="font-size: 22px; color: #2196F3;">{{bestBandwidthRegion.region_name }}</span>
+        </div>
+        <div class="col-md-6">
+            <span style="font-size: 22px; color: #2196F3;">{{ bestLatencyRegion.region_name }}</span>
+        </div>
+    </div>
+    <div class="row" align="center" style="margin-top: 5px;">
+        <div class="col-md-6">
+            <span style="font-size: 12px;">Best region for data intesive apps</span>
+        </div>
+        <div class="col-md-6">
+            <span style="font-size: 12px;">Best region for latency sensitive apps</span>
+        </div>
+    </div>
+    <div class="row" align="center" style="margin-top: 20px;">
+        <div class="col-md-4" style="margin-left: 0px;" align="center">
+            <span style="font-size: 20px; color: #2196F3;">{{bestBandwidthRegion.latency }} mbps</span><br>
+            <span style="font-size: 12px;">Latency</span>
+        </div>
+        <div class="col-md-2" style="margin-left: -30px;" align="center">
+            <span style="font-size: 12px;">{{bestBandwidthRegion.bandwidth }} mbps</span>
+            <span style="font-size: 12px;">Troughput</span>
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-2" align="center" style="margin-right: 5px;">
+            <span style="font-size: 12px;">{{ bestLatencyRegion.latency }} mbps</span>
+            <span style="font-size: 12px;">Latency</span>
+        </div>
+        <div class="col-md-3" align="center">
+            <span style="font-size: 20px; color: #2196F3;">{{ bestLatencyRegion.bandwidth }} mbps</span>
+            <span style="font-size: 12px;">Troughput</span>
+        </div>
+    </div>
+    <div class="row" align="center" style="margin-top: 55px; margin-left: 220px;">
+        <button class="btn btn-start" style="width: 100px;" (click)="dialogRef.close('')">Close</button>
+    </div>
+</div>
