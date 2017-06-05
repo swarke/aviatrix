@@ -776,14 +776,14 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
     if (this.latencyChart && this.latencyChart.series) {
       for(let index = 0; index < this.latencyChart.series.length; index++) {
         if(this.latencyChart.series[index].name !== marker.cloud_info.region && hide) {
-          this.latencyChart.series[index].hide();
+          this.latencyChart.series[index].setVisible(false, false);
 
           if (this.bandwidthChart && this.bandwidthChart.series) {
-            this.bandwidthChart.series[index].hide();
+            this.bandwidthChart.series[index].setVisible(false, false);
           }
         } else {
-          this.latencyChart.series[index].show();
-          this.bandwidthChart.series[index].show();
+          this.latencyChart.series[index].setVisible(true, false);
+          this.bandwidthChart.series[index].setVisible(true, false);
           if(hide) {
             this.latencyChart.series[index].update({
               dataLabels: {
@@ -811,6 +811,8 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
           }
         }
       }
+      console.log("Redrawing Chart....");
+      
       this.latencyChart.redraw();
       this.bandwidthChart.redraw();    
     }
