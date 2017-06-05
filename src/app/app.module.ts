@@ -14,6 +14,7 @@ import { LandingComponent } from './landing/landing.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AWSComponent } from './aws/aws.component';
 import { AzureComponent } from './azure/azure.component';
+import { GCEComponent } from './gce/gce.component';
 import { ModalComponent } from './modal/modal.component';
 
 import { ApiService } from '../services/api.service';
@@ -44,6 +45,7 @@ export function highchartsFactory() {
     DashboardComponent,
     AWSComponent,
     AzureComponent,
+    GCEComponent,
     ModalComponent
   ],
   imports: [

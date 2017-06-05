@@ -56,7 +56,7 @@ export class PropertiesService {
   public RESPONSE_TIME_HTML: string = 'test.html';
 
   public AWS_CLOUD_PIN_PATH = '/assets/aws_pin.png';
-  public GCE_CLOUD_PIN_PATH = '/assets/aws_pin.png';
+  public GCE_CLOUD_PIN_PATH = '/assets/google_pin.png';
   public AZURE_CLOUD_PIN_PATH = '/assets/azure_pin.svg';
 
   public AWS_PAGE_TITLE = 'Aviatrix - AWS Throughput and Latency Analyzer';
