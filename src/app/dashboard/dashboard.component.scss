@@ -111,22 +111,25 @@
 	// float: right; 
 	margin-right: 10px; 
 	color: #FFFFFF !important; 
-	background-color: #1E9F91; 
+	background-color: #ee7700; 
 	cursor: pointer;
+	border-color: #ee7700;
 }
 
 .btn-download:hover {
 	// float: right; 
 	margin-right: 10px; 
 	color: #FFFFFF !important; 
-	background-color: #1E9F91; 
+	background-color: #ee7700; 
 	cursor: pointer;
+	border-color: #ee7700;
 }
 
 .btn-download:focus, .btn-download.focus {
     outline: 0;
-    box-shadow: 0 0 0 2px #1E9F91 !important;
-    color: #FFFFFF !important; 
+    box-shadow: 0 0 0 2px #ee7700 !important;
+    color: #FFFFFF !important;
+    border-color: #ee7700; 
 }
 
 .interested-text-style {
