@@ -26,6 +26,7 @@ declare const AmCharts: any;
 export class DashboardComponent implements OnInit, AfterViewInit  {
   clouds: any;
   @Input() tool: string;
+  progressFactor: number = 0;
   options: any;
   latencyOptions: any;
   isTestCompleted: boolean;
@@ -477,8 +478,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
               obj.dashboardModel.bandwidth[obj.currentBandwidthIndex].value = parseFloat(speedMbps);
               this.bandwidthChart.series[index].data[obj.currentBandwidthIndex].update({"y": parseFloat(speedMbps)});
               obj.currentBandwidthIndex++;
-              this.slimLoadingBarService.progress++;
-
+              this.slimLoadingBarService.progress += this.progressFactor;
               // console.log("Region: " + obj.region_name + " Current index: " + obj.currentBandwidthIndex + " call index: " + obj.throughputCallIndex);
               if(obj.currentBandwidthIndex > 5) {
                 this.getBandwidth(obj);
@@ -533,6 +533,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
               obj.dashboardModel.latency[obj.currentLatencyIndex].value = Math.round(ping);
               current.latencyChart.series[index].data[obj.currentLatencyIndex].update({"y": Math.round(ping)});
               obj.currentLatencyIndex++;
+              current.slimLoadingBarService.progress += current.progressFactor;
               if (obj.currentLatencyIndex > 5) {
                 obj.latencyCompleted = true;
               }
@@ -662,6 +663,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   }
 
   getInvetory() {
+
     this.dashboardService.getInventory(this.inventoryPath).subscribe((inventory: any) => {
         this.inventory = JSON.parse(inventory);
         for(let index = 0; index < this.inventory.data.length; index++) {
@@ -673,6 +675,10 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
          obj.color = this.chartColors[index];
          this.locations.push(obj);
         }
+
+        let totalRegions = this.locations.length * 12;
+        this.progressFactor = 100/totalRegions;
+
 
         // this.generateMap();
         this.generateAmMap();
