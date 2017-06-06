@@ -28,11 +28,11 @@ export class FooterComponent implements OnInit {
 
   download(){
     if(this.properties.getCurerntToolName() == this.properties.AWS) {
-      window.location.href = this.properties.AWS_DOWNLOAD_URL;
+      return this.properties.AWS_DOWNLOAD_URL;
     } else if(this.properties.getCurerntToolName() == this.properties.AZURE) {
-      window.location.href = this.properties.AZURE_DOWNLOAD_URL;
+      return this.properties.AZURE_DOWNLOAD_URL;
     } else {
-      window.location.href = this.properties.DOWNLOAD_URL;
+      return this.properties.DOWNLOAD_URL;
     }
   }
 

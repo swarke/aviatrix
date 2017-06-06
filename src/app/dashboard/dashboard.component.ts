@@ -817,8 +817,6 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
           }
         }
       }
-      console.log("Redrawing Chart....");
-      
       this.latencyChart.redraw();
       this.bandwidthChart.redraw();    
     }
@@ -990,8 +988,6 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
         color: '#585869',
         rollOverColor: '#585869',
         selectedColor: '#585869',
-        "pauseDuration": 0.2,
-        "animationDuration": 2.5,
         "adjustAnimationSpeed": false
       },
 
