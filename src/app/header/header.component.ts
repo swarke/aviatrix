@@ -15,8 +15,7 @@ export class HeaderComponent implements OnInit {
   constructor(public properties: PropertiesService,
   			  private titleService: Title,
           private router: Router,
-          private route:ActivatedRoute
-          ) {
+          private route:ActivatedRoute) {
     console.log(this.route);
   	this.initToolName();
   }

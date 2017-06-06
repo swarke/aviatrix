@@ -19,7 +19,7 @@ export class PropertiesService {
   public LINK_FEEDBACK: string = 'Feedback';
 
   public READY_TO_IMPLEMENT: string ='Ready to implement hybrid cloud?';
-  public DOWNLOAD_AVIATRIX: string = 'Download Aviatrix!';
+  public DOWNLOAD_AVIATRIX: string = 'Download Aviatrix<br>Software<br>FREE TRIAL';
 
   public LEFT_PANEL_AWS_REGION: string  = 'AWS REGIONS';
   public LEFT_PANEL_AZURE_REGION: string  = 'AZURE REGIONS';
@@ -72,8 +72,12 @@ export class PropertiesService {
   public GOOGLE_API_KEY: string = 'AIzaSyAAPCDwjWqAyGu01LSKytb4tQIjQSrKw30';  // For development
   // public GOOGLE_API_KEY: string = 'AIzaSyD9N5DDr-Lzla4dTHE2ZpysyxkMtZFBpUo'; // For Production key
 
+  public AWS_DOWNLOAD_URL: string = 'https://aws.amazon.com/marketplace/seller-profile/ref=dtl_pcp_sold_by?id=ba8fdede-964b-475d-b679-0f9f899f6293';
+  public AZURE_DOWNLOAD_URL: string = 'https://azure.microsoft.com/en-us/marketplace/partners/aviatrix-systems/aviatrix-cloud-services/';
+  public DOWNLOAD_URL: string = 'http://aviatrix.com/download/';
 
   currentTool: string = null;
+  currentToolName: string = null;
   constructor() {
   }
 
@@ -84,4 +88,13 @@ export class PropertiesService {
   getCurerntTool() {
     return this.currentTool;
   }
+
+  setcurrentToolName(currentToolName) {
+    this.currentToolName = currentToolName;
+  }
+
+  getCurerntToolName() {
+    return this.currentToolName;
+  }
+
 }

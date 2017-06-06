@@ -14,8 +14,7 @@ export class FooterComponent implements OnInit {
   constructor(public properties: PropertiesService,
   			  private titleService: Title,
           private router: Router,
-          private route:ActivatedRoute
-          ) {
+          private route:ActivatedRoute) {
     console.log(this.route);
   	this.initToolName();
   }
@@ -25,6 +24,16 @@ export class FooterComponent implements OnInit {
 
   initToolName() {
     this.titleService.setTitle('Cloud Network Tools (powered by Aviatrix)');
+  }
+
+  download(){
+    if(this.properties.getCurerntToolName() == this.properties.AWS) {
+      window.location.href = this.properties.AWS_DOWNLOAD_URL;
+    } else if(this.properties.getCurerntToolName() == this.properties.AZURE) {
+      window.location.href = this.properties.AZURE_DOWNLOAD_URL;
+    } else {
+      window.location.href = this.properties.DOWNLOAD_URL;
+    }
   }
 
 }

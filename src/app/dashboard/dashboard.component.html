@@ -1,4 +1,4 @@
-
+    <ng2-slim-loading-bar style="height: 12px; border: 0; box-shadow: inset 0 12px 12px -12px rgba(0, 0, 0, 0.5);"></ng2-slim-loading-bar>
     <div class="row mrg-top-15">
         <div class="col-md-7 pad-right-none">
             <div class="card card-radious-none">
@@ -151,7 +151,7 @@
                 </div>
                 <div class="card-block" #latencyCard>
                     <chart [options]="latencyOptions" (load)="latencyInstance($event.context)"  *ngIf="latencyOptions !== null" class="chart-height"></chart>
-                    <h6 *ngIf="latencyOptions === null" style="margin-top: 0px; margin-bottom: 0px; font-weight: 300"><button class="btn btn-start" style="float: none; margin-top: 0px;" (click)="startTest();" [disabled]="disabledStart" *ngIf="!disabledStart"><i class="fa fa-play" aria-hidden="true"></i>&nbsp;&nbsp;{{properties.START}}</button></h6>
+                    <h6 *ngIf="latencyOptions === null" style="margin-top: 0px; margin-bottom: 0px; font-weight: 300; text-transform: none;">Click on Begin Speed Test on the top of the page to start your speed test</h6>
                 </div>
             </div>
         </div>
@@ -168,7 +168,7 @@
                 </div>
                 <div class="card-block">
                     <chart [options]="bandwidthOptions" (load)="bandwidthInstance($event.context)" *ngIf="bandwidthOptions !== null" class="chart-height"></chart>
-                     <h6 *ngIf="bandwidthOptions === null" style="margin-top: 0px; margin-bottom: 0px; font-weight: 300"><button class="btn btn-start" style="float: none; margin-top: 0px;" (click)="startTest();" [disabled]="disabledStart" *ngIf="!disabledStart"><i class="fa fa-play" aria-hidden="true"></i>&nbsp;&nbsp;{{properties.START}}</button></h6>
+                     <h6 *ngIf="bandwidthOptions === null" style="margin-top: 0px; margin-bottom: 0px; font-weight: 300; text-transform: none;">Click on Begin Speed Test on the top of the page to start your speed test</h6>
                 </div>
             </div>
         </div>

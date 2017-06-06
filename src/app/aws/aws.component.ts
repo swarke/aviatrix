@@ -16,6 +16,7 @@ export class AWSComponent {
               private dashboardService: DashboardService,
               public properties: PropertiesService) {
     properties.setcurrentTool(properties.AWS_TOOL_NAME);
+    properties.setcurrentToolName(properties.AWS);
   }
 
 

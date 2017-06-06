@@ -16,5 +16,6 @@ export class AzureComponent {
               private dashboardService: DashboardService,
               public properties: PropertiesService) {
     properties.setcurrentTool(properties.AZURE_TOOL_NAME);
+    properties.setcurrentToolName(properties.AZURE);
   }
 }

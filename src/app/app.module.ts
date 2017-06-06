@@ -23,6 +23,7 @@ import {PopoverModule} from "ngx-popover";
 import { StarRatingModule } from 'angular-star-rating';
 import {ShareButtonsModule} from 'ngx-sharebuttons';
 import { AppRoutingModule, appRoutingProviders} from './app-routing.module';
+import {SlimLoadingBarModule} from 'ng2-slim-loading-bar';
 
 
 
@@ -57,7 +58,8 @@ export function highchartsFactory() {
     ChartModule,
     PopoverModule,
     StarRatingModule,
-    ShareButtonsModule.forRoot()
+    ShareButtonsModule.forRoot(),
+    SlimLoadingBarModule.forRoot()
   ],
   entryComponents: [ModalComponent],
   providers: [

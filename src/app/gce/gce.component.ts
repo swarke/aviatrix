@@ -16,6 +16,7 @@ export class GCEComponent {
               private dashboardService: DashboardService,
               public properties: PropertiesService) {
     properties.setcurrentTool(properties.GCE_TOOL_NAME);
+    properties.setcurrentToolName(properties.GCE);
   }
 
 

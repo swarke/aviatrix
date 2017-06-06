@@ -5,6 +5,7 @@ import { DashboardModel} from '../../models';
 import { Response, Http } from '@angular/http';
 import { DashboardService, PropertiesService } from '../../services';
 import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
+import {SlimLoadingBarService} from 'ng2-slim-loading-bar';
 
 import { CLOUD_TOOL, AWS_INVENTORY_PATH, AZURE_INVENTORY_PATH, GCE_INVENTORY_PATH} from '../app-config';
 declare var jQuery:any;
@@ -84,7 +85,8 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   constructor(private http: Http,
               private dashboardService: DashboardService,
               public properties: PropertiesService,
-              public dialog: MdDialog) {
+              public dialog: MdDialog,
+              private slimLoadingBarService: SlimLoadingBarService) {
       
       this.chartColors = ['#2196F3', '#F44336', '#FF609E', '#14936C', '#00FF4F', '#A99000',
                           '#E8C21A', '#673AB7', '#3D495A', '#536DFE', '#C3429B', '#C33A38', 
@@ -128,6 +130,8 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   }
 
   openDialog() {
+   // set progress bar as complete 
+   this.slimLoadingBarService.complete();
    let config = new MdDialogConfig();
    let dialogRef:MdDialogRef<ModalComponent> = this.dialog.open(ModalComponent, config);
    dialogRef.componentInstance.bestLatencyRegion = this.bestLatencyRegion;
@@ -345,6 +349,8 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
    */
 
   startTest() {
+    // Start progress bar
+    this.slimLoadingBarService.start();
     // Disabling start button
     this.disabledStart = true;
     this.isTestCompleted = false;
