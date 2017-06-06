@@ -135,6 +135,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
 
    this.slimLoadingBarService.complete();
    this.slimLoadingBarService.reset();
+   this.slimLoadingBarService.progress = 0;
    let config = new MdDialogConfig();
    let dialogRef:MdDialogRef<ModalComponent> = this.dialog.open(ModalComponent, config);
    dialogRef.componentInstance.bestLatencyRegion = this.bestLatencyRegion;
