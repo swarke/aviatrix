@@ -132,7 +132,9 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
 
   openDialog() {
    // set progress bar as complete 
+
    this.slimLoadingBarService.complete();
+   this.slimLoadingBarService.reset();
    let config = new MdDialogConfig();
    let dialogRef:MdDialogRef<ModalComponent> = this.dialog.open(ModalComponent, config);
    dialogRef.componentInstance.bestLatencyRegion = this.bestLatencyRegion;
@@ -351,7 +353,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
 
   startTest() {
     // Start progress bar
-    // this.slimLoadingBarService.start();
+    this.slimLoadingBarService.progress = 0;
     // Disabling start button
     this.disabledStart = true;
     this.isTestCompleted = false;
@@ -693,6 +695,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
 
   stopTest() {
     // set progress bar as complete 
+    this.slimLoadingBarService.progress = 0;
     this.slimLoadingBarService.complete();
     this.disabledStart = false;
   }
