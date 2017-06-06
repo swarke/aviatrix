@@ -350,7 +350,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
 
   startTest() {
     // Start progress bar
-    this.slimLoadingBarService.start();
+    // this.slimLoadingBarService.start();
     // Disabling start button
     this.disabledStart = true;
     this.isTestCompleted = false;
@@ -383,6 +383,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
       object.firstLatencyPass = false;
       object.firstBandwidthPass = false;
       object.pingStartTime = new Date();
+
       // Setting up latency chart
       this.setDataPoint(object.dashboardModel.latency, object);
       latencySeries.push(this.getSeriesData('spline', object.cloud_info.region, this.getChartData(object.dashboardModel.latency)));
@@ -392,6 +393,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
       this.setDataPoint(object.dashboardModel.bandwidth, object);
       badwidthSeries.push(this.getSeriesData('spline', object.cloud_info.region, this.getChartData(object.dashboardModel.bandwidth)));
       setTimeout(()=>this.setBandwith(index),10);
+      
     }
 
     this.latencyOptions = this.getChartConfig('', this.properties.MILISECONDS, latencySeries, 'spline');
@@ -468,12 +470,14 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
             let speedBps: any = (bitsLoaded / duration).toFixed(2);
             let speedKbps: any = (speedBps / 1024).toFixed(2);
             let speedMbps = (speedKbps / 1024).toFixed(2);
+            
+
 
             if (obj.firstBandwidthPass) {
               obj.dashboardModel.bandwidth[obj.currentBandwidthIndex].value = parseFloat(speedMbps);
               this.bandwidthChart.series[index].data[obj.currentBandwidthIndex].update({"y": parseFloat(speedMbps)});
               obj.currentBandwidthIndex++;
-            
+              this.slimLoadingBarService.progress++;
 
               // console.log("Region: " + obj.region_name + " Current index: " + obj.currentBandwidthIndex + " call index: " + obj.throughputCallIndex);
               if(obj.currentBandwidthIndex > 5) {
@@ -682,6 +686,8 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   }
 
   stopTest() {
+    // set progress bar as complete 
+    this.slimLoadingBarService.complete();
     this.disabledStart = false;
   }
 
@@ -1045,6 +1051,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
     }
     return null;
   }
+
 }
 
 // just an interface for type safety.
@@ -1054,3 +1061,5 @@ interface marker {
   label?: string;
   draggable: boolean;
 }
+
+
