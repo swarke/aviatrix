@@ -16,6 +16,8 @@ declare const google: any;
 
 declare const AmCharts: any;
 
+declare const MktoForms2: any;
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html?v=${new Date().getTime()}',
@@ -27,6 +29,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   clouds: any;
   @Input() tool: string;
   progressFactor: number = 0;
+
   options: any;
   latencyOptions: any;
   isTestCompleted: boolean;
@@ -132,7 +135,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
 
   openDialog() {
    // set progress bar as complete 
-
+   MktoForms2.loadForm("//app-ab21.marketo.com", "882-LUR-510", 1005);
    this.slimLoadingBarService.complete();
    this.slimLoadingBarService.reset();
    this.slimLoadingBarService.progress = 0;

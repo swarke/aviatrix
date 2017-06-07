@@ -2,7 +2,7 @@
     <button md-dialog-close style="border: none; background-color: transparent; outline: none;cursor: pointer;">X</button>
 </md-dialog-actions>
 <div *ngIf="bestBandwidthRegion && bestLatencyRegion">
-    <div class="row" align="center" style="margin-top: 50px;">
+    <div class="row" align="center" style="margin-top: 35px;">
         <div class="col-md-6">
             <img src="/assets/ic_speedometer.png" style="margin-left: auto; margin-right: auto; display: block; ">
         </div>
@@ -26,7 +26,7 @@
             <span style="font-size: 14px;">Best region for data intesive apps</span>
         </div>
     </div>
-    <div class="row" align="center" style="margin-top: 25px;">
+    <div class="row" align="center" style="margin-top: 25px; margin-bottom: 35px;">
         <div class="col-md-4" style="margin-left: 0px;" align="center">
             <span style="font-size: 20px; color: #2196F3;">{{bestLatencyRegion.latency }} msec</span><br>
             <span style="font-size: 12px;">Latency</span>
@@ -50,6 +50,8 @@
     <!-- <div class="row" align="center" style="margin-top: 85px; margin-left: 340px;">
         <button class="btn btn-start" style="width: 130px; font-weight: 400;" (click)="dialogRef.close('')">Close</button>
     </div> -->
-    
+</div>
+<div align="center">
+    <form id="mktoForm_1005"></form>
 </div>
 
