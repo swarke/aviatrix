@@ -8,9 +8,10 @@ import { GCEComponent } from './gce/gce.component';
 
 const AppRoutes: Routes = [
 	// { path: '', component: LandingComponent },
+	// { path: 'speedtest', component: AWSComponent },
 	{ path: 'aws/speedtest', component: AWSComponent },
-	{ path: 'azure/speedtest', component: AzureComponent},
-	{ path: 'gce/speedtest', component: GCEComponent },
+	// { path: 'speedtest', component: AzureComponent},
+	// { path: 'speedtest', component: GCEComponent },
 ];
 export const appRoutingProviders: any[] = [];
 export const AppRoutingModule = RouterModule.forRoot(AppRoutes, { useHash: true });

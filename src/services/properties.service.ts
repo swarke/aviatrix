@@ -67,7 +67,7 @@ export class PropertiesService {
   public LATENCY_CHART_TOOLTIP: string = "Measures latency from the browser to cloud regions. Use latency to determine deployment of latency sensitive applications. To measure network performance from your data center to the cloud, open the browser in the data center.";
   public THROUGHPUT_PANEL_TOOLTIP: string = "Measures throughput from the browser to cloud regions. Use throughput data for data intensive applications. To measure network performance from your data center to the cloud, open the browser in the data center.";
 
-  public SHARE_POST: string ='Check out the free tool on cloudnetworkingtools.com!';
+  public SHARE_POST: string ='Checkout the cool free cloud speed test from Aviatrix!';
 
   public GOOGLE_API_KEY: string = 'AIzaSyAAPCDwjWqAyGu01LSKytb4tQIjQSrKw30';  // For development
   // public GOOGLE_API_KEY: string = 'AIzaSyD9N5DDr-Lzla4dTHE2ZpysyxkMtZFBpUo'; // For Production key

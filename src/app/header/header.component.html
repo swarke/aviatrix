@@ -47,8 +47,19 @@
         <div class="nav-container" id="nav-products">
           <a href="http://www.aviatrix.com/contact/" class="primary" style="text-decoration: none;">Contact Us</a>
         </div>
-
       </div>
     </div>
+     <div class="material-sharebuttons" style="margin-top: -7px; right: 0px; position: absolute;">
+            <share-buttons 
+             [pinterest]="pintTemp"
+             [google]="googleTemp"
+             [tumblr]="tumblrTemp"
+             [whatsApp]="whatsTemp"
+             [reddit]="false"
+             [stumbleUpOn]="false"
+             [title]="properties.SHARE_POST"
+             [url]="'https://cloudnetworkingtools.com'">
+            </share-buttons>
+        </div>
   </div>
 </div>
