@@ -49,7 +49,7 @@
         </div>
       </div>
     </div>
-     <div class="material-sharebuttons" style="margin-top: -7px; right: 0px; position: absolute;">
+      <div class="material-sharebuttons" style="margin-top: -7px; right: 0px; position: absolute; z-index: 900;">
             <share-buttons 
              [pinterest]="pintTemp"
              [google]="googleTemp"
@@ -60,6 +60,15 @@
              [title]="properties.SHARE_POST"
              [url]="'https://cloudnetworkingtools.com'">
             </share-buttons>
-        </div>
+
+            <button type="submit" class="emailbtn">
+              <!-- <div class="sb-template"> -->
+              <a href="mailto:">
+                <i class="fa fa-envelope"></i>
+              </a>  
+              <!-- </div> -->
+            </button>
+      </div>
+
   </div>
 </div>

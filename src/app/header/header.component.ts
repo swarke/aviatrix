@@ -7,7 +7,7 @@ import { CLOUD_TOOL} from '../app-config';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  // styleUrls: ['./header.component.scss'],
+  styleUrls: ['./header.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class HeaderComponent implements OnInit {
