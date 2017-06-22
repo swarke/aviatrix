@@ -110,5 +110,33 @@
     "url": "http://52.237.38.162/",
     "lat": 55.5333312,
     "lng": -106.583331
+  },
+  {
+    "name": "AZ-aviatrix-us-west",
+    "region_name": "West US",
+    "id": "/subscriptions/c0e9a5e9-b9e8-478d-8369-c8879c7e5a64/resourceGroups/aviatrix-us-west/providers/Microsoft.Compute/virtualMachines/AZ-aviatrix-us-west",
+    "dns_name": "",
+    "public_ip": "13.88.13.219",
+    "cloud_info": {
+      "region": "West US",
+      "availability_zone": ""
+    },
+    "url": "http://13.88.13.219/",
+    "lat": 36.778259,
+    "lng": -119.417931
+  },
+  {
+    "name": "AZ-aviatrix-us-west-2",
+    "region_name": "West US 2",
+    "id": "/subscriptions/c0e9a5e9-b9e8-478d-8369-c8879c7e5a64/resourceGroups/aviatrix-us-west-2/providers/Microsoft.Compute/virtualMachines/AZ-aviatrix-us-west-2",
+    "dns_name": "",
+    "public_ip": "52.191.138.114",
+    "cloud_info": {
+      "region": "West US 2",
+      "availability_zone": ""
+    },
+    "url": "http://52.191.138.114/",
+    "lat": 37.773972,
+    "lng": -122.431297
   }]
 }
