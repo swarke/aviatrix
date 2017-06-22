@@ -88,7 +88,98 @@
       "availability_zone": "sa-east-1c"
     },
     "url": "http://52.67.97.132/",
-    "lat": -23.3,
-    "lng": -46.38
+    "lat": 37.532600,
+    "lng": 127.024612
+  }, {
+    "name": "us-east-ohio-aviatrix-agent-do-not-stop",
+    "region_name": "US East (Ohio)",
+    "id": "i-0552d0571ed5df251",
+    "dns_name": "ec2-52-15-101-182.us-east-2.compute.amazonaws.com",
+    "public_ip": "52.15.101.182",
+    "cloud_info": {
+      "region": "us-east-2",
+      "availability_zone": "us-east-2b"
+    },
+    "url": "http://52.15.101.182/",
+    "lat": 40.367474,
+    "lng": -82.996216
+  }, {
+    "name": "canada-central-aviatrix-agent-do-not-stop",
+    "region_name": "Canada (Central)",
+    "id": "i-057e2b9549a4a738d",
+    "dns_name": "ec2-52-60-198-166.ca-central-1.compute.amazonaws.com",
+    "public_ip": "52.60.198.166",
+    "cloud_info": {
+      "region": "ca-central-1",
+      "availability_zone": "ca-central-1a"
+    },
+    "url": "http://52.60.198.166/",
+    "lat": 55.5333312,
+    "lng": -106.583331
+  }, {
+    "name": "eu-frankfurt-aviatrix-agent-do-not-stop",
+    "region_name": "EU (Frankfurt)",
+    "id": "i-06aa49b2f32700f05",
+    "dns_name": "ec2-52-58-32-22.eu-central-1.compute.amazonaws.com",
+    "public_ip": "52.58.32.22",
+    "cloud_info": {
+      "region": "eu-central-1",
+      "availability_zone": "eu-central-1b"
+    },
+    "url": "http://52.58.32.22/",
+    "lat": 50.110924,
+    "lng": 8.682127
+  }, {
+    "name": "eu-london-aviatrix-agent-do-not-stop",
+    "region_name": "EU (London)",
+    "id": "i-0610fe7a8c5e679bb",
+    "dns_name": "ec2-52-56-167-116.eu-west-2.compute.amazonaws.com",
+    "public_ip": "52.56.167.116",
+    "cloud_info": {
+      "region": "eu-west-2",
+      "availability_zone": "eu-west-2a"
+    },
+    "url": "http://52.56.167.116/",
+    "lat": 51.509865,
+    "lng": -0.118092
+  }, {
+    "name": "asia pasific-sydney-aviatrix-agent-do-not-stop",
+    "region_name": "Asia Pacific (Sydney)",
+    "id": "i-07efe45fc09bb0999",
+    "dns_name": "ec2-54-206-72-142.ap-southeast-2.compute.amazonaws.com",
+    "public_ip": "54.206.72.142",
+    "cloud_info": {
+      "region": "ap-southeast-2",
+      "availability_zone": "ap-southeast-2b"
+    },
+    "url": "http://54.206.72.142/",
+    "lat": -33.865143,
+    "lng": 151.209900
+  }, {
+    "name": "asia pasific-mumbai-aviatrix-agent-do-not-stop",
+    "region_name": "Asia Pacific (Mumbai)",
+    "id": "i-0363b5251c578d682",
+    "dns_name": "ec2-52-66-184-152.ap-south-1.compute.amazonaws.com",
+    "public_ip": "52.66.184.152",
+    "cloud_info": {
+      "region": "ap-south-1",
+      "availability_zone": "ap-south-1b"
+    },
+    "url": "http://52.66.184.152/",
+    "lat": 19.228825,
+    "lng": 72.854118
+  }, {
+    "name": "south america-sao Paulo-aviatrix-agent-do-not-stop",
+    "region_name": "South America (São Paulo)",
+    "id": "i-0e710c789a89825b0",
+    "dns_name": "ec2-52-67-97-132.sa-east-1.compute.amazonaws.com",
+    "public_ip": "52.67.97.132",
+    "cloud_info": {
+      "region": "sa-east-1c",
+      "availability_zone": "ap-south-1b"
+    },
+    "url": "http://52.67.97.132/",
+    "lat": -23.533773,
+    "lng": -46.625290
   }]
 }
