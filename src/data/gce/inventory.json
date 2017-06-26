@@ -82,5 +82,61 @@
     "url": "http://104.198.90.183/",
     "lat": 35.672855,
     "lng": 139.817413
+  },
+  {
+    "name": "aviatrix-us-central1-a",
+    "region_name": "us-central1 (Iowa)",
+    "id": "",
+    "dns_name": "",
+    "public_ip": "35.188.29.104",
+    "cloud_info": {
+      "region": "us-central1-a",
+      "availability_zone": ""
+    },
+    "url": "http://35.188.29.104/",
+    "lat": 42.032974,
+    "lng": -93.581543
+  },
+  {
+    "name": "aviatrix-us-east4-a",
+    "region_name": "us-east4 (Northern Virginia)",
+    "id": "",
+    "dns_name": "",
+    "public_ip": "35.186.185.66",
+    "cloud_info": {
+      "region": "us-east4-a",
+      "availability_zone": ""
+    },
+    "url": "http://35.186.185.66/",
+    "lat": 37.223232,
+    "lng": -81.449872
+  },
+  {
+    "name": "aviatrix-europe-west2-a",
+    "region_name": "europe-west2 (London)",
+    "id": "",
+    "dns_name": "",
+    "public_ip": "35.189.68.226",
+    "cloud_info": {
+      "region": "europe-west2-a",
+      "availability_zone": ""
+    },
+    "url": "http://35.189.68.226/",
+    "lat": 51.508530,
+    "lng": -0.076132
+  },
+  {
+    "name": "aviatrix-australia-southeast1-a",
+    "region_name": "australia-southeast1 (Sydney)",
+    "id": "",
+    "dns_name": "",
+    "public_ip": "35.189.12.207",
+    "cloud_info": {
+      "region": "australia-southeast1-a",
+      "availability_zone": ""
+    },
+    "url": "http://35.189.12.207/",
+    "lat": -33.865143,
+    "lng": 151.209900
   }]
 }
