@@ -1,3 +1,4 @@
+// import components
 import { Component, OnInit, AfterViewInit, ViewEncapsulation, Input } from '@angular/core';
 import { ModalComponent } from '../modal/modal.component';
 import { ChartModule } from 'angular2-highcharts';
@@ -23,6 +24,8 @@ declare const AmCharts: any;
   viewProviders: [DashboardService],
   encapsulation: ViewEncapsulation.None
 })
+
+// Dashboard Component
 export class DashboardComponent implements OnInit, AfterViewInit  {
   clouds: any;
   @Input() tool: string;
@@ -39,36 +42,23 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   lng: number;
   geoLocation: any;
   errorMessage: any;
-
   locations: any[];
-
   inventory: any;
-
   dashboardModel: DashboardModel;
   pingStartTime: any =  null;
-
-  TEST_MINUTES: number = 35;
-  TEST_INTERVAL: number = 5000;
-
   latency: any;
   bandwidth: any;
   responseTime: any;
   throughput: any;
-
   latencyChart: any;
-
   disabledStart: any;
-
   responseTimeChart : any;
   bandwidthChart: any;
   selectedRegions: any;
-
   bestRegion: any;
   worstRegion: any;
-
   bestLatencyRegion: any;
   bestBandwidthRegion: any;
-
   mapStyles: any;
   isDesc: boolean;
   sortableColumn: any;
@@ -77,6 +67,9 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   cloudPinPath: any;
   chartColors: any;
   userLocation: any;
+
+  TEST_MINUTES: number = 35;
+  TEST_INTERVAL: number = 5000;
 
   public zoom = 15;
   public opacity = 1.0;
@@ -120,7 +113,6 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
                 	    {value: '2', viewValue: 'Azure'}
                 	  ];
      this.options = [];
-
      this.inventory = {};
      this.errorMessage = "";
      this.locations = [];
@@ -131,6 +123,9 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
      this.isTestCompleted = false;
   }
 
+  /**
+   * Open modal to show best latency and throughput
+   */
   openDialog() {
    // set progress bar as complete 
    this.slimLoadingBarService.complete();
@@ -140,29 +135,42 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
    let dialogRef:MdDialogRef<ModalComponent> = this.dialog.open(ModalComponent, config);
    dialogRef.componentInstance.bestLatencyRegion = this.bestLatencyRegion;
    dialogRef.componentInstance.bestBandwidthRegion = this.bestBandwidthRegion;
- }
+  }
 
+  /**
+   * initialize latency instance
+   * [latencyInstance description]
+   * @param {[type]} chartInstance [chart instance]
+   */
   latencyInstance(chartInstance) {
     this.latencyChart = chartInstance;
   }
 
+  /**
+   * responce time instance
+   * [responseTimeInstance description]
+   * @param {[type]} chartInstance [chart instance]
+   */
   responseTimeInstance(chartInstance) {
     this.responseTimeChart = chartInstance;
   }
 
+  /**
+   * bandwidth instance
+   * [bandwidthInstance description]
+   * @param {[type]} chartInstance [chart instance]
+   */
   bandwidthInstance(chartInstance) {
     this.bandwidthChart = chartInstance;
   }
 
   ngOnInit() {
-    // this.userLocation.latitude = 18.5990891;                    
-    // this.userLocation .longitude = 73.7722048;  
-    // this.userLocation.isOpen = false;
-    // this.userLocation.label = 'User Location'
-    // this.userLocation.iconUrl = '/assets/user_pin.png';
-
   }
 
+  /**
+   * get the geo location of user
+   * [ngAfterViewInit description]
+   */
   ngAfterViewInit() {
     this.initLeftPanelHeader();
     let self = this;
@@ -198,32 +206,12 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
     }, (error: any) => {
       self.getInvetory();
     });
-
-    // if (navigator.geolocation){
-    //   navigator.geolocation.getCurrentPosition(function(position){                                                              
-    //     self.userLocation.latitude = position.coords.latitude;                    
-    //     self.userLocation.longitude = position.coords.longitude;  
-    //     self.userLocation.isOpen = false;
-    //     self.userLocation.label = 'User Location'
-    //     self.userLocation.iconUrl = '/assets/user_pin.png';
-    //     console.log("Lat: " + self.userLocation.latitude + " Long " +  self.userLocation .longitude);
-        
-    //     var geocoder = geocoder = new google.maps.Geocoder();
-    //       var latlng = new google.maps.LatLng(self.userLocation.latitude, self.userLocation.longitude);
-    //       geocoder.geocode({ 'latLng': latlng }, function (results, status) {
-    //           if (status == google.maps.GeocoderStatus.OK) {
-    //               if (results[1]) {
-    //                   self.userLocation.address = results[1].formatted_address;
-    //               }
-    //           }            
-    //     });
-
-    //     self.getInvetory();
-      
-    //   });
-    // }
   }
 
+  /**
+   * Initialize left panel header
+   * [initLeftPanelHeader description]
+   */
   initLeftPanelHeader() {
     if(this.tool.toUpperCase() === this.properties.AWS) {
      this.leftPanelHeader = this.properties.LEFT_PANEL_AWS_REGION;
@@ -240,6 +228,10 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
     }
   }
 
+  /**
+   * Get the current geo location of user
+   * [getCurrentGeoLocation description]
+   */
   getCurrentGeoLocation() {
      let current = this;
       this.getGeolocation().subscribe((geoLocation:   any) => {
@@ -262,11 +254,21 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
     })
   }
 
+  /**
+   * get the geo location from google api
+   * [getGeolocation description]
+   */
   getGeolocation() {
    return this.http.post('https://www.googleapis.com/geolocation/v1/geolocate?key=' + this.properties.GOOGLE_API_KEY, {});
-   // return this.http.get("https://freegeoip.net/json/");
   };
 
+  /**
+   * get series data
+   * [getSeriesData description]
+   * @param {[any]} chartType [type of chart]
+   * @param {[any]} name      [name of series]
+   * @param {[any]} data      [list of data]
+   */
   getSeriesData(chartType: any, name: any, data: any) {
     return {
               type:   chartType,
@@ -284,6 +286,14 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
     };
   }
 
+  /**
+   * get the chart configuration
+   * [getChartConfig description]
+   * @param {[any]} title     [title for chart]
+   * @param {[any]} unit      [unit for chart]
+   * @param {[any]} series    [series for chart]
+   * @param {[any]} chartType [type of chart]
+   */
   getChartConfig (title: any, unit: any, series: any, chartType: any) {
      const options = {
           chart:   { type:  chartType, zoomType:   'xy',
@@ -320,19 +330,16 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
 
   /**
    * [getChartData description]
-   * @param {[type]} chartData [description]
+   * @param {[type]} chartData [chart data]
    */
   getChartData(chartData) {
     const metricData: any = [];
     for (let index = 0; index < chartData.length; index++) {
       const jsonObj = chartData[index];
-      // if (jsonObj.value !== null) {
-        const date: Date = new Date(jsonObj.time);
-        let yVal = jsonObj.value;
-  
-        metricData.push([Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(),
-         date.getHours(), date.getMinutes(), date.getSeconds()), yVal]);
-      // }
+      const date: Date = new Date(jsonObj.time);
+      let yVal = jsonObj.value;
+      metricData.push([Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(),
+      date.getHours(), date.getMinutes(), date.getSeconds()), yVal]);
     }
 
     return metricData;
@@ -340,8 +347,8 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
 
   /**
    * [getChartPoint description]
-   * @param {[type]} date  [description]
-   * @param {[type]} value [description]
+   * @param {[type]} date  [date object] 
+   * @param {[type]} value [value of date]
    */
   getChartPoint(date, value) {
     return [Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(),
@@ -349,9 +356,9 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   }
 
   /**
-   * Starts test for calculating the statistics.
+   * Starts test for calculating the statistics
+   * [startTest description]
    */
-
   startTest() {
     // Start progress bar
     this.slimLoadingBarService.progress = 0;
@@ -404,6 +411,12 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
     this.bandwidthOptions = this.getChartConfig('', this.properties.MBPS, badwidthSeries, 'spline');
   }
 
+  /**
+   * set data point on map
+   * [setDataPoint description]
+   * @param {[type]} data [data for pin]
+   * @param {[type]} obj  [object of region]
+   */
   setDataPoint(data, obj) {
     for (var index = 0; index < 6; index++) {
       if (index == 0) {
@@ -417,30 +430,32 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   }  
 
   /**
+   * get the time diff
    * [getTimeDiff description]
    */
   getTimeDiff() {
     let endTime:any = new Date();
     let diff: any = endTime - this.pingStartTime;
-
     var diffMins = Math.round(((diff % 86400000) % 3600000) / 60000);
     return diffMins;
   }
 
 
   /**
+   * get time diff in seconds
    * [getTimeDiffInSeconds description]
    */
   getTimeDiffInSeconds(pingStartTime, index) {
     let endTime:any = new Date();
     let diff: any = endTime.getTime() - pingStartTime.getTime();
-
     var diffSec = diff/ 1000;
     return diffSec;
   }
 
   /**
+   * set bandwidth
    * [setBandwith description]
+   * @param {[type]} index [index of region]
    */
   setBandwith(index) {
     let obj = this.locations[index];
@@ -453,20 +468,6 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
         setTimeout(()=>this.setBandwith(index),this.TEST_INTERVAL);
         let pingStart = new Date();
         var cacheBuster = "?nnn=" + pingStart;
-        // this.http.get(this.inventory.aws[0].url + 'clouds-01.jpeg' + cacheBuster)
-        //   .subscribe((data) => {
-        //     let pingEnd: number = performance.now();
-        //     let duration: number = ((pingEnd - pingStart)/1000);
-        //     let bitsLoaded = downloadSize * 8;
-        //     let speedBps: any = (bitsLoaded / duration).toFixed(2);
-        //     let speedKbps: any = (speedBps / 1024).toFixed(2);
-        //     let speedMbps = (speedKbps / 1024).toFixed(2);
-
-        //     dashboard.dashboardModel.bandwidth.push({'time': pingEnd, 'value': speedMbps});
-        //     dashboard.getBandwidth();
-        //     dashboard.setBandwith();
-        // });
-
         this.dashboardService.getBandwidth(obj.url + this.properties.BANDWIDTH_IMG + cacheBuster).subscribe((data:any ) =>{
             let pingEnd = new Date();
             let duration: number = ((pingEnd.getTime() - pingStart.getTime())/1000);
@@ -474,9 +475,6 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
             let speedBps: any = (bitsLoaded / duration).toFixed(2);
             let speedKbps: any = (speedBps / 1024).toFixed(2);
             let speedMbps = (speedKbps / 1024).toFixed(2);
-            
-
-
             if (obj.firstBandwidthPass) {
               obj.dashboardModel.bandwidth[obj.currentBandwidthIndex].value = parseFloat(speedMbps);
               this.bandwidthChart.series[index].data[obj.currentBandwidthIndex].update({"y": parseFloat(speedMbps)});
@@ -502,7 +500,9 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   }
 
   /**
+   * get bandwidth
    * [getBandwidth description]
+   * @param {[type]} obj [dashboard model object]
    */
   getBandwidth(obj) {
     if (obj.dashboardModel.bandwidth.length > 0) {
@@ -518,6 +518,11 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
 
   /**
    * [setLatency description]
+   */
+  /**
+   * set latency
+   * [setLatency description]
+   * @param {any} index [index of region]
    */
   setLatency(index: any) {
     let obj = this.locations[index];
@@ -556,7 +561,9 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   }
 
   /**
+   * get latency
    * [getLatency description]
+   * @param {[type]} obj [object of dashboard model]
    */
   getLatency(obj) {
     if (obj.dashboardModel.latency.length > 0) {
@@ -572,7 +579,9 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   }
 
   /**
+   * set responce time
    * [setResponseTime description]
+   * @param {any} index [index of region]
    */
   setResponseTime(index: any) {
     let obj = this.locations[index];
@@ -596,7 +605,9 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   }
 
   /**
+   * Get the responce time
    * [getResponseTime description]
+   * @param {any} obj [object of dashboard model]
    */
   getResponseTime(obj: any) {
     if (obj.dashboardModel.responseTime.length > 0) {
@@ -611,6 +622,10 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
     }
   }
 
+  /**
+   * get the best latency and throughput
+   * [getBestLatencyAndBandwidth description]
+   */
   getBestLatencyAndBandwidth() {
     for (let index = 0; index < this.locations.length; index++) {
       let object: any = this.locations[index];
@@ -633,6 +648,10 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
     }
   }
 
+  /**
+   * return true if process is completed else return false
+   * [isProcessCompleted description]
+   */
   isProcessCompleted() {
     let processCompleted: boolean = false;
     for(let index = 0; index < this.locations.length; index++) {
@@ -665,6 +684,10 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
     }
   }
 
+  /**
+   * get the inventory from s3
+   * [getInvetory description]
+   */
   getInvetory() {
 
     this.dashboardService.getInventory(this.inventoryPath).subscribe((inventory: any) => {
@@ -694,6 +717,10 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
 
   }
 
+  /**
+   * stop the test
+   * [stopTest description]
+   */
   stopTest() {
     // set progress bar as complete 
     this.slimLoadingBarService.progress = 0;
@@ -701,6 +728,11 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
     this.disabledStart = false;
   }
 
+  /**
+   * Update marker label fro region
+   * [updateMarkerLabel description]
+   * @param {[type]} marker [region of cloud provider]
+   */
   updateMarkerLabel(marker) {
     let latency = "";
     let responseTime = "";
@@ -741,8 +773,9 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   }
 
   /**
+   * read latest latency 
    * [readLatestLatency description]
-   * @param {[type]} obj [description]
+   * @param {[type]} obj [object of dashboard model]
    */
   readLatestLatency(obj) {
     if (obj.latencyCompleted && obj.latency) {
@@ -755,6 +788,11 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
     return this.properties.CALCULATING_TEXT;
   }
 
+  /**
+   * read latest bandwidth
+   * [readLatestThroughput description]
+   * @param {[type]} obj [object of dashboard model]
+   */
   readLatestThroughput(obj) {
     if (obj.bandwidthCompleted && obj.bandwidth) {
       return obj.bandwidth;
@@ -766,6 +804,11 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
      return this.properties.CALCULATING_TEXT;
   }
 
+  /**
+   * sort by asc/desc
+   * [sortBy description]
+   * @param {[type]} property [property of header]
+   */
   sortBy (property) {
     this.sortableColumn = property;
     this.isDesc = !this.isDesc; //change the direction    
@@ -794,6 +837,12 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
     });
   }
 
+  /**
+   * update chart on marker hover
+   * [updateChartOnMarker description]
+   * @param {[any]}     marker [regon on marker]
+   * @param {[boolean]} hide   [true/false]
+   */
   updateChartOnMarker(marker: any, hide: boolean) {
     if (this.latencyChart && this.latencyChart.series) {
       for(let index = 0; index < this.latencyChart.series.length; index++) {
@@ -838,6 +887,10 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
     }
   }
 
+  /**
+   * generate map
+   * [generateMap description]
+   */
   generateMap() {
     let self = this;
     var map = L.map('map', { zoomControl:false }).setView([self.userLocation.latitude, self.userLocation.longitude], 1);
@@ -907,6 +960,10 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
     }
   }
 
+  /**
+   * generate AmMap
+   * [generateAmMap description]
+   */
   generateAmMap() {
     let self = this;
 
@@ -1048,6 +1105,11 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
     });
   }
 
+  /**
+   * get the image for region
+   * [getRegionForImage description]
+   * @param {[type]} regionId [region name]
+   */
   getRegionForImage(regionId) {
     for(let index = 0; index < this.locations.length; index++) {
       let location = this.locations[index];

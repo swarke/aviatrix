@@ -1,3 +1,4 @@
+// import components
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
@@ -9,8 +10,13 @@ import { PropertiesService } from '../../services';
   styleUrls: ['./footer.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
+
+// Footer Component
 export class FooterComponent implements OnInit {
   
+  /**
+   * constructor Footer Component
+   */
   constructor(public properties: PropertiesService,
   			  private titleService: Title,
           private router: Router,
@@ -22,10 +28,18 @@ export class FooterComponent implements OnInit {
   ngOnInit() {
   }
 
+  /**
+   * set title tool name
+   * [initToolName description]
+   */
   initToolName() {
     this.titleService.setTitle('Cloud Network Tools (powered by Aviatrix)');
   }
 
+  /**
+   * set Download link
+   * [download description]
+   */
   download(){
     if(this.properties.getCurerntToolName() == this.properties.AWS) {
       return this.properties.AWS_DOWNLOAD_URL;
@@ -35,5 +49,4 @@ export class FooterComponent implements OnInit {
       return this.properties.DOWNLOAD_URL;
     }
   }
-
 }

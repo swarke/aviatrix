@@ -1,184 +1,126 @@
-    <ng2-slim-loading-bar [color]="'#e24301'"></ng2-slim-loading-bar>
-    <div class="row mrg-top-15">
-        <div class="col-md-7 pad-right-none">
-            <div class="card card-radious-none">
-                <div class="card-header">   
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h6 class="card-title card-title-margin">{{leftPanelHeader}}</h6>
-                        </div>
-                        <div class="col-md-6">
-                            <button class="btn btn-stop" (click)="stopTest();" [disabled]="!disabledStart" *ngIf="disabledStart"> <i class="fa fa-stop" aria-hidden="true"></i>&nbsp;&nbsp;{{properties.STOP}}</button>
-                            <button class="btn btn-start" (click)="startTest();" [disabled]="disabledStart" *ngIf="!disabledStart"><i class="fa fa-play" aria-hidden="true"></i>&nbsp;&nbsp;{{properties.START}}</button>
-                        </div>
+<ng2-slim-loading-bar [color]="'#e24301'"></ng2-slim-loading-bar>
+<div class="row mrg-top-15">
+    <div class="col-md-7 pad-right-none">
+        <div class="card card-radious-none">
+            <div class="card-header">   
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="card-title card-title-margin">{{leftPanelHeader}}</h6>
                     </div>
-                </div>
-                <div class="card-block"  style="padding: 0px;"> 
-                <!-- *ngIf="userLocation.latitude && locations.length > 0" -->
-                    <div id="map" style="height: 306px;"></div>
-                <!-- *ngIf="userLocation.latitude && locations.length > 0" -->
-                    <!-- Google map implementation -->
-                    <!-- <agm-map [latitude]="0" [longitude]="768"
-                    [scrollwheel]="false" [zoom]="1" [streetViewControl]="false"  [disableDefaultUI]="false" [styles]="mapStyles" [usePanning] = 'false'>
-                        <agm-marker *ngIf="userLocation.latitude" [latitude]="userLocation.latitude" [longitude]="userLocation.longitude" [iconUrl]="userLocation.iconUrl" [optimized]="false" (mouseOver)="markerEntered(userLocation, $event, false)" (mouseOut)="markerOut(userLocation, $event, false)">
-
-                        </agm-marker>
-
-                        <agm-marker *ngFor="let m of locations" [latitude]="m.lat" [longitude]="m.lng" [iconUrl]="m.iconUrl" [optimized]="false" (mouseOver)="markerEntered(m, $event, true)" (mouseOut)="markerOut(m, $event, true)">
-                            <agm-info-window [disableAutoPan]="true" [isOpen]="m.isOpen">
-                                <div [innerHtml]="m.label"></div>
-                            </agm-info-window>
-                        </agm-marker>
-
-                        <agm-polyline [geodesic] = 'true' [strokeWeight]='1' *ngFor="let m of locations" [strokeColor]='m.color'>
-                             <agm-polyline-point [latitude]="userLocation.latitude" [longitude]="userLocation.longitude">
-                             </agm-polyline-point>
-                             <agm-polyline-point [latitude]="m.lat" [longitude]="m.lng">
-                             </agm-polyline-point>
-                        </agm-polyline>
-                    </agm-map> -->
+                    <div class="col-md-6">
+                        <button class="btn btn-stop" (click)="stopTest();" [disabled]="!disabledStart" *ngIf="disabledStart"> <i class="fa fa-stop" aria-hidden="true"></i>&nbsp;&nbsp;{{properties.STOP}}</button>
+                        <button class="btn btn-start" (click)="startTest();" [disabled]="disabledStart" *ngIf="!disabledStart"><i class="fa fa-play" aria-hidden="true"></i>&nbsp;&nbsp;{{properties.START}}</button>
+                    </div>
                 </div>
             </div>
+            <div class="card-block padding-none"> 
+                <div id="map" class="height-306"></div>
+            </div>
         </div>
-        <div class="col-md-5">
-            <div class="card card-radious-none">
-                <div class="card-header" style="margin-bottom: 25px;">
-                    <div class="row">
-                        <div class="col-md-9" style="padding-right: 0px;">
-                        <h6 class="card-title card-title-margin">{{properties.RIGHT_PANEL_HEADER}} <span>&nbsp;  <i class="fa fa-info-circle fa-lg info-color cursor-pointer" aria-hidden="true" mdTooltip="{{properties.RIGHT_PANEL_TOOLTIP}}"></i></span></h6>                 
-                        </div>
-                        <div class="col-md-3" style="text-align: right;">
-                            <img class="loader-style" src="../assets/loader.gif" *ngIf="disabledStart">
-                        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="card card-radious-none">
+            <div class="card-header margin-bottom-25">
+                <div class="row">
+                    <div class="col-md-9 padding-right-none">
+                    <h6 class="card-title card-title-margin">{{properties.RIGHT_PANEL_HEADER}} <span>&nbsp;  <i class="fa fa-info-circle fa-lg info-color cursor-pointer" aria-hidden="true" mdTooltip="{{properties.RIGHT_PANEL_TOOLTIP}}"></i></span></h6>                 
+                    </div>
+                    <div class="col-md-3 text-align-right">
+                        <img class="loader-style" src="../assets/loader.gif" *ngIf="disabledStart">
                     </div>
                 </div>
-                <div class="card-block test-card-height" style="padding-top: 0px;">
-                    <div class="row" style="margin-bottom: 25px; margin-left: 0px;">
-                        <div class="col-md-6" style="font-size: 18px; text-align: left;     border-left: solid 6px #26db68; padding-left: 10px;">
-                            <span *ngIf="!bestLatencyRegion && !disabledStart">{{properties.NA_TEXT}}</span>
-                            <span *ngIf="!bestLatencyRegion && disabledStart">{{properties.CALCULATING_TEXT}}</span>
-                            <span *ngIf="bestLatencyRegion && !disabledStart">{{bestLatencyRegion.region_name}}</span>
-                            <br>
-                            <span style="font-size: 12px;">Best region for latency sensitive apps</span>
-                        </div>
-                        <div class="col-md-6" style="font-size: 18px; text-align: left;     border-left: solid 6px #03bca1; padding-left: 10px;">
-                            <span *ngIf="!bestBandwidthRegion && !disabledStart">{{properties.NA_TEXT}}</span>
-                            <span *ngIf="!bestBandwidthRegion && disabledStart">{{properties.CALCULATING_TEXT}}</span>
-                            <span *ngIf="bestBandwidthRegion && !disabledStart">{{bestBandwidthRegion.region_name}}</span>
-                            <br>
-                            <span style="font-size: 12px;">Best region for data intesive apps</span>
-                        </div>
-                    <!-- div class="col-md-7" style="margin-bottom: 5px;">Best region for latency sensitive apps </div>
-                    <div class="col-md-5" *ngIf="!bestLatencyRegion && !disabledStart">{{properties.NA_TEXT}}</div>
-                    <div class="col-md-5" *ngIf="!bestLatencyRegion && disabledStart">{{properties.CALCULATING_TEXT}}</div>
-                    <div class="col-md-5" *ngIf="bestLatencyRegion && !disabledStart">{{best LatencyRegion.region_name}}</div> -->
+            </div>
+            <div class="card-block test-card-height padding-top-none">
+                <div class="row margin-bottom-25 margin-left-none">
+                    <div class="col-md-6 right-stat-panel right-latency-panel-border">
+                        <span *ngIf="!bestLatencyRegion && !disabledStart">{{properties.NA_TEXT}}</span>
+                        <span *ngIf="!bestLatencyRegion && disabledStart">{{properties.CALCULATING_TEXT}}</span>
+                        <span *ngIf="bestLatencyRegion && !disabledStart">{{bestLatencyRegion.region_name}}</span>
+                        <br>
+                        <span style="font-size: 12px;">Best region for latency sensitive apps</span>
                     </div>
-                    <!-- <div class="row">
-                       <div class="col-md-7"> Best region for data intesive apps </div>
-                       <div class="col-md-5" *ngIf="!bestBandwidthRegion && !disabledStart">{{properties.NA_TEXT}}</div>
-                       <div class="col-md-5" *ngIf="!bestBandwidthRegion && disabledStart">{{properties.CALCULATING_TEXT}}</div>
-                       <div class="col-md-5" *ngIf="bestBandwidthRegion && !disabledStart">{{bestBandwidthRegion.region_name}}</div>
+                    <div class="col-md-6 right-stat-panel right-throughput-panel-border">
+                        <span *ngIf="!bestBandwidthRegion && !disabledStart">{{properties.NA_TEXT}}</span>
+                        <span *ngIf="!bestBandwidthRegion && disabledStart">{{properties.CALCULATING_TEXT}}</span>
+                        <span *ngIf="bestBandwidthRegion && !disabledStart">{{bestBandwidthRegion.region_name}}</span>
+                        <br>
+                        <span style="font-size: 12px;">Best region for data intensive apps</span>
+                    </div>
+                </div>
+                <table class="table table-striped margin-top-10 margin-bottom-minus-10">
+                    <thead>
+                        <tr>
+                            <th width="35%"><span class="column-header" (click)="sortBy('region_name')">{{properties.RIGHT_PANEL_REGION_COLUMN_HEADER}} <i class="fa sort-style" 
+                                [ngClass]="{'fa-sort': sortableColumn != 'region_name', 'fa-sort-asc': (sortableColumn == 'region_name' && !isDesc),                                        'fa-sort-desc': (sortableColumn == 'region_name' && isDesc) }"
+                                aria-hidden="true"> </i>
 
-                    </div> -->
-                    <table class="table table-striped" style="margin-top: 10px; margin-bottom: -10px;">
-                        <thead>
-                            <tr>
-                                <th width="35%"><span class="column-header" (click)="sortBy('region_name')">{{properties.RIGHT_PANEL_REGION_COLUMN_HEADER}} <i class="fa sort-style" 
-                                    [ngClass]="{'fa-sort': sortableColumn != 'region_name', 'fa-sort-asc': (sortableColumn == 'region_name' && !isDesc),                                        'fa-sort-desc': (sortableColumn == 'region_name' && isDesc) }"
-                                    aria-hidden="true"> </i>
+                            </span></th>
 
-                                </span></th>
-
-                                <th width="30%" style="padding-left: 2px;"><span class="column-header" (click)="sortBy('latency')">{{properties.RIGHT_PANEL_LATENCY_COLUMN_HEADER}} <i class="fa sort-style" 
-                                    [ngClass]="{'fa-sort': sortableColumn != 'latency', 'fa-sort-asc': (sortableColumn == 'latency' && !isDesc),                                        'fa-sort-desc': (sortableColumn == 'latency' && isDesc) }"
-                                    aria-hidden="true"> </i></span></th>
+                            <th width="30%" class="padding-left-2"><span class="column-header" (click)="sortBy('latency')">{{properties.RIGHT_PANEL_LATENCY_COLUMN_HEADER}} <i class="fa sort-style" 
+                                [ngClass]="{'fa-sort': sortableColumn != 'latency', 'fa-sort-asc': (sortableColumn == 'latency' && !isDesc),                                        'fa-sort-desc': (sortableColumn == 'latency' && isDesc) }"
+                                aria-hidden="true"> </i></span></th>
+                            
+                            <th width="35%" class="padding-left-none"><span class="column-header" (click)="sortBy('bandwidth')">{{properties.RIGHT_PANEL_THROUGHPUT_COLUMN_HEADER}} <i class="fa sort-style" 
+                                [ngClass]="{'fa-sort': sortableColumn != 'bandwidth', 'fa-sort-asc': (sortableColumn == 'bandwidth' && !isDesc),                                        'fa-sort-desc': (sortableColumn == 'bandwidth' && isDesc) }"
+                                aria-hidden="true"> </i></span></th>
+                        </tr>
+                    </thead>
+                </table>
+                <div class="stat-table-overlay">
+                    <table class="table table-striped margin-top-10">
+                        
+                        <tbody>
+                            <tr *ngFor="let region of locations">
+                                <td class="width-35">{{region.region_name}}</td>
                                 
-                                <th width="35%" style="padding-left: 0px;"><span class="column-header" (click)="sortBy('bandwidth')">{{properties.RIGHT_PANEL_THROUGHPUT_COLUMN_HEADER}} <i class="fa sort-style" 
-                                    [ngClass]="{'fa-sort': sortableColumn != 'bandwidth', 'fa-sort-asc': (sortableColumn == 'bandwidth' && !isDesc),                                        'fa-sort-desc': (sortableColumn == 'bandwidth' && isDesc) }"
-                                    aria-hidden="true"> </i></span></th>
+                                <td class="padding-left-15 width-30" *ngIf="!region.latency && !disabledStart">{{properties.NA_TEXT}}</td>
+                                <td class="padding-left-15 width-30" *ngIf="!region.latency && disabledStart">{{readLatestLatency(region)}}</td>
+                                <td class="padding-left-15 width-30" *ngIf="region.latency">{{region.latency}}</td>
+
+                                <td class="padding-left-15 width-35" *ngIf="!region.bandwidth && !disabledStart">{{properties.NA_TEXT}}</td>
+                                <td class="padding-left-15 width-35" *ngIf="region.bandwidth">{{region.bandwidth}}</td>
+                                <td class="padding-left-15 width-35" *ngIf="!region.bandwidth && disabledStart">{{readLatestThroughput(region)}}</td>
                             </tr>
-                        </thead>
+                        </tbody>
                     </table>
-                    <div style="overflow-y: auto; height: 193px">
-                        <table class="table table-striped" style="margin-top: 10px;">
-                            <!-- <thead>
-                                <tr>
-                                    <th width="35%"><span class="column-header" (click)="sortBy('region_name')">{{properties.RIGHT_PANEL_REGION_COLUMN_HEADER}} <i class="fa sort-style" 
-                                        [ngClass]="{'fa-sort': sortableColumn != 'region_name', 'fa-sort-asc': (sortableColumn == 'region_name' && !isDesc),                                        'fa-sort-desc': (sortableColumn == 'region_name' && isDesc) }"
-                                        aria-hidden="true"> </i>
-
-                                    </span></th>
-
-                                    <th width="30%"><span class="column-header" (click)="sortBy('latency')">{{properties.RIGHT_PANEL_LATENCY_COLUMN_HEADER}} <i class="fa sort-style" 
-                                        [ngClass]="{'fa-sort': sortableColumn != 'latency', 'fa-sort-asc': (sortableColumn == 'latency' && !isDesc),                                        'fa-sort-desc': (sortableColumn == 'latency' && isDesc) }"
-                                        aria-hidden="true"> </i></span></th>
-                                    
-                                    <th width="35%"><span class="column-header" (click)="sortBy('bandwidth')">{{properties.RIGHT_PANEL_THROUGHPUT_COLUMN_HEADER}} <i class="fa sort-style" 
-                                        [ngClass]="{'fa-sort': sortableColumn != 'bandwidth', 'fa-sort-asc': (sortableColumn == 'bandwidth' && !isDesc),                                        'fa-sort-desc': (sortableColumn == 'bandwidth' && isDesc) }"
-                                        aria-hidden="true"> </i></span></th>
-                                </tr>
-                            </thead> -->
-                            <tbody>
-                                <tr *ngFor="let region of locations">
-                                    <td style="width:35%">{{region.region_name}}</td>
-                                    
-                                    <td style="width: 30%; padding-left: 15px" *ngIf="!region.latency && !disabledStart">{{properties.NA_TEXT}}</td>
-                                    <td style="width: 30%; padding-left: 15px" *ngIf="!region.latency && disabledStart">{{readLatestLatency(region)}}</td>
-                                    <td style="width: 30%; padding-left: 15px" *ngIf="region.latency">{{region.latency}}</td>
-
-                                    <td style="width: 35%; padding-left: 15px" *ngIf="!region.bandwidth && !disabledStart">{{properties.NA_TEXT}}</td>
-                                    <td style="width: 35%; padding-left: 15px" *ngIf="region.bandwidth">{{region.bandwidth}}</td>
-                                    <td style="width: 35%; padding-left: 15px" *ngIf="!region.bandwidth && disabledStart">{{readLatestThroughput(region)}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row mrg-bottom-15">
-        <div class="col-md-6 pad-right-none">
-            <div class="card card-radious-none">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-md-9"><h6 class="card-title card-title-margin">{{properties.LATENCY_CHART_HEADER}} <span>&nbsp; <i class="fa fa-info-circle fa-lg info-color cursor-pointer" aria-hidden="true" mdTooltip="{{properties.LATENCY_CHART_TOOLTIP}}" mdTooltipPosition="right"></i></span></h6></div>
-                        <div class="col-md-3" style="text-align: right;">
-                            <img class="loader-style" src="../assets/loader.gif" *ngIf="disabledStart">
-                        </div>
-
+</div>
+<div class="row mrg-bottom-15">
+    <div class="col-md-6 pad-right-none">
+        <div class="card card-radious-none">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-9"><h6 class="card-title card-title-margin">{{properties.LATENCY_CHART_HEADER}} <span>&nbsp; <i class="fa fa-info-circle fa-lg info-color cursor-pointer" aria-hidden="true" mdTooltip="{{properties.LATENCY_CHART_TOOLTIP}}" mdTooltipPosition="right"></i></span></h6></div>
+                    <div class="col-md-3 text-align-right">
+                        <img class="loader-style" src="../assets/loader.gif" *ngIf="disabledStart">
                     </div>
-                </div>
-                <div class="card-block" #latencyCard>
-                    <chart [options]="latencyOptions" (load)="latencyInstance($event.context)"  *ngIf="latencyOptions !== null" class="chart-height"></chart>
-                    <h6 *ngIf="latencyOptions === null" style="margin-top: 0px; margin-bottom: 0px; font-weight: 300; text-transform: none;">Click on Begin Speed Test on the top of the page.</h6>
+
                 </div>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card card-radious-none">
-                 <div class="card-header">
-                    <div class="row">
-                        <div class="col-md-9"><h6 class="card-title card-title-margin">{{properties.THROUGHPUT_CHART_HEADER}}  <span>&nbsp; <i class="fa fa-info-circle fa-lg info-color cursor-pointer" aria-hidden="true" mdTooltip="{{properties.THROUGHPUT_PANEL_TOOLTIP}}" mdTooltipPosition="right"></i></span></h6></div>
-                        <div class="col-md-3" style="text-align: right">
-                            <img class="loader-style" src="../assets/loader.gif" *ngIf="disabledStart">
-                        </div>
-                    </div>
-
-                </div>
-                <div class="card-block">
-                    <chart [options]="bandwidthOptions" (load)="bandwidthInstance($event.context)" *ngIf="bandwidthOptions !== null" class="chart-height"></chart>
-                     <h6 *ngIf="bandwidthOptions === null" style="margin-top: 0px; margin-bottom: 0px; font-weight: 300; text-transform: none;">Click on Begin Speed Test on the top of the page.</h6>
-                </div>
+            <div class="card-block" #latencyCard>
+                <chart [options]="latencyOptions" (load)="latencyInstance($event.context)"  *ngIf="latencyOptions !== null" class="chart-height"></chart>
+                <h6 *ngIf="latencyOptions === null" style="margin-top: 0px; margin-bottom: 0px; font-weight: 300; text-transform: none;">Click on Begin Speed Test on the top of the page.</h6>
             </div>
         </div>
     </div>
-    <!-- <div class="row margin-top-50 mrg-bottom-15">
-      <div class="col-md-12 center">
-        <h5 class="interested-text-style">{{properties.READY_TO_IMPLEMENT}}</h5><br/>
-        <a class="btn btn-download" href="http://aviatrix.com/download/" target="_blank"><i class="fa fa-download" aria-hidden="true"></i>&nbsp;&nbsp;{{properties.DOWNLOAD_AVIATRIX}}</a>
+    <div class="col-md-6">
+        <div class="card card-radious-none">
+             <div class="card-header">
+                <div class="row">
+                    <div class="col-md-9"><h6 class="card-title card-title-margin">{{properties.THROUGHPUT_CHART_HEADER}}  <span>&nbsp; <i class="fa fa-info-circle fa-lg info-color cursor-pointer" aria-hidden="true" mdTooltip="{{properties.THROUGHPUT_PANEL_TOOLTIP}}" mdTooltipPosition="right"></i></span></h6></div>
+                    <div class="col-md-3 text-align-right">
+                        <img class="loader-style" src="../assets/loader.gif" *ngIf="disabledStart">
+                    </div>
+                </div>
 
-      </div>
-    </div> -->
-<!-- </div> -->
-
+            </div>
+            <div class="card-block">
+                <chart [options]="bandwidthOptions" (load)="bandwidthInstance($event.context)" *ngIf="bandwidthOptions !== null" class="chart-height"></chart>
+                 <h6 *ngIf="bandwidthOptions === null" style="margin-top: 0px; margin-bottom: 0px; font-weight: 300; text-transform: none;">Click on Begin Speed Test on the top of the page.</h6>
+            </div>
+        </div>
+    </div>
+</div>

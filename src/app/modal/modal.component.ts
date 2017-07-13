@@ -1,3 +1,4 @@
+// import component
 import { Component, ViewEncapsulation } from '@angular/core';
 import { DashboardService, PropertiesService } from '../../services';
 import { DashboardModel} from '../../models';
@@ -13,12 +14,21 @@ declare const MktoForms2: any;
   encapsulation:  ViewEncapsulation.None,
 })
 
+// Modal component
 export class ModalComponent {
   bestLatencyRegion: any;
   bestBandwidthRegion: any;
- constructor(public dialogRef: MdDialogRef<ModalComponent>) {
+
+  /**
+   * constructor Modal component
+   */
+  constructor(public dialogRef: MdDialogRef<ModalComponent>) {
   }
 
+  /**
+   * display survey form
+   * [displaySurveyForm description]
+   */
   displaySurveyForm() {
   	MktoForms2.loadForm("//app-ab21.marketo.com", "882-LUR-510", 1088);
   	// MktoForms2.loadForm("//app-ab21.marketo.com", "882-LUR-510", 1005);
