@@ -183,11 +183,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
         self.userLocation.longitude = geoLocations.location.lng;
 
         self.userLocation.isOpen = false;
-        // self.userLocation.label = 'User Location';
         self.userLocation.iconUrl = '/assets/updated_user_pin.png';
-        // console.log("Lat: " + self.userLocation.latitude + " Long " +  self.userLocation .longitude);
-
-        // self.userLocation.address = geoLocations.region_name + ', ' + geoLocations.country_name;
         var geocoder = geocoder = new google.maps.Geocoder();
           var latlng = new google.maps.LatLng(self.userLocation.latitude, self.userLocation.longitude);
           geocoder.geocode({ 'latLng': latlng }, function (results, status) {
@@ -197,7 +193,6 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
                   }
               }
         });
-        // console.log(geoLocations);
       } catch(ex) {
       }
 
