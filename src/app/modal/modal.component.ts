@@ -8,8 +8,8 @@ declare const MktoForms2: any;
 
 @Component({
   selector: 'app-modal',
-  styleUrls:  ['./modal.scss?v=${new Date().getTime()}'],
-  templateUrl: './modal.html?v=${new Date().getTime()}',
+  styleUrls:  ['./modal.scss'],
+  templateUrl: './modal.html',
   viewProviders: [DashboardService],
   encapsulation:  ViewEncapsulation.None,
 })

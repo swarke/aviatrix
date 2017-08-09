@@ -19,8 +19,8 @@ declare const AmCharts: any;
 
 @Component({
   selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html?v=${new Date().getTime()}',
-  styleUrls: ['./dashboard.component.scss?v=${new Date().getTime()}'],
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss'],
   viewProviders: [DashboardService],
   encapsulation: ViewEncapsulation.None
 })
@@ -314,6 +314,9 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
               dateTimeLabelFormats: {
                 second: '%H:%M:%S'
               },
+              title: {
+                    text: 'Time'
+                  },
               startOnTick: true
           },
           yAxis:   {
@@ -400,12 +403,12 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
 
       // Setting up latency chart
       this.setDataPoint(object.dashboardModel.latency, object);
-      latencySeries.push(this.getSeriesData('spline', object.cloud_info.region, this.getChartData(object.dashboardModel.latency)));
+      latencySeries.push(this.getSeriesData('spline', object.label, this.getChartData(object.dashboardModel.latency)));
       setTimeout(()=>this.setLatency(index),10);
 
       // Setting up bandwidth(throughput)
       this.setDataPoint(object.dashboardModel.bandwidth, object);
-      badwidthSeries.push(this.getSeriesData('spline', object.cloud_info.region, this.getChartData(object.dashboardModel.bandwidth)));
+      badwidthSeries.push(this.getSeriesData('spline', object.label, this.getChartData(object.dashboardModel.bandwidth)));
       setTimeout(()=>this.setBandwith(index),10);
       
     }
