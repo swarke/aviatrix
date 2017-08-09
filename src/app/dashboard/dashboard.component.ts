@@ -77,6 +77,10 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   text = '';
   hoveredObject = null;
   beginTest: boolean = false;
+  AWS_CLOUD: boolean = false;
+  AZURE_CLOUD: boolean = false;
+  GCE_CLOUD: boolean = false;
+
   constructor(private http: Http,
               private dashboardService: DashboardService,
               public properties: PropertiesService,
@@ -212,14 +216,17 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
      this.leftPanelHeader = this.properties.LEFT_PANEL_AWS_REGION;
      this.inventoryPath = AWS_INVENTORY_PATH;
      this.cloudPinPath = this.properties.AWS_CLOUD_PIN_PATH;
+     this.AWS_CLOUD = true;
     } else if(this.tool.toUpperCase() === this.properties.AZURE) {
      this.leftPanelHeader = this.properties.LEFT_PANEL_AZURE_REGION;
      this.inventoryPath = AZURE_INVENTORY_PATH;
      this.cloudPinPath = this.properties.AZURE_CLOUD_PIN_PATH;
+     this.AZURE_CLOUD = true;
     } else  if(this.tool.toUpperCase() === this.properties.GCE) {
      this.leftPanelHeader = this.properties.LEFT_PANEL_GCE_REGION;
      this.inventoryPath = GCE_INVENTORY_PATH;
      this.cloudPinPath = this.properties.GCE_CLOUD_PIN_PATH;
+     this.GCE_CLOUD = true;
     }
   }
 

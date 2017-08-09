@@ -4,9 +4,21 @@
   <div class="col-sm-6 pad-right-none" *ngIf="!beginTest">
     <div class="card card-radious-none" style="height:365px; overflow-y: auto;">
       <div class="center" style="padding:15px;">
-        <img src="/assets/illus-cloud-performance-aws.png" height="100" width="165" />
-        <p class="begin-text">
-          Test latency and throughput from your data center to AWS regions.Identify the best cloud regions to deploy your apps and data.</p>
+        <div *ngIf="AWS_CLOUD">
+          <img src="/assets/illus-cloud-performance-aws.png" height="100" width="165" />
+          <p class="begin-text">
+            Test latency and throughput from your data center to AWS regions. Identify the best cloud regions to deploy your apps and data.</p>
+        </div>
+        <div *ngIf="AZURE_CLOUD">
+          <img src="/assets/illus-cloud-performance-aws.png" height="100" width="165" />
+          <p class="begin-text">
+            Test latency and throughput from your data center to Azure regions. Identify the best cloud regions to deploy your apps and data.</p>
+        </div>
+        <div *ngIf="GCE_CLOUD">
+          <img src="/assets/gce_icon.png" height="100" width="165" />
+          <p class="begin-text">
+            Test latency and throughput from your data center to GCE regions. Identify the best cloud regions to deploy your apps and data.</p>
+        </div>
         <button class="btn begin-test-btn outline-none" (click)="startTest();">Begin Test
           <img src="/assets/arrow-36x36-white.png" height="16" width="16" style="margin-left: 10px;" />
         </button>
@@ -151,5 +163,5 @@
       </div>
     </div>
   </div>
-  <!-- End of Thoughput Chart Panel -->
+  <!-- End of Throughput Chart Panel -->
 </div>
