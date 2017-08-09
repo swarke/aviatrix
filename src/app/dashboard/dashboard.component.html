@@ -85,12 +85,12 @@
               <tbody>
                 <tr *ngFor="let region of locations">
                   <td width="35%">{{region.region_name}}</td>
-                  <td class="padding-left-15 width-30" *ngIf="!region.latency && !disabledStart">{{properties.NA_TEXT}}</td>
-                  <td class="padding-left-15" width="30%" *ngIf="!region.latency && disabledStart">{{readLatestLatency(region)}}</td>
-                  <td class="padding-left-15" width="30%" *ngIf="region.latency">{{region.latency}}</td>
-                  <td class="padding-left-15" width="35%" *ngIf="!region.bandwidth && !disabledStart">{{properties.NA_TEXT}}</td>
-                  <td class="padding-left-15" width="35%" *ngIf="region.bandwidth">{{region.bandwidth}}</td>
-                  <td class="padding-left-15" width="35%" *ngIf="!region.bandwidth && disabledStart">{{readLatestThroughput(region)}}</td>
+                  <td class="padding-left-5 width-30" *ngIf="!region.latency && !disabledStart">{{properties.NA_TEXT}}</td>
+                  <td class="padding-left-5" width="30%" *ngIf="!region.latency && disabledStart">{{readLatestLatency(region)}}</td>
+                  <td class="padding-left-5" width="30%" *ngIf="region.latency">{{region.latency}}</td>
+                  <td class="padding-left-5" width="35%" *ngIf="!region.bandwidth && !disabledStart">{{properties.NA_TEXT}}</td>
+                  <td class="padding-left-10" width="35%" *ngIf="region.bandwidth">{{region.bandwidth}}</td>
+                  <td class="padding-left-10" width="35%" *ngIf="!region.bandwidth && disabledStart">{{readLatestThroughput(region)}}</td>
                 </tr>
               </tbody>
             </table>
