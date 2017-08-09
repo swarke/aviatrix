@@ -1,5 +1,5 @@
 .card-radious-none {
-	border-radius: 0px;
+  border-radius: 0px;
 }
 
 .sebm-google-map-container {
@@ -7,278 +7,306 @@
 }
 
 .test-card-height {
-	height: 281px;
+  height: 281px;
 }
 
 .card-title-margin {
-	margin-top: 5px !important;
-	margin-bottom: 5px !important;
-	font-weight: 500;
-    text-transform: uppercase;
-    opacity: 0.9;
-    // font-size: 14px;
-    // color: #666666;
-    
-	font-size: 14px !important;
-	color: #757575 !important;
-	letter-spacing: 0.19px !important;
-	line-height: 18px !important;
-
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
+  font-weight: 500;
+  text-transform: uppercase;
+  opacity: 0.9; // font-size: 14px;
+  // color: #666666;
+  font-size: 14px !important;
+  color: #757575 !important;
+  letter-spacing: 0.19px !important;
+  line-height: 18px !important;
 }
 
 .value-color {
-	color: #7bcef3;
+  color: #7bcef3;
 }
 
 .card-header {
-	background-color: #FFFFFF;
-	padding-top: 0.40rem !important;
-	padding-bottom: 0.40rem !important;
-	border-bottom: none;
+  background-color: #FFFFFF;
+  padding-top: 0.40rem !important;
+  padding-bottom: 0.40rem !important;
+  border-bottom: none;
 }
+
 .column-header {
-	cursor: pointer; 
-	color: #666666; 
-	font-weight: 500
+  cursor: pointer;
+  color: #666666;
+  font-weight: 500
 }
+
 .sort-style {
-	opacity: 0.8;
+  opacity: 0.8;
 }
 
 .chart-height {
-	height: 300px !important;
+  height: 300px !important;
 }
 
 .info-color {
-	color: rgba(0,0,0,0.64);
-	// margin-top: 10px;
+  color: rgba(0, 0, 0, 0.64); // margin-top: 10px;
 }
 
 .loader-style {
-	// float: right;
-	margin-top: 5px;
+  // float: right;
+  margin-top: 5px;
 }
 
 .card {
-	border: none;
-	background: #FFFFFF;
-	box-shadow: 0 2px 8px 0 rgba(0,0,0,0.12);
+  border: none;
+  background: #FFFFFF;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12);
 }
 
 .btn-start {
-	float: right; 
-	// margin-right: 10px; 
-	color: #FFFFFF;
-    background-color: #2196F3;
-	cursor: pointer;
-    margin-top: -8px;
-    box-shadow: 0 2px 6px 0 rgba(0,0,0,0.22);
+  float: right; //margin-right: 10px; 
+  color: #FFFFFF;
+  background-color: #2196F3 !important;
+  cursor: pointer; //margin-top: -5px;
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.22);
 }
 
 .btn-start:disabled {
-    cursor: not-allowed;
-    // opacity: .5;
-    -webkit-transform: scale(1.0);
-    transform: scale(1.0);
-    color: #DCDCDC;
+  cursor: not-allowed; // opacity: .5;
+  -webkit-transform: scale(1.0);
+  transform: scale(1.0);
+  color: #DCDCDC;
 }
 
 .btn-stop {
-	float: right; 
-	// margin-right: 10px; 
-	color: #FFFFFF; 
-	background-color: #F44336; 
-	cursor: pointer;
-	margin-top: -8px;
-	box-shadow: 0 2px 6px 0 rgba(0,0,0,0.22);
+  float: right; //margin-right: 10px; 
+  color: #FFFFFF;
+  background-color: #F44336;
+  cursor: pointer; //margin-top: -5px;
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.22);
 }
 
 .btn-stop:disabled {
-    cursor: not-allowed;
-    // opacity: .5;
-    -webkit-transform: scale(1.0);
-    transform: scale(1.0);
-    color: #DCDCDC;
+  cursor: not-allowed; // opacity: .5;
+  -webkit-transform: scale(1.0);
+  transform: scale(1.0);
+  color: #DCDCDC;
 }
 
 .fa-lg {
-    font-size: 1.2em !important;
+  font-size: 1.2em !important;
 }
 
 .mat-tooltip {
-    font-size: 14px !important;
+  font-size: 14px !important;
 }
 
 .btn-download {
-	// float: right; 
-	margin-right: 10px; 
-	color: #FFFFFF !important; 
-	background-color: #ee7700; 
-	cursor: pointer;
-	border-color: #ee7700;
-	font-size: 20px;
-	box-shadow: 0 4px 18px 0 rgba(0,0,0,0.22);
+  // float: right; 
+  margin-right: 10px;
+  color: #FFFFFF !important;
+  background-color: #ee7700;
+  cursor: pointer;
+  border-color: #ee7700;
+  font-size: 20px;
+  box-shadow: 0 4px 18px 0 rgba(0, 0, 0, 0.22);
 }
 
 .btn-download:hover {
-	// float: right; 
-	margin-right: 10px; 
-	color: #FFFFFF !important; 
-	background-color: #ee7700; 
-	cursor: pointer;
-	border-color: #ee7700;
+  // float: right; 
+  margin-right: 10px;
+  color: #FFFFFF !important;
+  background-color: #ee7700;
+  cursor: pointer;
+  border-color: #ee7700;
 }
 
-.btn-download:focus, .btn-download.focus {
-    outline: 0;
-    box-shadow: 0 0 0 2px #ee7700 !important;
-    color: #FFFFFF !important;
-    border-color: #ee7700; 
+.btn-download:focus,
+.btn-download.focus {
+  outline: 0;
+  box-shadow: 0 0 0 2px #ee7700 !important;
+  color: #FFFFFF !important;
+  border-color: #ee7700;
 }
 
 .interested-text-style {
-	margin-bottom: 5px !important;
-    line-height: 0px !important;
-    font-weight: 400;
+  margin-bottom: 5px !important;
+  line-height: 0px !important;
+  font-weight: 400;
 }
 
 .margin-top-50 {
-	margin-top: 50px;
+  margin-top: 50px;
 }
 
 .map-container {
-	height: 300px;
+  height: 300px;
 }
 
 .leaflet-container {
-	z-index: 1;
+  z-index: 1;
 }
 
 .leaflet-marker-icon {
-	height: 39px !important; 
-	width: 22px !important;
-	margin-left: -11px !important;
-    margin-top: -39px !important;
+  height: 39px !important;
+  width: 22px !important;
+  margin-left: -11px !important;
+  margin-top: -39px !important;
 }
 
 .leaflet-popup {
-	bottom: 10px !important;
+  bottom: 10px !important;
 }
 
 .leaflet-popup-close-button {
-	display: none;
-	opacity: 0;
+  display: none;
+  opacity: 0;
 }
 
 .leaflet-control-attribution {
-	display: none !important;
+  display: none !important;
 }
 
 #chartdiv {
   width: 100%;
   height: 300px;
-}			
-
-.amcharts-chart-div a {
-	display: none !important;
-	opacity: 0 !important;
 }
 
-a:focus, a:hover {
-	color: inherit;
-	text-decoration: none;
+.amcharts-chart-div a {
+  display: none !important;
+  opacity: 0 !important;
+}
+
+a:focus,
+a:hover {
+  color: inherit;
+  text-decoration: none;
 }
 
 .sb-style .sb-button {
-	min-width: 25px !important;
-	height: 35px !important;
-	margin-top: 0px;
+  min-width: 25px !important;
+  height: 35px !important;
+  margin-top: 0px;
 }
 
 .sb-style button {
-	padding-top: 5px !important;
+  padding-top: 5px !important;
 }
 
 
 .padding-none {
-	padding: 0px;
+  padding: 0px;
 }
 
 .height-306 {
-	height: 306px;
+  height: 306px;
 }
 
 .margin-bottom-25 {
-	margin-bottom: 25px !important;
+  margin-bottom: 25px !important;
 }
 
 .padding-right-none {
-	padding-right: 0px !important;
+  padding-right: 0px !important;
 }
 
 .text-align-right {
-	text-align: right !important;
+  text-align: right !important;
 }
 
 .padding-top-none {
-	padding-top: 0px !important;
+  padding-top: 0px !important;
 }
 
 .margin-left-none {
-	margin-left: 0px !important;
+  margin-left: 0px !important;
 }
 
 .right-stat-panel {
-	font-size: 18px !important; 
-	text-align: left !important;     
-	padding-left: 10px !important;
+  font-size: 18px !important;
+  text-align: left !important;
+  padding-left: 10px !important;
 }
 
 .right-latency-panel-border {
-	border-left: solid 6px #26db68 !important; 
+  border-left: solid 6px #26db68 !important;
 }
 
 .right-throughput-panel-border {
-	border-left: solid 6px #03bca1 !important; 
+  border-left: solid 6px #03bca1 !important;
 }
 
 .font-size-12 {
-	font-size: 12px !important;
+  font-size: 12px !important;
 }
 
 .margin-top-10 {
-	margin-top: 10px !important;
+  margin-top: 10px !important;
 }
 
 .margin-bottom-minus-10 {
-	margin-bottom: -10px !important;
+  margin-bottom: -10px !important;
 }
 
 .padding-left-2 {
-	padding-left: 2px !important;
+  padding-left: 2px !important;
 }
 
 .padding-left-none {
-	padding-left: 0px !important;
+  padding-left: 0px !important;
 }
 
 .stat-table-overlay {
-	overflow-y: auto !important; 
-	height: 175px !important;
+  overflow-y: auto !important;
+  height: 135px !important;
 }
 
 .padding-left-15 {
-	padding-left: 15px !important;
+  padding-left: 15px !important;
 }
 
 .width-30 {
-	width: 30% !important;
+  width: 30% !important;
 }
 
 .width-35 {
-	width: 35% !important;
+  width: 35% !important;
 }
 
 .display-block {
   display: block !important;
+}
+
+.begin-test-content {
+  font-size: 16px;
+  line-height: 20px;
+  text-align: center;
+}
+
+.begin-text {
+  //font-family: sans-serif;
+  font-size: 17px; //color: #bbb;
+  padding: 17px; //font-weight: 100;
+  font-family: "Yoga Sans Light", Corbel, Calibri, HelveticaNeue, Tahoma, sans-serif;
+  font-weight: normal;
+  font-style: normal;
+}
+
+.begin-test-btn {
+  color: #FFFFFF;
+  background-color: #2196F3;
+  cursor: pointer;
+  margin-top: -5px;
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.22); //height: 40px;
+  width: 135px;
+  font-size: 16px;
+}
+
+.pull-right {
+  float: right !important;
+}
+
+.flow-buttons-bottom {
+  border-top: 1px solid #e0e0e0;
+  padding-top: 15px;
 }

@@ -76,7 +76,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   public width = 5;
   text = '';
   hoveredObject = null;
-
+  beginTest: boolean = false;
   constructor(private http: Http,
               private dashboardService: DashboardService,
               public properties: PropertiesService,
@@ -356,6 +356,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
    */
   startTest() {
     // Start progress bar
+    this.beginTest = true;
     this.slimLoadingBarService.progress = 0;
     // Disabling start button
     this.disabledStart = true;

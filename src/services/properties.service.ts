@@ -46,7 +46,7 @@ export class PropertiesService {
 
   public CALCULATING_TEXT = 'Calculating';
 
-  public START: string = 'Begin Speed Test';
+  public START: string = 'Restart Speed Test';
   public STOP: string = 'Stop Speed Test';
 
   public NA_LATITUDE: number = 46.0730555556;
