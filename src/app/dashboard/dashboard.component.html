@@ -41,14 +41,14 @@
       </div>
       <div class="card-block test-card-height padding-top-none">
         <div class="row margin-bottom-25 margin-left-none">
-          <div class="col-sm-6 right-stat-panel right-latency-panel-border">
+          <div id="bestRegionBorder" class="col-sm-6 right-stat-panel right-latency-panel-border" [style.border-left-color]="bestLatencyRegion ? bestLatencyRegion.color : '#26db68' ">
             <span *ngIf="!bestLatencyRegion && !disabledStart">{{properties.NA_TEXT}}</span>
             <span *ngIf="!bestLatencyRegion && disabledStart">{{properties.CALCULATING_TEXT}}</span>
             <span *ngIf="bestLatencyRegion && !disabledStart">{{bestLatencyRegion.region_name}}</span>
             <br>
             <span style="font-size: 12px;">Best region for latency sensitive apps</span>
           </div>
-          <div class="col-sm-6 right-stat-panel right-throughput-panel-border">
+          <div class="col-sm-6 right-stat-panel right-throughput-panel-border" [style.border-left-color]="bestBandwidthRegion ? bestBandwidthRegion.color : '#03bca1' ">
             <span *ngIf="!bestBandwidthRegion && !disabledStart">{{properties.NA_TEXT}}</span>
             <span *ngIf="!bestBandwidthRegion && disabledStart">{{properties.CALCULATING_TEXT}}</span>
             <span *ngIf="bestBandwidthRegion && !disabledStart">{{bestBandwidthRegion.region_name}}</span>
