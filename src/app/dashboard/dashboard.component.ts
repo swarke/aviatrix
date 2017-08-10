@@ -852,7 +852,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   updateChartOnMarker(marker: any, hide: boolean) {
     if (this.latencyChart && this.latencyChart.series) {
       for(let index = 0; index < this.latencyChart.series.length; index++) {
-        if(this.latencyChart.series[index].name !== marker.cloud_info.region && hide) {
+        if(this.latencyChart.series[index].name !== marker.label && hide) {
           this.latencyChart.series[index].setVisible(false, false);
 
           if (this.bandwidthChart && this.bandwidthChart.series) {
