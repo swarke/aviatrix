@@ -317,7 +317,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
               title: {
                     text: 'Time'
                   },
-              startOnTick: true
+              startOnTick: true,
           },
           yAxis:   {
                   labels:   {
@@ -331,7 +331,6 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
       };
       return options;
     }
-
 
   /**
    * [getChartData description]
@@ -490,7 +489,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
               if(obj.currentBandwidthIndex > 5) {
                 this.getBandwidth(obj);
                 obj.bandwidthCompleted = true;
-                setTimeout(() => this.isProcessCompleted(), 10);
+                setTimeout(() => this.isProcessCompleted(), 5);
               }
             } else {
               obj.firstBandwidthPass = true;
@@ -719,9 +718,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
       );
   }
 
-  handleError(error: any) {
-
-  }
+  handleError(error: any) { }
 
   /**
    * stop the test
