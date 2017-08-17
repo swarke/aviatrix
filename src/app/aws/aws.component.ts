@@ -7,8 +7,8 @@ import { CLOUD_TOOL, AWS_INVENTORY_PATH, AZURE_INVENTORY_PATH, GCE_INVENTORY_PAT
 
 @Component({
   selector: 'app-aws',
-  templateUrl: './aws.component.html?v=${new Date().getTime()}',
-  styleUrls: ['./aws.component.scss?v=${new Date().getTime()}'],
+  templateUrl: './aws.component.html',
+  styleUrls: ['./aws.component.scss'],
   viewProviders: [DashboardService ],
   encapsulation: ViewEncapsulation.None
 })

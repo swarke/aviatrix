@@ -19,8 +19,8 @@ declare const AmCharts: any;
 
 @Component({
   selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html?v=${new Date().getTime()}',
-  styleUrls: ['./dashboard.component.scss?v=${new Date().getTime()}'],
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss'],
   viewProviders: [DashboardService],
   encapsulation: ViewEncapsulation.None
 })
@@ -76,6 +76,10 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   public width = 5;
   text = '';
   hoveredObject = null;
+  beginTest: boolean = false;
+  AWS_CLOUD: boolean = false;
+  AZURE_CLOUD: boolean = false;
+  GCE_CLOUD: boolean = false;
 
   constructor(private http: Http,
               private dashboardService: DashboardService,
@@ -212,14 +216,17 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
      this.leftPanelHeader = this.properties.LEFT_PANEL_AWS_REGION;
      this.inventoryPath = AWS_INVENTORY_PATH;
      this.cloudPinPath = this.properties.AWS_CLOUD_PIN_PATH;
+     this.AWS_CLOUD = true;
     } else if(this.tool.toUpperCase() === this.properties.AZURE) {
      this.leftPanelHeader = this.properties.LEFT_PANEL_AZURE_REGION;
      this.inventoryPath = AZURE_INVENTORY_PATH;
      this.cloudPinPath = this.properties.AZURE_CLOUD_PIN_PATH;
+     this.AZURE_CLOUD = true;
     } else  if(this.tool.toUpperCase() === this.properties.GCE) {
      this.leftPanelHeader = this.properties.LEFT_PANEL_GCE_REGION;
      this.inventoryPath = GCE_INVENTORY_PATH;
      this.cloudPinPath = this.properties.GCE_CLOUD_PIN_PATH;
+     this.GCE_CLOUD = true;
     }
   }
 
@@ -307,7 +314,10 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
               dateTimeLabelFormats: {
                 second: '%H:%M:%S'
               },
-              startOnTick: true
+              title: {
+                    text: 'Time'
+                  },
+              startOnTick: true,
           },
           yAxis:   {
                   labels:   {
@@ -321,7 +331,6 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
       };
       return options;
     }
-
 
   /**
    * [getChartData description]
@@ -356,6 +365,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
    */
   startTest() {
     // Start progress bar
+    this.beginTest = true;
     this.slimLoadingBarService.progress = 0;
     // Disabling start button
     this.disabledStart = true;
@@ -392,12 +402,12 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
 
       // Setting up latency chart
       this.setDataPoint(object.dashboardModel.latency, object);
-      latencySeries.push(this.getSeriesData('spline', object.cloud_info.region, this.getChartData(object.dashboardModel.latency)));
+      latencySeries.push(this.getSeriesData('spline', object.label, this.getChartData(object.dashboardModel.latency)));
       setTimeout(()=>this.setLatency(index),10);
 
       // Setting up bandwidth(throughput)
       this.setDataPoint(object.dashboardModel.bandwidth, object);
-      badwidthSeries.push(this.getSeriesData('spline', object.cloud_info.region, this.getChartData(object.dashboardModel.bandwidth)));
+      badwidthSeries.push(this.getSeriesData('spline', object.label, this.getChartData(object.dashboardModel.bandwidth)));
       setTimeout(()=>this.setBandwith(index),10);
       
     }
@@ -479,7 +489,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
               if(obj.currentBandwidthIndex > 5) {
                 this.getBandwidth(obj);
                 obj.bandwidthCompleted = true;
-                setTimeout(() => this.isProcessCompleted(), 10);
+                setTimeout(() => this.isProcessCompleted(), 5);
               }
             } else {
               obj.firstBandwidthPass = true;
@@ -708,9 +718,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
       );
   }
 
-  handleError(error: any) {
-
-  }
+  handleError(error: any) { }
 
   /**
    * stop the test
@@ -841,7 +849,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   updateChartOnMarker(marker: any, hide: boolean) {
     if (this.latencyChart && this.latencyChart.series) {
       for(let index = 0; index < this.latencyChart.series.length; index++) {
-        if(this.latencyChart.series[index].name !== marker.cloud_info.region && hide) {
+        if(this.latencyChart.series[index].name !== marker.label && hide) {
           this.latencyChart.series[index].setVisible(false, false);
 
           if (this.bandwidthChart && this.bandwidthChart.series) {
