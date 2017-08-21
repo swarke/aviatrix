@@ -23,7 +23,7 @@ import { StarRatingModule } from 'angular-star-rating';
 import {ShareButtonsModule} from 'ngx-sharebuttons';
 import { AppRoutingModule, appRoutingProviders} from './app-routing.module';
 import {SlimLoadingBarModule} from 'ng2-slim-loading-bar';
-
+import { ToastrModule } from 'toastr-ng2';
 
 
 declare var require: any;
@@ -57,7 +57,8 @@ export function highchartsFactory() {
     PopoverModule,
     StarRatingModule,
     ShareButtonsModule.forRoot(),
-    SlimLoadingBarModule.forRoot()
+    SlimLoadingBarModule.forRoot(),
+    ToastrModule.forRoot({timeOut: 5000, closeButton: true}),
   ],
   entryComponents: [ModalComponent],
   providers: [
