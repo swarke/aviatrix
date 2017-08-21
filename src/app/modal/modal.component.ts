@@ -18,6 +18,7 @@ declare const MktoForms2: any;
 export class ModalComponent {
   bestLatencyRegion: any;
   bestBandwidthRegion: any;
+  isSurveyFormOpen: boolean = false;
 
   /**
    * constructor Modal component
@@ -30,7 +31,10 @@ export class ModalComponent {
    * [displaySurveyForm description]
    */
   displaySurveyForm() {
-  	MktoForms2.loadForm("//app-ab21.marketo.com", "882-LUR-510", 1088);
+    if(!this.isSurveyFormOpen){
+      this.isSurveyFormOpen = true;
+  	  MktoForms2.loadForm("//app-ab21.marketo.com", "882-LUR-510", 1088);
+    }
   	// MktoForms2.loadForm("//app-ab21.marketo.com", "882-LUR-510", 1005);
   }
 }
