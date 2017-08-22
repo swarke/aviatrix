@@ -76,6 +76,8 @@ export class PropertiesService {
   public AZURE_DOWNLOAD_URL: string = 'https://azure.microsoft.com/en-us/marketplace/partners/aviatrix-systems/aviatrix-cloud-services/';
   public DOWNLOAD_URL: string = 'http://aviatrix.com/download/';
 
+  public INVENTORY_GET_ERROR_MESSAGE: string = "Failed to get inventories.";
+
   currentTool: string = null;
   currentToolName: string = null;
   constructor() {
