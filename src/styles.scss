@@ -12,5 +12,19 @@
 /* Material design icons */
 @import '../node_modules/material-design-icons/iconfont/material-icons.css';
 
+/* Fontawsome icons */
+@import '../node_modules/font-awesome/css/font-awesome.css';
+
 /* Custom scss */
 @import './avaitrix-style.scss';
+
+/* Custom scss */
+@import './googleapis_fonts.css';
+
+
+@import './styles-main.css';
+@import './styles-layout.css';
+@import './styles-navigation.css';
+@import './styles-marquees.css';
+@import './styles-images.css';
+@import 'node_modules/toastr-ng2/toastr';

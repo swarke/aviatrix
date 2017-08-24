@@ -1,7 +1,21 @@
-.bg-header {
-	background-color: #333333;
+.emailbtn {
+    min-width: 35px !important; 
+    height: 25px !important; 
+    margin-top: 0px;
+    background-color: #00ACEE; 
+    color: #ffffff; 
+    margin-right: 5px; 
+    border-radius: .2em;
 }
 
-.card-radious-none {
-	border-radius: 0px;
+.emailbtn:hover {
+    background-color: #008abe; 
+    color: #FFFFFF !important;
+}
+
+.share-btn {
+	margin-top: -7px; 
+	right: 0px; 
+	position: absolute; 
+	z-index: 900;
 }

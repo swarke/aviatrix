@@ -1,0 +1,64 @@
+<!-- Modal dialog -->
+<md-dialog-actions align="end" md-dialog-close style="padding: 0px;">
+    <button md-dialog-close class="close-button">X</button>
+</md-dialog-actions>
+<div *ngIf="bestBandwidthRegion && bestLatencyRegion">
+    <div class="row margin-top-35" align="center">
+        <div class="col-md-6">
+            <img src="/assets/ic_speedometer.png" class="speed-meeter">
+        </div>
+        <div class="col-md-6">
+            <img src="/assets/ic_cloud.png" class="ic-cloud">
+        </div>
+    </div>
+    <div class="row margin-top-25" align="center">
+        <div class="col-md-6">
+            <span class="latency-throughput">{{ bestLatencyRegion.region_name }}</span>
+        </div>
+        <div class="col-md-6">
+            <span class="latency-throughput">{{bestBandwidthRegion.region_name }}</span>
+        </div>
+    </div>
+    <div class="row margin-top-5" align="center">
+        <div class="col-md-6">
+            <span class="font-size-14">Best region for latency sensitive apps</span>
+        </div>
+        <div class="col-md-6">
+            <span class="font-size-14">Best region for data intensive apps</span>
+        </div>
+    </div>
+    <div class="row margin-top-25 margin-bottom-35" align="center">
+        <div class="col-md-4 margin-left-none" align="center">
+            <span class="best-region">{{bestLatencyRegion.latency | number : '1.1-2' }} msec</span><br>
+            <span class="font-size-12">Latency</span>
+        </div>
+        <div class="col-md-2 margin-left-minus-67" align="center">
+            <span class="font-size-18">{{bestLatencyRegion.bandwidth | number : '1.1-2' }} mbps</span>
+            <br>
+            <span class="font-size-12">Throughput</span>
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-3" align="center">
+            <span class="font-size-18">{{ bestBandwidthRegion.latency | number : '1.1-2' }} msec</span>
+            <br>
+            <span class="font-size-12">Latency</span>
+        </div>
+        <div class="col-md-3 margin-left-minus-30" align="center">
+            <span class="best-region">{{ bestBandwidthRegion.bandwidth | number : '1.1-2' }} mbps</span><br>
+            <span class="font-size-12">Throughput</span>
+        </div>
+    </div>
+    <div class="col-md-12 margin-bottom-20 font-yoga" align="center">
+        <h6 class="text-transform-inherit">Share with us your experience of using this tool in short survey.</h6>
+    </div>
+    <div class="col-md-12 margin-bottom-35 font-yoga" align="center">
+        <button class="btn survey-form" (click)="displaySurveyForm();">Survey</button>
+    </div>
+    <div align="center">
+        <!-- <form id="mktoForm_1005"></form> -->
+        <form id="mktoForm_1088"></form>
+    </div>
+</div>
+<!-- End Modal dialog -->
+
+
