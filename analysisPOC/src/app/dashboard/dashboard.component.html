@@ -1,0 +1,80 @@
+<div class="row mrg-top-15">
+    <!-- Begin Test -->
+    <div class="col-sm-12 pad-right-none" *ngIf="!beginTest">
+        <div class="card card-radious-none" style="height:365px; overflow-y: auto;">
+            <div class="center" style="padding:15px;">
+                <img src="/assets/aws_icon.svg" height="120" width="30%" />
+                <p class="begin-text">
+                    Test latency and throughput from your data center to AWS regions. Identify the best cloud regions to deploy your apps and data.</p>
+            </div>
+            <button class="btn begin-test-btn outline-none center" (click)="startTest();">Begin Test
+                <img src="/assets/arrow-36x36-white.png" height="16" width="16" style="margin-left: 10px;" />
+            </button>
+        </div>
+    </div>
+    <!--End of Begin Test -->
+    <!-- Connectivity Network Panel -->
+    <div class="col-sm-12 pad-right-none" *ngIf="beginTest">
+        <div class="card card-radious-none" style="height:365px; overflow-y: auto;">
+            <div class="card-header margin-bottom-25">
+                <div class="row">
+                    <div class="col-sm-9 padding-right-none">
+                        <h6 class="card-title card-title-margin">{{properties.RIGHT_PANEL_HEADER}} <span>&nbsp;  <i class="fa fa-info-circle fa-lg info-color cursor-pointer" aria-hidden="true" mdTooltip="{{properties.RIGHT_PANEL_TOOLTIP}}"></i></span></h6>
+                    </div>
+                    <div class="col-sm-3 text-align-right">
+                        <img class="loader-style" src="../assets/loader.gif" *ngIf="disabledStart">
+                    </div>
+                </div>
+            </div>
+            <div class="card-block test-card-height padding-top-none">
+                <div class="row margin-bottom-25 margin-left-none">
+                    <div> Get Call
+                    </div>
+                </div>
+                <div class="height-155">
+                    <table class="table table-striped" style="margin-bottom: 0px; background-color: #f8f8f8;">
+                        <thead>
+                            <tr>
+                                <th rowspan="2" align="center"> Region Name </th>
+                                <th colspan="6" align="center"> Latency (msec)</th>
+                                <th colspan="6" align="center"> Throughput (mbps) </th>
+                            </tr>
+                            <tr>
+                                <th> Test 1</th>
+                                <th> Test 2</th>
+                                <th> Test 3</th>
+                                <th> Test 4</th>
+                                <th> Test 5</th>
+                                <th> Test 6</th>
+
+                                <th> Test 1</th>
+                                <th> Test 2</th>
+                                <th> Test 3</th>
+                                <th> Test 4</th>
+                                <th> Test 5</th>
+                                <th> Test 6</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let region of locations">
+                                <td> {{region.region_name}}</td>
+                                <td> Test 1</td>
+                                <td> Test 2</td>
+                                <td> Test 3</td>
+                                <td> Test 4</td>
+                                <td> Test 5</td>
+                                <td> Test 6</td>
+                                <td> Test 1</td>
+                                <td> Test 2</td>
+                                <td> Test 3</td>
+                                <td> Test 4</td>
+                                <td> Test 5</td>
+                                <td> Test 6</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
