@@ -5,6 +5,7 @@ import { Response, Http } from '@angular/http';
 import { DashboardService, PropertiesService } from '../../services';
 import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
 import { ToastrService } from 'toastr-ng2';
+import * as $ from 'jquery';
 
 import { CLOUD_TOOL, AWS_INVENTORY_PATH, AZURE_INVENTORY_PATH, GCE_INVENTORY_PATH} from '../app-config';
 declare var jQuery:any;
@@ -137,49 +138,18 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
       object.firstBandwidthPass = false;
       object.pingStartTime = new Date();
 
-      this.setDataPoint(object.dashboardModel.latency, object);
       this.setLatency(index);
-      this.setDataPoint(object.dashboardModel.bandwidth, object);
       this.setBandwidth(index);
-
       this.setHeaderLatency(index);
       this.setHeaderBandwidth(index);
-
       this.setPingLatency(index);
       this.setPingBandwidth(index);
-
       this.setDynamodbLatency(index);
       this.setSystemPingBandwidth(index);
       
     }
 
   }
-
-
-
-  /**
-   * get the time diff
-   * [getTimeDiff description]
-   */
-  getTimeDiff() {
-    let endTime:any = new Date();
-    let diff: any = endTime - this.pingStartTime;
-    var diffMins = Math.round(((diff % 86400000) % 3600000) / 60000);
-    return diffMins;
-  }
-
-
-  /**
-   * get time diff in seconds
-   * [getTimeDiffInSeconds description]
-   */
-  getTimeDiffInSeconds(pingStartTime, index) {
-    let endTime:any = new Date();
-    let diff: any = endTime.getTime() - pingStartTime.getTime();
-    var diffSec = diff/ 1000;
-    return diffSec;
-  }
-
 
   /**
    * set bandwidth
@@ -189,55 +159,18 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
   setBandwidth(index) {
     let obj = this.locations[index];
     var downloadSize = 2621440; //bytes
-    let dashboard = this;
-    if (this.getTimeDiffInSeconds(obj.pingStartTime, index) < this.TEST_MINUTES) {
-        obj.throughputCallIndex = obj.throughputCallIndex === undefined ? 0 : (obj.throughputCallIndex + 1);
-      
-        setTimeout(()=>this.setBandwidth(index),this.TEST_INTERVAL);
-        let pingStart = new Date();
-        var cacheBuster = "?nnn=" + pingStart;
-        this.dashboardService.getBandwidth(obj.url + this.properties.BANDWIDTH_IMG + cacheBuster).subscribe((data:any ) =>{
-            let pingEnd = new Date();
-            let duration: number = ((pingEnd.getTime() - pingStart.getTime())/1000);
-            let bitsLoaded = downloadSize * 8;
-            let speedBps: any = (bitsLoaded / duration).toFixed(2);
-            let speedKbps: any = (speedBps / 1024).toFixed(2);
-            let speedMbps = (speedKbps / 1024).toFixed(2);
-            if (obj.firstBandwidthPass) {
-              obj.dashboardModel.bandwidth[obj.currentBandwidthIndex].value = parseFloat(speedMbps);
-              obj.currentBandwidthIndex++;
-              // console.log("Region: " + obj.region_name + " Current index: " + obj.currentBandwidthIndex + " call index: " + obj.throughputCallIndex);
-              if(obj.currentBandwidthIndex > 5) {
-                this.getBandwidth(obj);
-                obj.bandwidthCompleted = true;
-                setTimeout(() => this.isProcessCompleted(), 5);
-              }
-            } else {
-              obj.firstBandwidthPass = true;
-            }
-        });
-      } else {
-            this.getBandwidth(obj);
-            obj.bandwidthCompleted = true;
-            setTimeout(() => this.isProcessCompleted(), 5);
-        }
-  }
-
-  /**
-   * get bandwidth
-   * [getBandwidth description]
-   * @param {[type]} obj [dashboard model object]
-   */
-  getBandwidth(obj) {
-    if (obj.dashboardModel.bandwidth.length > 0) {
-      let _bandwidth:number = 0;
-      for (let index = 0 ; index < obj.dashboardModel.bandwidth.length; index++) {
-        if(null != obj.dashboardModel.bandwidth[index].value) {
-          _bandwidth = _bandwidth + parseFloat(obj.dashboardModel.bandwidth[index].value);
-        }
-      }
-     obj.bandwidth =  (_bandwidth / obj.dashboardModel.bandwidth.length).toFixed(2);
-    }
+    let pingStart = new Date();
+    var cacheBuster = "?nnn=" + pingStart;
+    this.dashboardService.getBandwidth(obj.url + this.properties.BANDWIDTH_IMG + cacheBuster).subscribe((data:any ) =>{
+        let pingEnd = new Date();
+        let duration: number = ((pingEnd.getTime() - pingStart.getTime())/1000);
+        let bitsLoaded = downloadSize * 8;
+        let speedBps: any = (bitsLoaded / duration).toFixed(2);
+        let speedKbps: any = (speedBps / 1024).toFixed(2);
+        let speedMbps = (speedKbps / 1024).toFixed(2);
+        obj.bandwidth = parseFloat(speedMbps);
+      });
+              
   }
 
   /**
@@ -254,126 +187,21 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
    */
   setLatency(index: any) {
     let obj = this.locations[index];
-     if (this.getTimeDiffInSeconds(obj.pingStartTime, index) < this.TEST_MINUTES ) {
-       setTimeout(() => this.setLatency(index), this.TEST_INTERVAL);
-        var download = new Image() ;
-        let pingStart = new Date();
-        var cacheBuster = "?nnn=" + pingStart;
-        download.onerror = function() {
-          if (obj.firstLatencyPass) {
-              let pingEnd = new Date();
-              let ping: number = (pingEnd.getTime() - pingStart.getTime());
-              obj.dashboardModel.latency[obj.currentLatencyIndex].value = Math.round(ping);              
-              obj.currentLatencyIndex++;
-              if (obj.currentLatencyIndex > 5) {
-                obj.latencyCompleted = true;
-              }
-          } else {
-              obj.firstLatencyPass = true;
-          }
+    var download = new Image() ;
+    let pingStart = new Date();
+    var cacheBuster = "?nnn=" + pingStart;
+    download.onerror = function() {
+        let pingEnd = new Date();
+        let ping: number = (pingEnd.getTime() - pingStart.getTime());
+        obj.latency = Math.round(ping);
+        obj.currentLatencyIndex++;
+        if (obj.currentLatencyIndex > 5) {
+          obj.latencyCompleted = true;
         }
-        download.src = obj.url +'ping'+ cacheBuster ;
-
-    } else {
-       this.getLatency(obj);
-       obj.latencyCompleted = true;
-        setTimeout(() => this.isProcessCompleted(), 5);
     }
-
+    download.src = obj.url +'ping'+ cacheBuster ;
   }
 
-  /**
-   * get latency
-   * [getLatency description]
-   * @param {[type]} obj [object of dashboard model]
-   */
-  getLatency(obj) {
-    if (obj.dashboardModel.latency.length > 0) {
-      let _latency:number = 0;
-      for (let index = 0 ; index < obj.dashboardModel.latency.length; index++) {
-        if(null != obj.dashboardModel.latency[index].value) {
-          _latency = _latency + parseFloat(obj.dashboardModel.latency[index].value);
-        }
-      }
-
-     obj.latency =  (_latency / obj.dashboardModel.latency.length).toFixed(2);
-    }
-  }
-
-  /**
-   * set responce time
-   * [setResponseTime description]
-   * @param {any} index [index of region]
-   */
-  setResponseTime(index: any) {
-    let obj = this.locations[index];
-
-    if (this.getTimeDiffInSeconds(obj.pingStartTime, index) < this.TEST_MINUTES) {
-       setTimeout(() => this.setResponseTime(index), this.TEST_INTERVAL);
-       let pingStart = new Date();
-       var cacheBuster = "?nnn=" + pingStart;
-       this.dashboardService.getResponseTime(obj.url + this.properties.RESPONSE_TIME_HTML + cacheBuster).subscribe((data:any ) =>{
-          let pingEnd = new Date();
-          let ping: number = (pingEnd.getTime() - pingStart.getTime());
-          obj.dashboardModel.responseTime[obj.currentResponseIndex].value = Math.round(ping);          
-          obj.currentResponseIndex++;
-       });
-    } else {
-      this.getResponseTime(obj);
-      obj.responseCompleted = true;
-    }
-  }
-
-  /**
-   * Get the responce time
-   * [getResponseTime description]
-   * @param {any} obj [object of dashboard model]
-   */
-  getResponseTime(obj: any) {
-    if (obj.dashboardModel.responseTime.length > 0) {
-      let _responseTime:number = 0;
-      for (let index = 0 ; index < obj.dashboardModel.responseTime.length; index++) {
-        if(null != obj.dashboardModel.responseTime[index].value) {
-          _responseTime = _responseTime + parseFloat(obj.dashboardModel.responseTime[index].value);
-        }
-      }
-
-     obj.responseTime =  (_responseTime / obj.dashboardModel.responseTime.length).toFixed(2);
-    }
-  }
-
-  /**
-   * return true if process is completed else return false
-   * [isProcessCompleted description]
-   */
-  isProcessCompleted() {
-    let processCompleted: boolean = false;
-    for(let index = 0; index < this.locations.length; index++) {
-      let object: any = this.locations[index];
-      // console.log("Region: " + object.region_name + " Latency completed: " + object.latencyCompleted + " Th completed: " + object.bandwidthCompleted);
-      if(object.latencyCompleted) {
-        this.getLatency(object);
-      }
-
-      if(object.bandwidthCompleted) {
-        this.getBandwidth(object);
-      }
-
-      if (object.latencyCompleted 
-          && object.bandwidthCompleted) {
-        processCompleted = true;
-      } else {
-        processCompleted = false;
-        break;
-      }
-    }
-
-    if (processCompleted && !this.isTestCompleted) {
-      this.isTestCompleted = true;
-    } else {
-        setTimeout(() => this.isProcessCompleted(), 10);
-    }
-  }
   handleError(error: any) { }
 
   /**
@@ -382,27 +210,35 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
    */
     setHeaderLatency(index){
       let obj = this.locations[index];
-      var pingStart = new Date();
-      var cacheBuster = "?nnn=" + pingStart;
-      var url = obj['url'] + 'ping' + cacheBuster;
-      this.dashboardService.getheaderLatency(url).subscribe ((data:any ) =>{
-      // var pingStart = new Date();
-      // var cacheBuster = "?nnn=" + pingStart;
-      // url = obj['url'] + 'ping' + cacheBuster;
-          // ajaxSizeRequest = $.ajax({
-          //     type: "HEAD",
-          //     async: true,
-          //     url: url,
-          //     error: function(message){
-      var e = new Date();
-      var diff = (e.getTime() - pingStart.getTime());
-      obj.dashboardModel.headerLatency[obj.currentLatencyIndex].value = Math.round(diff); 
-      console.log(obj['region_name'] + ': ' + Math.round(diff));
-                      
-          //     }
-          // });
+
+        var pingStart = new Date();
+        var cacheBuster = "?nnn=" + pingStart;
+        var url = obj['url'] + 'ping' + cacheBuster;
+        var ajaxSizeRequest = $.ajax({
+            type: "HEAD",
+            async: true,
+            url: url,
+            error: function(message){
+                            
+            }
         });
-      // obj.dashboardModel.headerLatency[obj.currentLatencyIndex].value = Math.round(235); 
+
+        var pingStart = new Date();
+        var cacheBuster = "?nnn=" + pingStart;
+        url = obj['url'] + 'ping' + cacheBuster;
+        ajaxSizeRequest = $.ajax({
+            type: "HEAD",
+            async: true,
+            url: url,
+            error: function(message){
+            var e = new Date();
+            var diff = (e.getTime() - pingStart.getTime());
+            obj.headerLatency = Math.round(diff);
+            console.log(obj['region_name'] + ': ' + Math.round(diff));
+                    
+            }
+        });
+    
     }
 
     /**
@@ -411,7 +247,18 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
      */
     setHeaderBandwidth(index){
       let obj = this.locations[index];
-      // obj.dashboardModel.headerBandwidth[obj.currentLatencyIndex].value = parseFloat('6.7'); 
+      var downloadSize = 2621440; //bytes
+      let pingStart = new Date();
+      var cacheBuster = "?nnn=" + pingStart;
+      this.dashboardService.getBandwidth(obj.url + this.properties.BANDWIDTH_IMG + cacheBuster).subscribe((data:any ) =>{
+          let pingEnd = new Date();
+          let duration: number = ((pingEnd.getTime() - pingStart.getTime())/1000);
+          let bitsLoaded = downloadSize * 8;
+          let speedBps: any = (bitsLoaded / duration).toFixed(2);
+          let speedKbps: any = (speedBps / 1024).toFixed(2);
+          let speedMbps = (speedKbps / 1024).toFixed(2);
+          obj.headerBandwidth = parseFloat(speedMbps);
+        });
     }
 
     /**
