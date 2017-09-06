@@ -48,4 +48,9 @@ export class DashboardService {
     return this._apiService.executeAPI(apiRequest);
   }
 
+  getheaderLatency(url){
+    const apiRequest: APIRequest = new APIRequest(url, APIMethod.HEAD);
+    return this._apiService.executeAPI(apiRequest);
+  }
+
 }

@@ -15,7 +15,8 @@ export enum APIMethod {
   POST,
   PUT,
   DELETE,
-  IMAGE_GET
+  IMAGE_GET,
+  HEAD
 };
 
 /**
@@ -77,6 +78,12 @@ export class ApiService {
 
       case APIMethod.IMAGE_GET:
         return this.apiExecuter.get(apiRequest.endpoint, { headers: this.headers });
+
+      case APIMethod.HEAD:
+        return this.apiExecuter.head(apiRequest.endpoint, { headers: this.headers })
+          .map(res => this.handleResponse(res))
+          .catch((errorObj: any) => this.handleError(errorObj));
+
 
       default:
         return this.apiExecuter.get(apiRequest.endpoint, { headers: this.headers })

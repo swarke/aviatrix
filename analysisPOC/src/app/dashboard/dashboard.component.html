@@ -1,3 +1,4 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 <div class="row mrg-top-15">
     <!-- Begin Test -->
     <div class="col-sm-12 pad-right-none" *ngIf="!beginTest">
@@ -28,48 +29,50 @@
             </div>
             <div class="card-block test-card-height padding-top-none">
                 <div class="row margin-bottom-25 margin-left-none">
-                    <div> Get Call
-                    </div>
                 </div>
                 <div class="height-155">
                     <table class="table table-striped" style="margin-bottom: 0px; background-color: #f8f8f8;">
                         <thead>
                             <tr>
-                                <th rowspan="2" align="center"> Region Name </th>
-                                <th colspan="6" align="center"> Latency (msec)</th>
-                                <th colspan="6" align="center"> Throughput (mbps) </th>
+                                <th align="center"> Region Name </th>
+                                <th align="center" colspan="2"> HTTP Get</th>
+                                <th align="center" colspan="2"> HTTP Header</th>
+                                <th align="center" colspan="2"> HTTP Ping</th>
+                                <th align="center"> HTTP DynamoDB</th>
+                                <th align="center"> System Ping</th>
                             </tr>
                             <tr>
-                                <th> Test 1</th>
-                                <th> Test 2</th>
-                                <th> Test 3</th>
-                                <th> Test 4</th>
-                                <th> Test 5</th>
-                                <th> Test 6</th>
-
-                                <th> Test 1</th>
-                                <th> Test 2</th>
-                                <th> Test 3</th>
-                                <th> Test 4</th>
-                                <th> Test 5</th>
-                                <th> Test 6</th>
+                                <th></th>
+                                <th>Latency (msec)</th><th>Throughput (mbps)</th>
+                                <th>Latency (msec)</th><th>Throughput (mbps)</th>
+                                <th>Latency (msec)</th><th>Throughput (mbps)</th>
+                                <th>Latency (msec)</th>
+                                <th>Latency (msec)</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let region of locations">
-                                <td> {{region.region_name}}</td>
-                                <td> Test 1</td>
-                                <td> Test 2</td>
-                                <td> Test 3</td>
-                                <td> Test 4</td>
-                                <td> Test 5</td>
-                                <td> Test 6</td>
-                                <td> Test 1</td>
-                                <td> Test 2</td>
-                                <td> Test 3</td>
-                                <td> Test 4</td>
-                                <td> Test 5</td>
-                                <td> Test 6</td>
+                                <th> {{region.region_name}}</th>
+                                <td *ngIf="!region.latency">{{properties.NA_TEXT}}</td>
+                                <td *ngIf="region.latency"> {{region.latency}}</td>
+                                <td *ngIf="!region.bandwidth">{{properties.NA_TEXT}}</td>
+                                <td *ngIf="region.bandwidth">{{region.bandwidth}}</td>
+
+                                <td *ngIf="!region.headerLatency">{{properties.NA_TEXT}}</td>
+                                <td *ngIf="region.headerLatency"> {{region.headerLatency}}</td>
+                                <td *ngIf="!region.headerBandwidth">{{properties.NA_TEXT}}</td>
+                                <td *ngIf="region.headerBandwidth">{{region.headerBandwidth}}</td>
+
+                                <td *ngIf="!region.pingLatency">{{properties.pingLatency}}</td>
+                                <td *ngIf="region.pingLatency"> {{region.pingLatency}}</td>
+                                <td *ngIf="!region.pingBandwidth">{{properties.NA_TEXT}}</td>
+                                <td *ngIf="region.pingBandwidth">{{region.pingBandwidth}}</td>
+
+                                <td *ngIf="!region.dynamodbLatency">{{properties.NA_TEXT}}</td>
+                                <td *ngIf="region.dynamodbLatency">{{region.dynamodbLatency}}</td>
+
+                                <td *ngIf="!region.systemPingLatency">{{properties.NA_TEXT}}</td>
+                                <td *ngIf="region.systemPingLatency">{{region.systemPingLatency}}</td>
                             </tr>
                         </tbody>
                     </table>

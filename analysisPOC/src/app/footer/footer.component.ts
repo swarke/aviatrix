@@ -21,7 +21,6 @@ export class FooterComponent implements OnInit {
   			  private titleService: Title,
           private router: Router,
           private route:ActivatedRoute) {
-    console.log(this.route);
   	this.initToolName();
   }
 
