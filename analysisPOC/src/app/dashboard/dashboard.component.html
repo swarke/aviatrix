@@ -22,16 +22,18 @@
                         <thead>
                             <tr>
                                 <th align="center"> Region Name </th>
-                                <th align="center" colspan="2"> HTTP Get</th>
-                                <th align="center" colspan="2"> HTTP Header</th>
+                                <th align="center"> HTTP Get</th>
+                                <th align="center"> HTTP Header</th>
                                 <th align="center"> HTTP Ping</th>
                                 <th align="center"> HTTP DynamoDB</th>
                                 <!-- <th align="center"> System Ping</th> -->
                             </tr>
                             <tr>
                                 <th></th>
-                                <th>Latency (msec)</th><th>Throughput (mbps)</th>
-                                <th>Latency (msec)</th><th>Throughput (mbps)</th>
+                                <th>Latency (msec)</th>
+                                <!-- <th>Throughput (mbps)</th> -->
+                                <th>Latency (msec)</th>
+                                <!-- <th>Throughput (mbps)</th> -->
                                 <th>Latency (msec)</th>
                                 <th>Latency (msec)</th>
                                 <!-- <th>Latency (msec)</th> -->
@@ -42,15 +44,15 @@
                                 <th> {{region.region_name}}</th>
                                 <td *ngIf="!region.latency">{{properties.NA_TEXT}}</td>
                                 <td *ngIf="region.latency"> {{region.latency}}</td>
-                                <td *ngIf="!region.bandwidth">{{properties.NA_TEXT}}</td>
-                                <td *ngIf="region.bandwidth">{{region.bandwidth}}</td>
+                                <!-- <td *ngIf="!region.bandwidth">{{properties.NA_TEXT}}</td>
+                                <td *ngIf="region.bandwidth">{{region.bandwidth}}</td> -->
 
                                 <td *ngIf="!region.headerLatency">{{properties.NA_TEXT}}</td>
                                 <td *ngIf="region.headerLatency"> {{region.headerLatency}}</td>
-                                <td *ngIf="!region.headerBandwidth">{{properties.NA_TEXT}}</td>
-                                <td *ngIf="region.headerBandwidth">{{region.headerBandwidth}}</td>
+                                <!-- <td *ngIf="!region.headerBandwidth">{{properties.NA_TEXT}}</td>
+                                <td *ngIf="region.headerBandwidth">{{region.headerBandwidth}}</td> -->
 
-                                <td *ngIf="!region.pingLatency">{{properties.pingLatency}}</td>
+                                <td *ngIf="!region.pingLatency">{{properties.NA_TEXT}}</td>
                                 <td *ngIf="region.pingLatency"> {{region.pingLatency}}</td>
 
                                 <td *ngIf="!region.dynamodbLatency">{{properties.NA_TEXT}}</td>

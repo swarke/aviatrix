@@ -140,9 +140,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
       object.firstBandwidthPass = false;
       object.pingStartTime = new Date();
       this.setLatency(index);
-      this.setBandwidth(index);
       this.setHeaderLatency(index);
-      this.setHeaderBandwidth(index);
       this.setPingLatency(index);
       this.setDynamodbLatency(index);
     }
@@ -189,9 +187,14 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
     let pingStart = new Date();
     var cacheBuster = "?nnn=" + pingStart;
     download.onerror = function() {
-        let pingEnd = new Date();
-        let ping: number = (pingEnd.getTime() - pingStart.getTime());
-        obj.latency = Math.round(ping);
+        let pingStart = new Date();
+        var cacheBuster = "?nnn=" + pingStart;
+        download.onerror = function() {
+            let pingEnd = new Date();
+            let ping: number = (pingEnd.getTime() - pingStart.getTime());
+            obj.latency = Math.round(ping);
+        }
+        download.src = obj.url +'ping'+ cacheBuster ;
     }
     download.src = obj.url +'ping'+ cacheBuster ;
   }
@@ -214,27 +217,24 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
             url: url,
             crossDomain : true,
             error: function(message){
-                            
+              var pingStart = new Date();
+              var cacheBuster = "?nnn=" + pingStart;
+              url = obj['url'] + 'ping' + cacheBuster;
+              ajaxSizeRequest = $.ajax({
+                  type: "HEAD",
+                  async: true,
+                  crossDomain : true,
+                  url: url,
+                  error: function(message){
+                  var e = new Date();
+                  var diff = (e.getTime() - pingStart.getTime());
+                  obj.headerLatency = Math.round(diff);
+                  console.log(obj['region_name'] + ': ' + Math.round(diff));
+                          
+                  }
+              });
             }
         });
-
-        var pingStart = new Date();
-        var cacheBuster = "?nnn=" + pingStart;
-        url = obj['url'] + 'ping' + cacheBuster;
-        ajaxSizeRequest = $.ajax({
-            type: "HEAD",
-            async: true,
-            crossDomain : true,
-            url: url,
-            error: function(message){
-            var e = new Date();
-            var diff = (e.getTime() - pingStart.getTime());
-            obj.headerLatency = Math.round(diff);
-            console.log(obj['region_name'] + ': ' + Math.round(diff));
-                    
-            }
-        });
-    
     }
 
     /**
@@ -272,8 +272,10 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
       let obj = this.locations[index];
       let ping = new Ping();
       ping.ping(obj.url, function(error, delta) {
-        obj.pingLatency = delta;
+        ping.ping(obj.url, function(error, delta) {
+          obj.pingLatency = delta;
         });
+      });
     }
 
     /**
@@ -286,10 +288,14 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
       let pingStart = new Date();
       var cacheBuster = "?nnn=" + pingStart;
       download.onerror = function() {
-          let pingEnd = new Date();
-          let ping: number = (pingEnd.getTime() - pingStart.getTime());
-          obj.dynamodbLatency = Math.round(ping);
-          
+          let pingStart = new Date();
+          var cacheBuster = "?nnn=" + pingStart;
+          download.onerror = function() { 
+            let pingEnd = new Date();
+            let ping: number = (pingEnd.getTime() - pingStart.getTime());
+            obj.dynamodbLatency = Math.round(ping);
+          }
+          download.src = obj.dynamo_url +'ping'+ cacheBuster ;
       }
       download.src = obj.dynamo_url +'ping'+ cacheBuster ;
     }
