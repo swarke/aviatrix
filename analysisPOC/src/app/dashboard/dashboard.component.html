@@ -24,7 +24,7 @@
                                 <th align="center"> Region Name </th>
                                 <th align="center" colspan="2"> HTTP Get</th>
                                 <th align="center" colspan="2"> HTTP Header</th>
-                                <th align="center" colspan="2"> HTTP Ping</th>
+                                <th align="center"> HTTP Ping</th>
                                 <th align="center"> HTTP DynamoDB</th>
                                 <!-- <th align="center"> System Ping</th> -->
                             </tr>
@@ -32,7 +32,7 @@
                                 <th></th>
                                 <th>Latency (msec)</th><th>Throughput (mbps)</th>
                                 <th>Latency (msec)</th><th>Throughput (mbps)</th>
-                                <th>Latency (msec)</th><th>Throughput (mbps)</th>
+                                <th>Latency (msec)</th>
                                 <th>Latency (msec)</th>
                                 <!-- <th>Latency (msec)</th> -->
                             </tr>
@@ -52,8 +52,6 @@
 
                                 <td *ngIf="!region.pingLatency">{{properties.pingLatency}}</td>
                                 <td *ngIf="region.pingLatency"> {{region.pingLatency}}</td>
-                                <td *ngIf="!region.pingBandwidth">{{properties.NA_TEXT}}</td>
-                                <td *ngIf="region.pingBandwidth">{{region.pingBandwidth}}</td>
 
                                 <td *ngIf="!region.dynamodbLatency">{{properties.NA_TEXT}}</td>
                                 <td *ngIf="region.dynamodbLatency">{{region.dynamodbLatency}}</td>
@@ -64,7 +62,13 @@
                         </tbody>
                     </table>
                 </div>
+                
             </div>
         </div>
+    </div>
+    <div align="center" *ngIf="beginTest">
+        <button class="btn begin-test-btn outline-none center" style="margin-left: 35px;" (click)="startTest();">Restart Test
+            <img src="/assets/arrow-36x36-white.png" height="16" width="16" style="margin-left: 10px;" />
+        </button>
     </div>
 </div>

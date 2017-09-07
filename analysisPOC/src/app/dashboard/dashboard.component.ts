@@ -16,6 +16,8 @@ declare const google: any;
 
 declare const AmCharts: any;
 
+declare const Ping: any
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -137,16 +139,12 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
       object.firstLatencyPass = false;
       object.firstBandwidthPass = false;
       object.pingStartTime = new Date();
-
       this.setLatency(index);
       this.setBandwidth(index);
       this.setHeaderLatency(index);
       this.setHeaderBandwidth(index);
       this.setPingLatency(index);
-      this.setPingBandwidth(index);
       this.setDynamodbLatency(index);
-      this.setSystemPingBandwidth(index);
-      
     }
 
   }
@@ -194,10 +192,6 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
         let pingEnd = new Date();
         let ping: number = (pingEnd.getTime() - pingStart.getTime());
         obj.latency = Math.round(ping);
-        obj.currentLatencyIndex++;
-        if (obj.currentLatencyIndex > 5) {
-          obj.latencyCompleted = true;
-        }
     }
     download.src = obj.url +'ping'+ cacheBuster ;
   }
@@ -218,6 +212,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
             type: "HEAD",
             async: true,
             url: url,
+            crossDomain : true,
             error: function(message){
                             
             }
@@ -229,6 +224,7 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
         ajaxSizeRequest = $.ajax({
             type: "HEAD",
             async: true,
+            crossDomain : true,
             url: url,
             error: function(message){
             var e = new Date();
@@ -248,16 +244,23 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
     setHeaderBandwidth(index){
       let obj = this.locations[index];
       var downloadSize = 2621440; //bytes
-      let pingStart = new Date();
-      var cacheBuster = "?nnn=" + pingStart;
-      this.dashboardService.getBandwidth(obj.url + this.properties.BANDWIDTH_IMG + cacheBuster).subscribe((data:any ) =>{
-          let pingEnd = new Date();
-          let duration: number = ((pingEnd.getTime() - pingStart.getTime())/1000);
-          let bitsLoaded = downloadSize * 8;
-          let speedBps: any = (bitsLoaded / duration).toFixed(2);
-          let speedKbps: any = (speedBps / 1024).toFixed(2);
-          let speedMbps = (speedKbps / 1024).toFixed(2);
-          obj.headerBandwidth = parseFloat(speedMbps);
+        var pingStart = new Date();
+        var cacheBuster = "?nnn=" + pingStart;
+        var url = obj.url + this.properties.BANDWIDTH_IMG + cacheBuster;
+        var ajaxSizeRequest = $.ajax({
+            type: "HEAD",
+            async: true,
+            crossDomain : true,
+            url: url,
+            success: function(message){
+            let pingEnd = new Date();
+            let duration: number = ((pingEnd.getTime() - pingStart.getTime())/1000);
+            let bitsLoaded = downloadSize * 8;
+            let speedBps: any = (bitsLoaded / duration).toFixed(2);
+            let speedKbps: any = (speedBps / 1024).toFixed(2);
+            let speedMbps = (speedKbps / 1024).toFixed(2);
+            obj.headerBandwidth = parseFloat(speedMbps);
+            }
         });
     }
 
@@ -267,16 +270,10 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
      */
     setPingLatency(index){
       let obj = this.locations[index];
-      // obj.dashboardModel.pingLatency[obj.currentLatencyIndex].value = Math.round(250); 
-    }
-
-    /**
-     * [setPingBandwidth description]
-     * @param {[type]} index [description]
-     */
-    setPingBandwidth(index){
-      let obj = this.locations[index];
-      // obj.dashboardModel.pingBandwidth[obj.currentLatencyIndex].value = parseFloat('6.7'); 
+      let ping = new Ping();
+      ping.ping(obj.url, function(error, delta) {
+        obj.pingLatency = delta;
+        });
     }
 
     /**
@@ -285,7 +282,16 @@ export class DashboardComponent implements OnInit, AfterViewInit  {
      */
     setDynamodbLatency(index){
       let obj = this.locations[index];
-      // obj.dashboardModel.dynamodbLatency[obj.currentLatencyIndex].value = Math.round(490); 
+      var download = new Image() ;
+      let pingStart = new Date();
+      var cacheBuster = "?nnn=" + pingStart;
+      download.onerror = function() {
+          let pingEnd = new Date();
+          let ping: number = (pingEnd.getTime() - pingStart.getTime());
+          obj.dynamodbLatency = Math.round(ping);
+          
+      }
+      download.src = obj.dynamo_url +'ping'+ cacheBuster ;
     }
 
     /**
